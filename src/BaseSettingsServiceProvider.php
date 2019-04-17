@@ -28,6 +28,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         // Config.
         $this->publishes([
             __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
+            __DIR__ . '/config/theme.php' => config_path('theme.php'),
         ], 'config');
 
         // Подключение миграций.
@@ -60,20 +61,23 @@ class BaseSettingsServiceProvider extends ServiceProvider
                 $view->with('mainMenu', []);
             }
         });
+
         // Ко всем шаблонам цепляем переменную тукущего роута.
         // Ко всем что бы не добавлять шаблон каждый раз как понадобится эта переменная.
         view()->composer('*', function ($view) {
             $view->with('currentRoute', Route::currentRouteName());
         });
+
         // Выбор темы.
         view()->composer('layouts.boot', function ($view) {
             $currentRouteName = Route::currentRouteName();
-            $theme = 'site';
-            if (strstr($currentRouteName, 'admin')) {
-                $theme = 'admin';
-            }
-            if (strstr($currentRouteName, 'webflow')) {
-                $theme = 'webflow';
+            $themes = config('theme.themes');
+            $theme = config('theme.default');
+            foreach ($themes as $item => $template) {
+                if (strstr($currentRouteName, $item)) {
+                    $theme = $template;
+                    break;
+                }
             }
             $view->with('theme', $theme);
         });
