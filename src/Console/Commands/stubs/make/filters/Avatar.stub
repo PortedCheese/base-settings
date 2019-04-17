@@ -1,0 +1,24 @@
+<?php
+
+namespace {{namespace}}\Filters;
+
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\Image as File;
+
+class Avatar implements FilterInterface {
+
+    public function applyFilter(File $image)
+    {
+//        // create empty canvas with background color
+//        $water = Image::canvas(1000, 1000);
+//
+//        // draw a filled blue circle
+//        $water->circle(1000, 500, 500, function ($draw) {
+//            $draw->background('#0000ff');
+//        });
+        return $image
+            ->widen(100);
+//            ->mask($water, TRUE);
+    }
+}

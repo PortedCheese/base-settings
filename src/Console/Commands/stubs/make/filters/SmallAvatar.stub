@@ -1,0 +1,17 @@
+<?php
+
+namespace {{namespace}}\Filters;
+
+use Intervention\Image\Facades\Image;
+use Intervention\Image\Filters\FilterInterface;
+use Intervention\Image\Image as File;
+
+class SmallAvatar implements FilterInterface {
+
+    public function applyFilter(File $image)
+    {
+        return $image
+            ->widen(30);
+//            ->crop(30, 30, 10, 10);
+    }
+}

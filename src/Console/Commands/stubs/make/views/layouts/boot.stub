@@ -1,0 +1,5 @@
+@if ($theme == 'admin')
+    @include('layouts.admin')
+@elseif ($theme == 'site')
+    @include('layouts.app')
+@endif

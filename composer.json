@@ -1,0 +1,26 @@
+{
+    "name": "portedcheese/base-settings",
+    "description": "Templates and settings for start project",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Peshkov",
+            "email": "vladimirpeshkov5@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "PortedCheese\\BaseSettings\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PortedCheese\\BaseSettings\\BaseSettingsServiceProvider"
+            ]
+        }
+    }
+}

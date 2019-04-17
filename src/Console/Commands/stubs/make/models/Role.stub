@@ -1,0 +1,9 @@
+<?php
+
+namespace {{namespace}};
+
+
+class Role extends \PortedCheese\BaseSettings\Models\Role
+{
+
+}

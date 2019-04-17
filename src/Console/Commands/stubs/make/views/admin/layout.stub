@@ -1,0 +1,9 @@
+@extends('layouts.boot')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            @yield('admin')
+        </div>
+    </div>
+@endsection
