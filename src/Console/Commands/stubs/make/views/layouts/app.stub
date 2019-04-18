@@ -75,11 +75,19 @@
         <main class="py-4">
             <div class="container">
                 <div class="row">
-                    @yield('header-title')
+                    <h1>@yield('header-title')</h1>
                 </div>
             </div>
             @yield('content')
         </main>
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    @yield('footer')
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 </html>
