@@ -36,6 +36,11 @@
                     Dashboard
                 </a>
             @endrole
+            @role('admin')
+                <a class="dropdown-item" target="_blank" href="{{ route('admin.logs') }}">
+                    Логи
+                </a>
+            @endrole
             <a class="dropdown-item"
                href="{{ route('profile') }}">
                 Профиль
