@@ -3,58 +3,58 @@
         <div class="col-12">
             <table class="table">
                 <thead>
-                    <th>Изображение</th>
-                    <th>Вес</th>
-                    <th>Действия</th>
+                <th>Изображение</th>
+                <th>Вес</th>
+                <th>Действия</th>
                 </thead>
                 <tbody>
-                    <tr v-for="image in images">
-                        <td>
-                            <img class="rounded float-left" :src="image.src" :alt="image.id">
-                        </td>
-                        <td width="20%">
-                            <div v-if="image.input">
-                                <div class="input-group input-group-sm">
-                                    <div class="input-group-prepend" id="button-addon">
-                                        <button class="btn btn-danger"
-                                                @click="image.input = false">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                        <button class="btn btn-success"
-                                                @click="changeWeight(image)">
-                                            <i class="far fa-check-circle"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text"
-                                           class="form-control"
-                                           v-model="image.changed" aria-describedby="button-addon">
+                <tr v-for="image in images">
+                    <td>
+                        <img class="rounded float-left" :src="image.src" :alt="image.id">
+                    </td>
+                    <td width="20%">
+                        <div v-if="image.input">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend" id="button-addon">
+                                    <button class="btn btn-danger"
+                                            @click="image.input = false">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                    <button class="btn btn-success"
+                                            @click="changeWeight(image)">
+                                        <i class="far fa-check-circle"></i>
+                                    </button>
                                 </div>
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="image.changed" aria-describedby="button-addon">
                             </div>
-                            <p v-else @click="image.input = true">
-                                {{ image.weight }}
-                            </p>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button class="btn btn-primary"
-                                        v-if="image.weight > 1"
-                                        :disabled="loading"
-                                        @click="upWeight(image)">
-                                    <i class="fas fa-level-up-alt"></i>
-                                </button>
-                                <button class="btn btn-danger"
-                                        :disabled="loading"
-                                        @click="deleteImage(image)">
-                                    Удалить
-                                </button>
-                                <button class="btn btn-primary"
-                                        :disabled="loading"
-                                        @click="downWeight(image)">
-                                    <i class="fas fa-level-down-alt"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                        </div>
+                        <p v-else @click="image.input = true">
+                            {{ image.weight }}
+                        </p>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-primary"
+                                    v-if="image.weight > 1"
+                                    :disabled="loading"
+                                    @click="upWeight(image)">
+                                <i class="fas fa-level-up-alt"></i>
+                            </button>
+                            <button class="btn btn-danger"
+                                    :disabled="loading"
+                                    @click="deleteImage(image)">
+                                Удалить
+                            </button>
+                            <button class="btn btn-primary"
+                                    :disabled="loading"
+                                    @click="downWeight(image)">
+                                <i class="fas fa-level-down-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -94,7 +94,7 @@
                         </button>
                     </form>
                     <p class="text-info" v-else>Идет обработка запроса</p>
-                    <p class="text-success">{{ message }}</p>
+                    <p :class="{ 'text-success': !error, 'text-danger': error}">{{ message }}</p>
                 </div>
                 <div class="col-3">
                     <img v-if="content"
@@ -125,6 +125,7 @@
                 content: false,
                 loading: false,
                 message: '',
+                error: false,
                 images: []
             }
         },
@@ -146,46 +147,53 @@
                 let formData = new FormData();
                 formData.append('changed', image.changed);
                 formData.append('weight', image.weight);
-                axios.post(image.weightUrl, formData, {
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken
-                    }
-                }).then(response => {
-                    this.loading = false;
-                    let result = response.data;
-                    if (result.success) {
-                        this.images = result.images;
-                        this.message = 'Вес изменен';
-                    }
-                    else {
-                        this.message = result.message;
-                    }
-                }, response => {
-                        this.loading = false;
+                axios
+                    .post(image.weightUrl, formData, {
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
                     })
-                },
+                    .then(response => {
+                        this.error = false;
+                        let result = response.data;
+                        if (result.success) {
+                            this.images = result.images;
+                            this.message = 'Вес изменен';
+                        }
+                        else {
+                            this.message = result.message;
+                        }
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            },
 
             // Удаление изображения.
             deleteImage (image) {
                 this.loading = true;
                 this.message = "";
-                axios.delete(image.delete, {
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken
-                    }
-                }).then(response => {
-                    this.loading = false;
-                    let result = response.data;
-                    if (result.success) {
-                        this.images = result.images;
-                        this.message = 'Удалено';
-                    }
-                    else {
-                        this.message = result.message;
-                    }
-                }, response => {
-                    this.loading = false;
-                })
+                axios
+                    .delete(image.delete, {
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken
+                        }
+                    })
+                    .then(response => {
+                        this.error = false;
+                        this.loading = false;
+                        let result = response.data;
+                        if (result.success) {
+                            this.images = result.images;
+                            this.message = 'Удалено';
+                        }
+                        else {
+                            this.message = result.message;
+                        }
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
             },
 
             // Отправляем на сервер.
@@ -194,26 +202,37 @@
                 this.message = "";
                 let formData = new FormData();
                 formData.append('image', this.uploadFile);
-                axios.post(this.uploadUrl, formData, {
-                    headers: {
-                        'X-CSRF-TOKEN': this.csrfToken
-                    }
-                }).then(response => {
-                    this.loading = false;
-                    let result = response.data;
-                    if (result.success) {
-                        this.images = result.images;
-                        this.message = 'Загружено';
-                    }
-                    else {
-                        this.message = result.message;
-                    }
-                }, response => {
+                axios
+                    .post(this.uploadUrl, formData, {
+                        headers: {
+                            'X-CSRF-TOKEN': this.csrfToken
+                        },
+                        responseType: 'json'
+                    })
+                    .then(response => {
+                        this.error = false;
+                        let result = response.data;
+                        if (result.success) {
+                            this.images = result.images;
+                            this.message = 'Загружено';
+                        }
+                        else {
+                            this.message = result.message;
+                        }
+                    })
+                    .catch(error => {
+                        this.error = true;
+                        let data = error.response.data;
+                        if (data.errors.image.length) {
+                            this.message = data.errors.image[0];
+                        }
+                    })
+                    .finally(() => {
+                        this.content = false;
+                        this.uploadFile = false;
                         this.loading = false;
                     });
-                    this.content = false;
-                    this.uploadFile = false;
-                },
+            },
 
             // Получаем выбранное изображение.
             getImage (event) {
@@ -240,17 +259,16 @@
 
         created() {
             axios.get(this.getUrl)
-                    .then(response => {
-                        let result = response.data;
-                        if (result.success) {
-                            this.images = result.images;
-                        }
-                        else {
-                            this.message = result.message;
-                        }
-                    }, response => {
-                        console.log(response);
-                    })
+                .then(response => {
+                    this.error = false;
+                    let result = response.data;
+                    if (result.success) {
+                        this.images = result.images;
+                    }
+                    else {
+                        this.message = result.message;
+                    }
+                })
         }
     }
 </script>

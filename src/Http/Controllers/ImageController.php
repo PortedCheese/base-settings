@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use PortedCheese\BaseSettings\Http\Requests\ImagePostRequest;
 
 class ImageController extends Controller
 {
@@ -41,7 +42,7 @@ class ImageController extends Controller
      * @param $id
      * @return array
      */
-    public function post(Request $request, $model, $id) {
+    public function post(ImagePostRequest $request, $model, $id) {
         if ($modelClass = $this->getModel($model, $id)) {
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store("gallery/$model");
