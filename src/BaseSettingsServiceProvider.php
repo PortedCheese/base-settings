@@ -29,6 +29,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
             __DIR__ . '/config/theme.php' => config_path('theme.php'),
+            __DIR__ . '/config/siteconfigurations.php' => config_path('siteconfigurations.php'),
         ], 'config');
 
         // Подключение миграций.

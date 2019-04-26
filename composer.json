@@ -14,13 +14,19 @@
     "autoload": {
         "psr-4": {
             "PortedCheese\\BaseSettings\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
             "providers": [
                 "PortedCheese\\BaseSettings\\BaseSettingsServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Siteconf": "PortedCheese\\BaseSettings\\Facade"
+            }
         }
     }
 }
