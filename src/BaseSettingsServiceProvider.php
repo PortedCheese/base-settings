@@ -3,18 +3,29 @@
 namespace PortedCheese\BaseSettings;
 
 use App\Menu;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
+use PortedCheese\BaseSettings\Events\UserUpdate;
 
 class BaseSettingsServiceProvider extends ServiceProvider
 {
+
     public function boot()
     {
-        $this->hasRoleBlade();
+        setlocale(LC_ALL, 'ru_RU.UTF-8');
 
+        /**
+         * Событие обновление пользователя.
+         */
+        User::updated(function ($user) {
+            event(new UserUpdate($user));
+        });
+
+        $this->hasRoleBlade();
         $this->extendViews();
 
         // Подключение роутов.
