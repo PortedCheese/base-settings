@@ -23,7 +23,7 @@
                 <i class="fas fa-trash-alt"></i>
             </button>
         </template>
-    </div class="btn-group">
+    </div>
 </template>
 
 <script>
