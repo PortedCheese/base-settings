@@ -1,0 +1,9 @@
+<?php
+
+namespace {{namespace}};
+
+
+class User extends \PortedCheese\BaseSettings\Models\User
+{
+
+}

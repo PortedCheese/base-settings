@@ -32,6 +32,7 @@ class BaseMakeCommand extends Command
     protected $models = [
         'Role.stub' => 'Role.php',
         'Image.stub' => 'Image.php',
+        'User.stub' => 'User.php',
     ];
 
     /**
@@ -82,9 +83,6 @@ class BaseMakeCommand extends Command
 
         if (!$this->option('views')) {
             $this->exportModels();
-
-            $this->exportMiddleware();
-
             $this->exportFilters();
         }
     }
@@ -133,22 +131,6 @@ class BaseMakeCommand extends Command
         if (! is_dir($directory = app_path('Filters'))) {
             mkdir($directory, 0755, true);
         }
-    }
-
-    protected function exportMiddleware()
-    {
-        if (file_exists(app_path("Http/Middleware/CheckRole.php"))) {
-            if (!$this->confirm("The [CheckRole.php] middleware already exists. Do you want to replace it?")) {
-                return;
-            }
-        }
-
-        file_put_contents(
-            app_path("Http/Middleware/CheckRole.php"),
-            $this->compileMiddlewareStub()
-        );
-
-        $this->info("Middleware [CheckRole.php] generated successfully. Don't forget add it to kernel!");
     }
 
     /**

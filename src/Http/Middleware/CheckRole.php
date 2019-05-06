@@ -1,6 +1,6 @@
 <?php
 
-namespace {{namespace}}Http\Middleware;
+namespace PortedCheese\BaseSettings\Http\Middleware;
 
 use Closure;
 

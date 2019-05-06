@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
 use PortedCheese\BaseSettings\Events\UserUpdate;
+use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
 
 class BaseSettingsServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         $this->hasRoleBlade();
         $this->extendViews();
+
+        // Задать middleware.
+        $this->app['router']->aliasMiddleware('role', CheckRole::class);
 
         // Подключение роутов.
         $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
@@ -71,6 +75,15 @@ class BaseSettingsServiceProvider extends ServiceProvider
             }
             else {
                 $view->with('mainMenu', []);
+            }
+        });
+
+        view()->composer('layouts.admin', function ($view) {
+            if (class_exists('\App\Menu')) {
+                $view->with('adminMenu', Menu::getByKey('admin'));
+            }
+            else {
+                $view->with('adminMenu', []);
             }
         });
 
