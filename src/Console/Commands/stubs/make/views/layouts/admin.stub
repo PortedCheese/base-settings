@@ -7,24 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @section('tag-title')
-        @empty($pageMetas['title'])
-            <title>@yield('page-title'){{ config('app.name', 'Laravel') }}</title>
-        @endempty
-        @empty($pageMetas['og:title'])
-            <meta content="@yield('page-title'){{ config('app.name', 'Laravel') }}" property="og:title" >
-        @endempty
-    @show
-
-    @isset($pageMetas)
-        @foreach($pageMetas as $key => $meta)
-            {!! $meta !!}
-        @endforeach
-    @endisset
-
-    @stack('more-meta')
+    <title>@yield('page-title'){{ config('app.name', 'Laravel') }}</title>
+    <meta content="@yield('page-title'){{ config('app.name', 'Laravel') }}" property="og:title" >
 
     <!-- Scripts -->
+    @stack('js-lib')
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script src="{{ asset('js/admin.js') }}" defer></script>
     @stack('more-scripts')
@@ -75,9 +62,35 @@
 
         <main class="py-4">
             <div class="container">
-                <h1>@yield('header-title')</h1>
+                <div class="row">
+                    @hasSection('sidebar')
+                        <aside class="col-3">
+                            <div class="row">
+                                @yield('sidebar')
+                            </div>
+                        </aside>
+                        <section class="col-9">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1>@yield('header-title')</h1>
+                                </div>
+                                @yield('content')
+                                @yield('links')
+                            </div>
+                        </section>
+                    @else
+                        <section class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1>@yield('header-title')</h1>
+                                </div>
+                                @yield('content')
+                                @yield('links')
+                            </div>
+                        </section>
+                    @endif
+                </div>
             </div>
-            @yield('content')
         </main>
     </div>
 </body>
