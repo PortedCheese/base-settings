@@ -78,7 +78,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
             }
         });
 
-        view()->composer('layouts.admin', function ($view) {
+        view()->composer(['layouts.admin', 'layouts.paper', 'layouts.argon'], function ($view) {
             if (class_exists('\App\Menu')) {
                 $view->with('adminMenu', Menu::getByKey('admin'));
             }
