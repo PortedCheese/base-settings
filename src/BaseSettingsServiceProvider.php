@@ -68,25 +68,6 @@ class BaseSettingsServiceProvider extends ServiceProvider
      */
     private function extendViews()
     {
-        // Добавляем главное меню сайта в основной шаблон сайта.
-        view()->composer('layouts.app', function ($view) {
-            if (class_exists('\App\Menu')) {
-                $view->with('mainMenu', Menu::getByKey('main'));
-            }
-            else {
-                $view->with('mainMenu', []);
-            }
-        });
-
-        view()->composer(['layouts.admin', 'layouts.paper', 'layouts.argon'], function ($view) {
-            if (class_exists('\App\Menu')) {
-                $view->with('adminMenu', Menu::getByKey('admin'));
-            }
-            else {
-                $view->with('adminMenu', []);
-            }
-        });
-
         // Ко всем шаблонам цепляем переменную тукущего роута.
         // Ко всем что бы не добавлять шаблон каждый раз как понадобится эта переменная.
         view()->composer('*', function ($view) {

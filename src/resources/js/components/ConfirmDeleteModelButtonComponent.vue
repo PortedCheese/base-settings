@@ -1,28 +1,32 @@
 <template>
-    <div class="btn-group">
-        <template v-if="showConfirm">
-            <button class="btn btn-danger"
-                    @click="submitForm()">
-                <i class="far fa-check-circle"></i>
-            </button>
-            <slot name="delete"></slot>
-            <button type="button"
-                    @click="toggleConfirm()"
-                    class="btn btn-success">
-                <i class="fas fa-ban"></i>
-            </button>
-        </template>
-        <template v-else>
-            <slot name="edit"></slot>
-            <slot name="show"></slot>
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group mr-1">
+            <template v-if="showConfirm">
+                <button class="btn btn-danger"
+                        @click="submitForm()">
+                    <i class="far fa-check-circle"></i>
+                </button>
+                <slot name="delete"></slot>
+                <button type="button"
+                        @click="toggleConfirm()"
+                        class="btn btn-success">
+                    <i class="fas fa-ban"></i>
+                </button>
+            </template>
+            <template v-else>
+                <slot name="edit"></slot>
+                <slot name="show"></slot>
+                <button type="button"
+                        v-if="hasSlot()"
+                        @click="toggleConfirm()"
+                        class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </template>
+        </div>
+        <div class="btn-group" v-if="hasSlot('other')">
             <slot name="other"></slot>
-            <button type="button"
-                    v-if="hasSlot()"
-                    @click="toggleConfirm()"
-                    class="btn btn-danger">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </template>
+        </div>
     </div>
 </template>
 
