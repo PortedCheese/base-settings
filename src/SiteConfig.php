@@ -64,6 +64,7 @@ class SiteConfig
             config_path($this->configName . '.php'),
             $this->makeSaveStr($config)
         );
+        sleep(1);
     }
 
     protected function makeSaveStr($config)

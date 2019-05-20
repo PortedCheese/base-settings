@@ -56,6 +56,9 @@ class BaseMakeCommand extends Command
         'layouts/messages.stub' => 'layouts/messages.blade.php',
         'layouts/user-menu.stub' => 'layouts/user-menu.blade.php',
         'layouts/footer.stub' => 'layouts/footer.blade.php',
+        'layouts/nav.stub' => 'layouts/nav.blade.php',
+        'layouts/content.stub' => 'layouts/content.blade.php',
+        'layouts/main-section.stub' => 'layouts/main-section.blade.php',
     ];
 
     /**

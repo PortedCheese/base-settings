@@ -24,10 +24,7 @@
 
     @stack('more-meta')
 
-    <!-- Scripts -->
     @stack('js-lib')
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    @stack('more-scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -41,77 +38,13 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button
-                        class="navbar-toggler"
-                        type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="{{ __('Toggle navigation') }}"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @includeIf('layouts.menu.index', ['menu' => $mainMenu])
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        @include('layouts.user-menu')
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @include('layouts.nav')
 
         @include('layouts.messages')
 
         <main class="py-4">
             <div class="container">
-                <div class="row">
-                    @hasSection('sidebar')
-                        <aside class="col-3">
-                            <div class="row">
-                                @yield('sidebar')
-                            </div>
-                        </aside>
-                        <section class="col-9">
-                            <div class="row">
-                                @hasSection('header-title')
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <h1>@yield('header-title')</h1>
-                                        </div>
-                                    </div>
-                                @endif
-                                @yield('content')
-                                @yield('links')
-                            </div>
-                        </section>
-                    @else
-                        <section class="col-12">
-                            <div class="row">
-                                @hasSection('header-title')
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <h1>@yield('header-title')</h1>
-                                        </div>
-                                    </div>
-                                @endif
-                                @yield('content')
-                                @yield('links')
-                            </div>
-                        </section>
-                    @endif
-                </div>
+                @include('layouts.main-section')
             </div>
         </main>
 
@@ -127,5 +60,9 @@
             @endif
         </footer>
     </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    @stack('more-scripts')
 </body>
 </html>
