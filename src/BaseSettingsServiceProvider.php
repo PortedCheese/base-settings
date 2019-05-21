@@ -28,6 +28,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         $this->hasRoleBlade();
         $this->extendViews();
+        $this->bladeComponents();
 
         // Задать middleware.
         $this->app['router']->aliasMiddleware('role', CheckRole::class);
@@ -49,6 +50,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         // Подключение миграций.
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+
+        // Подключение шаблонов.
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'base-settings');
 
         // Console.
         if ($this->app->runningInConsole()) {
@@ -104,6 +108,13 @@ class BaseSettingsServiceProvider extends ServiceProvider
             }
             return $condition;
         });
+    }
+
+    private function bladeComponents()
+    {
+        Blade::component("base-settings::components.image", 'image');
+        Blade::component("base-settings::components.gallery", 'gallery');
+
     }
 
 }

@@ -27,6 +27,9 @@
         <div class="btn-group" v-if="hasSlot('other')">
             <slot name="other"></slot>
         </div>
+        <div class="d-none" v-if="hasSlot('forms')">
+            <slot name="forms"></slot>
+        </div>
     </div>
 </template>
 
