@@ -43,9 +43,7 @@
         @include('layouts.messages')
 
         <main class="py-4">
-            <div class="container">
-                @include('layouts.main-section')
-            </div>
+            @include('layouts.main-section')
         </main>
 
         <footer>
