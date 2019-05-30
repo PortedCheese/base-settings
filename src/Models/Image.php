@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageCache;
+use PortedCheese\BaseSettings\Events\ImageUpdate;
 
 class Image extends Model {
 
@@ -18,11 +19,17 @@ class Image extends Model {
     {
         parent::boot();
 
-        static::deleting(function($image) {
+        static::updated(function ($model) {
+            event(new ImageUpdate($model));
+        });
+
+        static::deleting(function ($model) {
             // Чистим кэши изображения.
-            $image->cacheClear();
+            $model->cacheClear();
             // Удаляем с диска картинку.
-            Storage::delete($image->path);
+            Storage::delete($model->path);
+
+            event(new ImageUpdate($model));
         });
     }
 

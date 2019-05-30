@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use PortedCheese\BaseSettings\Events\UserUpdate;
 use PortedCheese\BaseSettings\Notifications\CustomResetPasswordNotify;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -33,22 +34,26 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        static::deleting(function($user) {
+        static::deleting(function($model) {
             // Удаляем аватар.
-            $user->clearAvatar();
+            $model->clearAvatar();
             // Чистим таблицу ролей.
-            $user->roles()->sync([]);
+            $model->roles()->sync([]);
             // Удаляем изображения.
-            $user->clearImages();
+            $model->clearImages();
         });
 
-        static::creating(function($user) {
+        static::creating(function($model) {
             if (
                 !empty(Auth::user()) &&
                 Auth::user()->hasRole('admin')
             ) {
-                $user->email_verified_at = Carbon::now();
+                $model->email_verified_at = Carbon::now();
             }
+        });
+
+        static::updated(function ($model) {
+            event(new UserUpdate($user));
         });
     }
 

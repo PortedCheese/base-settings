@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\BaseSettings\Http\Requests\ImagePostRequest;
 
 class ImageController extends Controller
@@ -51,6 +52,7 @@ class ImageController extends Controller
                     'name' => "$model-$id" . Carbon::now()->timestamp,
                 ]);
                 $modelClass->images()->save($image);
+                event(new ImageUpdate($image));
                 return [
                     'success' => TRUE,
                     'images' => $this->parseImages($modelClass, $model),

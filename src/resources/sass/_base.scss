@@ -1,0 +1,32 @@
+.line {
+  width: 140px;
+  height: 2px;
+  background-color: $grid-line;
+  padding-bottom: 2px;
+}
+
+.card-base {
+  font-family: Montserrat, sans-serif;
+
+  border-color: $border-grid;
+  &:hover {
+    border-color: $grid-line;
+    box-shadow: 0 9px 13px 0 rgba(0, 0, 0, 0.28);
+  }
+
+  .empty-image {
+    text-align: center;
+    min-height: 240px;
+    width: 100%;
+    @media (min-width: 768px) and (max-width: 991px) {
+      min-height: 150px;
+    }
+    @media (min-width: 992px) and (max-width: 1199px) {
+      min-height: 200px;
+    }
+  }
+
+  .card-footer {
+    border: none;
+  }
+}
