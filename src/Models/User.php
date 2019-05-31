@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
         });
 
         static::updated(function ($model) {
-            event(new UserUpdate($user));
+            event(new UserUpdate($model));
         });
     }
 
