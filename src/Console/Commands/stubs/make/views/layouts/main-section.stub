@@ -36,12 +36,12 @@
     <div class="container">
         <div class="row">
             @hasSection('sidebar')
-                <aside class="col-3">
+                <aside class="d-none d-lg-block col-lg-3">
                     <div class="row">
                         @yield('sidebar')
                     </div>
                 </aside>
-                <section class="col-9">
+                <section class="col-12 col-lg-9">
                     <div class="row">
                         @include('layouts.content')
                     </div>

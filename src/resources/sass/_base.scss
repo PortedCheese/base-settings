@@ -5,10 +5,25 @@
   padding-bottom: 2px;
 }
 
+.noUi-horizontal {
+  height: 10px;
+  .noUi-handle {
+    height: 20px;
+    &:before,
+    &:after {
+      height: 7px;
+    }
+  }
+  .noUi-connect {
+    background: $blue;
+  }
+}
+
 .card-base {
   font-family: Montserrat, sans-serif;
 
   border-color: $border-grid;
+
   &:hover {
     border-color: $grid-line;
     box-shadow: 0 9px 13px 0 rgba(0, 0, 0, 0.28);
@@ -26,7 +41,57 @@
     }
   }
 
+  .states {
+    position: absolute;
+    .badge {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
   .card-footer {
     border: none;
+  }
+}
+
+.fade-scale {
+  transform: scale(0);
+  opacity: 0;
+  -webkit-transition: all .25s linear;
+  -o-transition: all .25s linear;
+  transition: all .25s linear;
+
+  &.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.slide {
+  opacity: 0;
+  -webkit-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+  -moz-transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+  transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+
+  &.dir-left {
+    -webkit-transform: translateX(-20%);
+    -moz-transform: translateX(-20%);
+    -ms-transform: translateX(-20%);
+    transform: translateX(-20%);
+  }
+
+  &.dir-right {
+    -webkit-transform: translateX(20%);
+    -moz-transform: translateX(20%);
+    -ms-transform: translateX(20%);
+    transform: translateX(20%);
+  }
+
+  &.show {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
   }
 }

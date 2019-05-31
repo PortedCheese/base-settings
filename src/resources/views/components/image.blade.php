@@ -7,21 +7,20 @@
        @isset($lightbox)
        data-lightbox="{{ $lightbox }}"
        @endisset>
-        @isset($grid)
+        @if(! empty($grid))
             @picture([
                 'image' => $image,
                 'template' => $template,
                 'grid' => $grid,
                 'imgClass' => $imgClass,
             ])@endpicture
-        @endisset
-        @empty($grid)
+        @else
             <img src="{{ route('imagecache', [
                         'template' => $template,
                         'filename' => $image->file_name
                     ]) }}"
                  class="{{ $imgClass }}"
                  alt="{{ $image->name }}">
-        @endempty
+        @endif
     </a>
 </figure>
