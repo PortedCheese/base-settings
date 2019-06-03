@@ -61,6 +61,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
                 BaseMakeCommand::class,
             ]);
         }
+
+        debugbar()->info($this->app);
     }
 
     public function register()

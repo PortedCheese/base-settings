@@ -48,7 +48,7 @@ class BaseOverrideCommand extends Command
     }
 
     /**
-     * Create controller for news.
+     * Create controllers.
      */
     protected function createControllers($place)
     {
@@ -77,7 +77,7 @@ class BaseOverrideCommand extends Command
     }
 
     /**
-     * Compiles the NewsController stub.
+     * Compiles the Controller stub.
      *
      * @return string
      */

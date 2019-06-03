@@ -179,7 +179,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return bool
      */
     public function hasRole($role) {
-        return !empty($this->roles->where('name', $role)->toArray());
+        return $this->roles->where('name', $role)->count();
     }
 
     /**

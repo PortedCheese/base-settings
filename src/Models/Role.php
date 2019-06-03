@@ -3,6 +3,7 @@
 namespace PortedCheese\BaseSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Role extends Model
 {
@@ -13,5 +14,14 @@ class Role extends Model
 
     public function users() {
         return $this->belongsToMany('App\User');
+    }
+
+    public static function getForAdmin()
+    {
+        $roles = self::query();
+        if (! Auth::user()->hasRole('admin')) {
+            $roles->where('name', '!=', 'admin');
+        }
+        return $roles->get();
     }
 }

@@ -61,6 +61,10 @@ class BaseMakeCommand extends Command
         'layouts/main-section.stub' => 'layouts/main-section.blade.php',
     ];
 
+    protected $controllers = [
+        'Admin' => ['UserController'],
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -88,6 +92,7 @@ class BaseMakeCommand extends Command
         if (!$this->option('views')) {
             $this->exportModels();
             $this->exportFilters();
+            $this->exportControllers("Admin");
         }
     }
 
@@ -177,6 +182,49 @@ class BaseMakeCommand extends Command
 
             $this->info("Model [{$model}] generated successfully.");
         }
+    }
+
+    /**
+     * Create controllers.
+     */
+    protected function exportControllers($place)
+    {
+        if (empty($this->controllers[$place])) {
+            $this->info("$place not found in controllers");
+            return;
+        }
+        foreach ($this->controllers[$place] as $controller) {
+            if (file_exists(app_path("Http/Controllers/{$place}/{$controller}.php"))) {
+                if (! $this->confirm("The [{$place}/$controller.php] controller already exists. Do you want to replace it?")) {
+                    return;
+                }
+            }
+
+            if (! is_dir($directory = app_path("Http/Controllers/{$place}"))) {
+                mkdir($directory, 0755, true);
+            }
+
+            file_put_contents(
+                app_path("Http/Controllers/{$place}/{$controller}.php"),
+                $this->compileControllerStub($place, $controller)
+            );
+
+            $this->info("[{$place}/$controller.php] created");
+        }
+    }
+
+    /**
+     * Compiles the Controller stub.
+     *
+     * @return string
+     */
+    protected function compileControllerStub($place, $controller)
+    {
+        return str_replace(
+            '{{namespace}}',
+            $this->getAppNamespace(),
+            file_get_contents(__DIR__ . "/stubs/make/controllers/{$place}{$controller}.stub")
+        );
     }
 
     /**
