@@ -40,6 +40,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/base-settings'),
             __DIR__ . '/resources/sass' => resource_path('sass/'),
+            __DIR__ . '/resources/js/scripts' => resource_path("js/"),
         ], 'public');
 
         // Config.
