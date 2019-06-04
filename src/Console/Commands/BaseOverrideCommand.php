@@ -38,13 +38,18 @@ class BaseOverrideCommand extends Command
             return;
         }
 
-        file_put_contents(
-            base_path("routes/{$place}.php"),
-            file_get_contents($this->dir . "/stubs/make/{$place}.stub"),
-            FILE_APPEND
-        );
+        try {
+            file_put_contents(
+                base_path("routes/{$place}.php"),
+                file_get_contents($this->dir . "/stubs/make/{$place}.stub"),
+                FILE_APPEND
+            );
 
-        $this->info("Routes added to {$place}.php");
+            $this->info("Routes added to {$place}.php");
+        }
+        catch (\Exception $e) {
+            $this->error("Failed append to file");
+        }
     }
 
     /**
@@ -67,12 +72,18 @@ class BaseOverrideCommand extends Command
                 mkdir($directory, 0755, true);
             }
 
-            file_put_contents(
-                app_path("Http/Controllers/{$this->packageName}/{$place}/{$controller}.php"),
-                $this->compileControllerStub($place, $controller)
-            );
 
-            $this->info("[{$place}/$controller.php] created");
+            try {
+                file_put_contents(
+                    app_path("Http/Controllers/{$this->packageName}/{$place}/{$controller}.php"),
+                    $this->compileControllerStub($place, $controller)
+                );
+
+                $this->info("[{$place}/$controller.php] created");
+            }
+            catch (\Exception $e) {
+                $this->error("Failed put controller");
+            }
         }
     }
 

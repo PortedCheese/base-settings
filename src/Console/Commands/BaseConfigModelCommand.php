@@ -21,6 +21,8 @@ class BaseConfigModelCommand extends Command
 
     protected $namespace = '';
 
+    protected $vueIncludes = [];
+
     protected $dir = __DIR__;
 
     /**
@@ -37,7 +39,7 @@ class BaseConfigModelCommand extends Command
     }
 
     /**
-     * Добавить настройки новостей по умолчанию.
+     * Добавить настройки по умолчанию.
      */
     protected function makeConfig()
     {
@@ -53,6 +55,13 @@ class BaseConfigModelCommand extends Command
         $this->info("Config {$this->configName} added to siteconfig");
     }
 
+    protected function makeVueIncludes()
+    {
+        foreach ($this->vueIncludes as $vueInclude) {
+
+        }
+    }
+
     /**
      * Create models files.
      */
@@ -65,12 +74,17 @@ class BaseConfigModelCommand extends Command
                 }
             }
 
-            file_put_contents(
-                app_path($model),
-                $this->compileModetStub($key)
-            );
+            try {
+                file_put_contents(
+                    app_path($model),
+                    $this->compileModetStub($key)
+                );
 
-            $this->info("Model [{$model}] generated successfully.");
+                $this->info("Model [{$model}] generated successfully.");
+            }
+            catch (\Exception $e) {
+                $this->error("Filed put model");
+            }
         }
     }
 

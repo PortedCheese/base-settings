@@ -4,7 +4,7 @@
 
 ### Установка
 
-Выгрузить компоненты VueJs
+Выгрузить компоненты VueJs, стили и скрипт.
 
 `php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force`
 
@@ -12,5 +12,6 @@
 
 `php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config`
 
-Что бы создать нужные модели и шаблоны есть команда
-`php artisan make:base-settings` флаг `--views` говорит выгрузить только шаблоны, флаг `--force` говорит заменить шаблоны без подтверждения. На модели всегда спрашивается разрешение на замену.
+`php artisan make:base-settings` - создает модели и шаблоны. Флаг `--views` говорит выгрузить только шаблоны, флаг `--force` говорит заменить шаблоны без подтверждения. На модели всегда спрашивается разрешение на замену.
+
+Есть базовые команды для пакетов что бы заполнить конфигурацию и модели, а так же команда для перезаписи контроллеров и роутов.
