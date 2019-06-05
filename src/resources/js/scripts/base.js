@@ -1,3 +1,7 @@
+window.Lightbox = require('lightbox2');
+window.Chosen = require('chosen-js');
+window.noUiSlider = require('nouislider');
+
 (function ($) {
     $(document).ready(function(){
         ckExample();
@@ -7,7 +11,55 @@
         $('[data-toggle="popover"]').popover();
         activateChosen();
         rangeSlider();
+        ajaxLogin();
     });
+
+    function ajaxLogin() {
+        let $forms = $('.ajax-login-form');
+        $forms.each(function (index, element) {
+            $(element).on('submit', function (event) {
+                event.preventDefault();
+
+                let $form = $(event.target);
+                let $submit = $form.find("input[type='submit']");
+                if (! $submit.length) {
+                    $submit = $form.find("button[type='submit']");
+                }
+                let formData = new FormData($form[0]);
+
+                $submit.attr('disabled', 'disabled');
+                $submit.append("<i class=\"loader fas fa-spinner fa-spin\"></i>");
+                $form.find('.invalid-feedback').each(function (inx, el) {
+                    $(el).parent().find('input').removeClass('is-invalid');
+                    $(el).remove();
+                });
+
+                axios
+                    .post($form.attr('action'), formData)
+                    .then(response => {
+                        document.location.reload(true);
+                    })
+                    .catch(error => {
+                        let data = error.response.data;
+                        for (let item in data.errors) {
+                            let $input = $form.find("input[name='" + item + "']");
+                            let $parent = $input.parent().append("<span class=\"invalid-feedback\" role=\"alert\"></span>");
+                            let $errorBlock = $parent.find('.invalid-feedback');
+                            $input.toggleClass('is-invalid');
+                            for (index in data.errors[item]) {
+                                if (data.errors[item].hasOwnProperty(index)) {
+                                    $errorBlock.append("<strong>" + data.errors[item][index] + "</strong>");
+                                }
+                            }
+                        }
+                    })
+                    .finally(() => {
+                        $submit.removeAttr('disabled');
+                        $submit.find(".loader").remove();
+                    });
+            });
+        });
+    }
 
     function rangeSlider() {
         $(".steps-slider-cover").each(function (index, element) {

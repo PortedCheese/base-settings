@@ -50,6 +50,7 @@ class BaseMakeCommand extends Command
      */
     protected $views = [
         'admin/layout.stub' => 'admin/layout.blade.php',
+
         'layouts/admin.stub' => 'layouts/admin.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
         'layouts/boot.stub' => 'layouts/boot.blade.php',
@@ -59,6 +60,13 @@ class BaseMakeCommand extends Command
         'layouts/nav.stub' => 'layouts/nav.blade.php',
         'layouts/content.stub' => 'layouts/content.blade.php',
         'layouts/main-section.stub' => 'layouts/main-section.blade.php',
+
+        'auth/login-modal.stub' => 'auth/login-modal.blade.php',
+
+        'profile/edit.stub' => 'profile/edit.blade.php',
+        'profile/layout.stub' => 'profile/layout.blade.php',
+        'profile/menu.stub' => 'profile/menu.blade.php',
+        'profile/show.stub' => 'profile/show.blade.php',
     ];
 
     protected $controllers = [
