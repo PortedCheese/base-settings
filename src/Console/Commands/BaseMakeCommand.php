@@ -62,6 +62,7 @@ class BaseMakeCommand extends Command
         'layouts/main-section.stub' => 'layouts/main-section.blade.php',
 
         'auth/login-modal.stub' => 'auth/login-modal.blade.php',
+        'auth/ajax-login.stub' => 'auth/ajax-login.blade.php',
 
         'profile/edit.stub' => 'profile/edit.blade.php',
         'profile/layout.stub' => 'profile/layout.blade.php',

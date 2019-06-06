@@ -1,3 +1,4 @@
+@includeIf("catalog::site.cart.cart-state")
 <!-- Authentication Links -->
 @guest
     <li class="nav-item">
@@ -34,7 +35,7 @@
             </a>
             @endrole
             <a class="dropdown-item"
-               href="{{ route('profile') }}">
+               href="{{ route('profile.show') }}">
                 Профиль
             </a>
             <a class="dropdown-item"

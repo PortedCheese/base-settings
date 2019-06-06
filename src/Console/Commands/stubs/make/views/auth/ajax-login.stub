@@ -1,0 +1,13 @@
+<ul class="nav{{ !empty($vertical) ? " flex-column" : "" }}">
+    @guest
+        <li class="nav-item">
+            <a href="#" class="nav-link" data-toggle="modal" data-target="#LoginForm">
+                Войти
+            </a>
+            @includeIf("auth.login-modal")
+        </li>
+    @endguest
+    @auth
+        @includeIf('layouts.user-menu')
+    @endauth
+</ul>
