@@ -70,12 +70,16 @@ window.noUiSlider = require('nouislider');
             let min = parseInt($from.attr('data-value'));
             let max = parseInt($to.attr('data-value'));
             let range = [parseInt($from.attr('data-init')), parseInt($to.attr('data-init'))];
+            let step = parseInt($(element).attr('data-step'));
+            if (isNaN(step)) {
+                step = 10;
+            }
 
             noUiSlider.create(stepsSlider, {
                 start: range,
                 connect: true,
                 padding: 10,
-                step: 10,
+                step: step,
                 range: {
                     'min': min - 10,
                     'max': max + 10
