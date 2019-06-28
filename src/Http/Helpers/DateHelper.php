@@ -8,6 +8,45 @@ class DateHelper
 {
     const TZ = "Europe/Moscow";
     const UTC = "Etc/UTC";
+    const ACTIONS = [
+        'forFilter',
+        'changeTz',
+        'format',
+    ];
+
+    public $timeZone;
+    public $date;
+
+    public function __construct($timeZone = self::TZ)
+    {
+        $this->timeZone = $timeZone;
+        $this->date = NULL;
+    }
+
+    public function __call($method, $args)
+    {
+        if (in_array($method, self::ACTIONS)) {
+            $this->methodRouter($method, $args);
+        }
+        return $this->date;
+    }
+
+    public function methodRouter($method, $args)
+    {
+        switch ($method) {
+            case 'forFilter':
+                call_user_func_array([$this, "getForFilterDate"], $args);
+                break;
+
+            case 'changeTz':
+                call_user_func_array([$this, "changeTz"], $args);
+                break;
+
+            case 'format':
+                call_user_func_array([$this, "formatValue"], $args);
+                break;
+        }
+    }
 
     /**
      * Значение для фильтров.
@@ -16,7 +55,7 @@ class DateHelper
      * @param bool $to
      * @return mixed
      */
-    public static function getForFilterDate($value, $to = false)
+    protected function getForFilterDate($value, $to = false)
     {
         if ($to) {
             $value = "$value 23:59:59";
@@ -24,9 +63,14 @@ class DateHelper
         else {
             $value = "$value 00:00:00";
         }
-        $carbon = Carbon::createFromFormat("Y-m-d H:i:s",  $value, self::TZ);
-        $carbon->timezone = self::UTC;
-        return $carbon->toDateTimeString();
+        try {
+            $carbon = Carbon::createFromFormat("Y-m-d H:i:s",  $value, $this->timeZone);
+            $carbon->timezone = self::UTC;
+            $this->date = $carbon->toDateTimeString();
+        }
+        catch (\Exception $e) {
+            $this->date = NULL;
+        }
     }
 
     /**
@@ -35,7 +79,7 @@ class DateHelper
      * @param $value
      * @return string
      */
-    public static function changeTz($value)
+    protected function changeTz($value)
     {
         if (empty($value)) {
             return $value;
@@ -44,10 +88,10 @@ class DateHelper
             $carbon = new Carbon($value);
         }
         catch (\Exception $e) {
-            return $value;
+            $this->date = $value;
         }
-        $carbon->timezone = self::TZ;
-        return $carbon->toDateTimeString();
+        $carbon->timezone = $this->timeZone;
+        $this->date = $carbon->toDateTimeString();
     }
 
     /**
@@ -57,11 +101,11 @@ class DateHelper
      * @param string $format
      * @return false|string
      */
-    public static function formatValue($value, $format = "d.m.Y H:i")
+    protected function formatValue($value, $format = "d.m.Y H:i")
     {
         if (empty($value)) {
-            return $value;
+            $this->date = $value;
         }
-        return date($format, strtotime($value));
+        $this->date = date($format, strtotime($value));
     }
 }

@@ -11,3 +11,9 @@ if (!function_exists('siteconf')) {
         return app(\PortedCheese\BaseSettings\Http\Helpers\SiteConfig::class);
     }
 }
+
+if (!function_exists('datehelper')) {
+    function datehelper() {
+        return app(\PortedCheese\BaseSettings\Http\Helpers\DateHelper::class);
+    }
+}
