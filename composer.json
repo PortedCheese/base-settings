@@ -25,7 +25,8 @@
                 "PortedCheese\\BaseSettings\\BaseSettingsServiceProvider"
             ],
             "aliases": {
-                "Siteconf": "PortedCheese\\BaseSettings\\Facade"
+                "SiteConf": "PortedCheese\\BaseSettings\\Http\\Facades\\SiteConfig",
+                "DateHelper": "PortedCheese\\BaseSettings\\Http\\Facades\\DateHelper"
             }
         }
     }
