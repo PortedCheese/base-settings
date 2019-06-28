@@ -16,6 +16,8 @@ use PortedCheese\BaseSettings\Filters\MdGrid4;
 use PortedCheese\BaseSettings\Filters\MdGrid6;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
+use PortedCheese\BaseSettings\Http\Helpers\DateHelper;
+use PortedCheese\BaseSettings\Http\Helpers\SiteConfig;
 use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
 
 class BaseSettingsServiceProvider extends ServiceProvider
@@ -62,13 +64,16 @@ class BaseSettingsServiceProvider extends ServiceProvider
                 BaseMakeCommand::class,
             ]);
         }
-
-        debugbar()->info($this->app);
     }
 
     public function register()
     {
-
+        $this->app->bind('siteconf', function () {
+            return app(SiteConfig::class);
+        });
+        $this->app->bind('datehelper', function () {
+            return app(DateHelper::class);
+        });
     }
 
     /**

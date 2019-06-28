@@ -8,6 +8,6 @@ if (!function_exists('siteconf')) {
      */
     function siteconf()
     {
-        return app(\PortedCheese\BaseSettings\SiteConfig::class);
+        return app(\PortedCheese\BaseSettings\Http\Helpers\SiteConfig::class);
     }
 }

@@ -6,7 +6,7 @@
  * Time: 16:01
  */
 
-namespace PortedCheese\BaseSettings;
+namespace PortedCheese\BaseSettings\Http\Helpers;
 
 
 class SiteConfig
