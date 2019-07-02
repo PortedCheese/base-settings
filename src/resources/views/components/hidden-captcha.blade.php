@@ -1,0 +1,1 @@
+<input type="text" placeholder="Enter check" name="geo_check" style="display: none;">

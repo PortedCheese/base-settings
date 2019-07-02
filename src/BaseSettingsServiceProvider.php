@@ -64,6 +64,10 @@ class BaseSettingsServiceProvider extends ServiceProvider
                 BaseMakeCommand::class,
             ]);
         }
+
+        $this->app['validator']->extend('hidden_captcha', function ($attribute, $value) {
+            return empty($value);
+        });
     }
 
     public function register()
@@ -145,7 +149,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         Blade::component("base-settings::components.image", 'image');
         Blade::component("base-settings::components.picture", 'picture');
         Blade::component("base-settings::components.gallery", 'gallery');
-
+        Blade::component("base-settings::components.hidden-captcha", "hCaptcha");
     }
 
 }
