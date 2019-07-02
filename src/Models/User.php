@@ -51,6 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
             ) {
                 $model->email_verified_at = Carbon::now();
             }
+            if (!empty(app('request')->getClientIp())) {
+                $model->creator_address = app('request')->getClientIp();
+            }
         });
 
         static::updated(function ($model) {

@@ -17,6 +17,7 @@ use PortedCheese\BaseSettings\Filters\MdGrid6;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
 use PortedCheese\BaseSettings\Http\Helpers\DateHelper;
+use PortedCheese\BaseSettings\Http\Helpers\ReCaptcha;
 use PortedCheese\BaseSettings\Http\Helpers\SiteConfig;
 use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
 
@@ -68,6 +69,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->app['validator']->extend('hidden_captcha', function ($attribute, $value) {
             return empty($value);
         });
+        $this->app['validator']->extend('google_captcha', function ($attribute, $value) {
+            return $this->app['geocaptcha']->verifyResponse($value, $this->app['request']->getClientIp());
+        });
     }
 
     public function register()
@@ -77,6 +81,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         });
         $this->app->bind('datehelper', function () {
             return app(DateHelper::class);
+        });
+        $this->app->singleton('geocaptcha', function ($app) {
+            return new ReCaptcha();
         });
     }
 
@@ -150,6 +157,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         Blade::component("base-settings::components.picture", 'picture');
         Blade::component("base-settings::components.gallery", 'gallery');
         Blade::component("base-settings::components.hidden-captcha", "hCaptcha");
+        Blade::component("base-settings::components.google-captcha", "gCaptcha");
     }
 
 }
