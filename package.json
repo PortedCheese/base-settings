@@ -1,0 +1,14 @@
+{
+  "name": "base-settings-npm",
+  "description": "Additional packages for npm",
+  "version": "1.0.0",
+  "author" : "PortedCheese",
+  "licence": "MIT",
+  "private": true,
+  "dependencies": {
+    "sweetalert2": "^8.15.2",
+    "chosen-js": "^1.8.7",
+    "lightbox2": "^2.11.1",
+    "nouislider": "^13.1.5"
+  }
+}
