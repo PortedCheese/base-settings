@@ -12,7 +12,6 @@
     "nouislider": "^13.1.5"
   },
   "scripts": {
-    "start": "NODE_PATH=../../../",
-    "postinstall": ""
+    "preinstall": "npm install --prefix ../../../node_modules"
   }
 }
