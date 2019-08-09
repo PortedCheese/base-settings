@@ -43,13 +43,13 @@
                 </aside>
                 <section class="col-12 col-lg-9">
                     <div class="row">
-                        @include('layouts.content')
+                        @include('base-settings::layouts.content')
                     </div>
                 </section>
             @else
                 <section class="col-12">
                     <div class="row">
-                        @include('layouts.content')
+                        @include('base-settings::layouts.content')
                     </div>
                 </section>
             @endif

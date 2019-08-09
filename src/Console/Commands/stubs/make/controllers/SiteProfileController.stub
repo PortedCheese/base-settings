@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Site;
+
+use Illuminate\Http\Request;
+
+class ProfileController extends \PortedCheese\BaseSettings\Http\Controllers\Site\ProfileController
+{
+
+}

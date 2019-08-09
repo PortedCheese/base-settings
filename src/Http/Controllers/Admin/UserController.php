@@ -46,7 +46,7 @@ class UserController extends Controller
             }
         }
         $users->orderBy('created_at', 'desc');
-        return view('admin.user.index', [
+        return view('base-settings::admin.user.index', [
             'users' => $users->paginate(env("USER_ADMIN_PAGER", self::PAGER))->appends($request->input()),
             'query' => $query,
             'per' => self::PAGER,
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create', [
+        return view('base-settings::admin.user.create', [
             'sex' => Auth::user()->getSexList(),
             'roles' => Role::getForAdmin(),
         ]);
@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.user.edit', [
+        return view('base-settings::admin.user.edit', [
             'user' => $user,
             'sex' => $user->getSexList(),
             'roles' => Role::getForAdmin(),

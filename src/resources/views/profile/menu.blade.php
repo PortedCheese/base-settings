@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs card-header-tabs">
+<ul class="nav nav-pills">
     <li class="nav-item">
         <a class="nav-link {{ $currentRoute == 'profile.show' ? 'active' : '' }}"
            href="{{ route('profile.show') }}">

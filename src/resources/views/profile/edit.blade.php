@@ -1,4 +1,4 @@
-@extends('profile.layout')
+@extends('base-settings::profile.layout')
 
 @section('profile')
     <form method="post"
@@ -37,6 +37,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label for="login">Login</label>
@@ -48,8 +49,8 @@
                        class="form-control{{ $errors->has('login') ? ' is-invalid' : '' }}">
                 @if ($errors->has('login'))
                     <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('login') }}</strong>
-                </span>
+                        <strong>{{ $errors->first('login') }}</strong>
+                    </span>
                 @endif
             </div>
             <div class="form-group">
@@ -62,6 +63,7 @@
                        class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}">
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label for="surname">Фимилия</label>
@@ -88,6 +90,7 @@
                        class="form-control">
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label for="sex">Пол</label>
@@ -128,7 +131,7 @@
             </div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="submit" class="btn btn-primary">Обновить</button>
         </div>
     </form>
 @endsection

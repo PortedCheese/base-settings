@@ -1,4 +1,4 @@
-@extends('profile.layout')
+@extends('base-settings::profile.layout')
 
 @section('profile')
     <div class="row">

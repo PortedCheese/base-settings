@@ -54,24 +54,15 @@ class BaseMakeCommand extends Command
         'layouts/admin.stub' => 'layouts/admin.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
         'layouts/boot.stub' => 'layouts/boot.blade.php',
-        'layouts/messages.stub' => 'layouts/messages.blade.php',
-        'layouts/user-menu.stub' => 'layouts/user-menu.blade.php',
-        'layouts/footer.stub' => 'layouts/footer.blade.php',
-        'layouts/nav.stub' => 'layouts/nav.blade.php',
-        'layouts/content.stub' => 'layouts/content.blade.php',
-        'layouts/main-section.stub' => 'layouts/main-section.blade.php',
+        'layouts/paper.stub' => 'layouts/paper.blade.php',
 
         'auth/login-modal.stub' => 'auth/login-modal.blade.php',
         'auth/ajax-login.stub' => 'auth/ajax-login.blade.php',
-
-        'profile/edit.stub' => 'profile/edit.blade.php',
-        'profile/layout.stub' => 'profile/layout.blade.php',
-        'profile/menu.stub' => 'profile/menu.blade.php',
-        'profile/show.stub' => 'profile/show.blade.php',
     ];
 
     protected $controllers = [
         'Admin' => ['UserController'],
+        'Site' => ['ProfileController'],
     ];
 
     /**
@@ -89,8 +80,6 @@ class BaseMakeCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -102,6 +91,7 @@ class BaseMakeCommand extends Command
             $this->exportModels();
             $this->exportFilters();
             $this->exportControllers("Admin");
+            $this->exportControllers("Site");
         }
     }
 

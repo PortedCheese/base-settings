@@ -24,7 +24,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 @yield('right-navbar')
-                @include('layouts.user-menu')
+                @include('base-settings::layouts.user-menu')
             </ul>
         </div>
     </div>
