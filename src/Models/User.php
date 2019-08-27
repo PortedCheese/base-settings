@@ -71,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     const SEX = [
-        0 => "Не выбранно",
+        0 => "Не выбрано",
         1 => "Мужской",
         2 => "Женский",
     ];
