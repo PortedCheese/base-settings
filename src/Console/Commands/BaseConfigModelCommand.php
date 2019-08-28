@@ -10,19 +10,59 @@ class BaseConfigModelCommand extends Command
     use DetectsApplicationNamespace;
 
     /**
-     * The models that need to be exported.
+     * Список моделей.
+     *
      * @var array
      */
     protected $models = [];
 
+    /**
+     * Список контроллеров.
+     *
+     * @var array
+     */
+    protected $controllers = [];
+
+    /**
+     * Имя пакета.
+     *
+     * @var string
+     */
+    protected $packageName = "";
+
+    /**
+     * Имя конфига.
+     *
+     * @var string
+     */
     protected $configName = '';
 
+    /**
+     * Значения конфига.
+     *
+     * @var array
+     */
     protected $configValues = [];
 
+    /**
+     * Namespace.
+     *
+     * @var mixed|string
+     */
     protected $namespace = '';
 
+    /**
+     * Vue файлы.
+     *
+     * @var array
+     */
     protected $vueIncludes = [];
 
+    /**
+     * Директория.
+     *
+     * @var string
+     */
     protected $dir = __DIR__;
 
     /**
@@ -57,9 +97,10 @@ class BaseConfigModelCommand extends Command
 
     protected function makeVueIncludes()
     {
-        foreach ($this->vueIncludes as $vueInclude) {
-
-        }
+        // TODO: copy vue files.
+//        foreach ($this->vueIncludes as $vueInclude) {
+//
+//        }
     }
 
     /**
@@ -100,6 +141,57 @@ class BaseConfigModelCommand extends Command
             '{{namespace}}',
             $this->namespace,
             file_get_contents("{$this->dir}/stubs/make/models/{$model}")
+        );
+    }
+
+    /**
+     * Создать контроллеры.
+     *
+     * @param $place
+     */
+    protected function exportControllers($place)
+    {
+        if (empty($this->controllers[$place])) {
+            $this->info("$place not found in controllers");
+            return;
+        }
+        foreach ($this->controllers[$place] as $controller) {
+            if (file_exists(app_path("Http/Controllers/Vendor/{$this->packageName}/{$place}/{$controller}.php"))) {
+                if (! $this->confirm("The [{$place}/$controller.php] controller already exists. Do you want to replace it?")) {
+                    return;
+                }
+            }
+
+            if (! is_dir($directory = app_path("Http/Controllers/Vendor/{$this->packageName}/{$place}"))) {
+                mkdir($directory, 0755, true);
+            }
+
+
+            try {
+                file_put_contents(
+                    app_path("Http/Controllers/Vendor/{$this->packageName}/{$place}/{$controller}.php"),
+                    $this->compileControllerStub($place, $controller)
+                );
+
+                $this->info("[{$place}/$controller.php] created");
+            }
+            catch (\Exception $e) {
+                $this->error("Failed put controller");
+            }
+        }
+    }
+
+    /**
+     * Compiles the Controller stub.
+     *
+     * @return string
+     */
+    protected function compileControllerStub($place, $controller)
+    {
+        return str_replace(
+            '{{namespace}}',
+            $this->getAppNamespace(),
+            file_get_contents("{$this->dir}/stubs/make/controllers/{$place}{$controller}.stub")
         );
     }
 }
