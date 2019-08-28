@@ -173,7 +173,8 @@ class User extends Authenticatable implements MustVerifyEmail
             $this->firstname,
             $this->fathername,
         ];
-        return implode(' ', $fullName);
+        $fullName = implode(' ', $fullName);
+        return trim($fullName);
     }
 
     /**
