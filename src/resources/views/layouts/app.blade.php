@@ -11,7 +11,7 @@
         @empty($pageMetas['title'])
             <title>@yield('page-title'){{ config('app.name', 'Laravel') }}</title>
         @endempty
-        @empty($pageMetas['title-og:title'])
+        @empty($pageMetas['og:title'])
             <meta content="@yield('page-title'){{ config('app.name', 'Laravel') }}" property="og:title" >
         @endempty
     @show

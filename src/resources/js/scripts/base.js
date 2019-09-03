@@ -78,11 +78,10 @@ window.noUiSlider = require('nouislider');
             noUiSlider.create(stepsSlider, {
                 start: range,
                 connect: true,
-                padding: 10,
                 step: step,
                 range: {
-                    'min': min - 10,
-                    'max': max + 10
+                    'min': min,
+                    'max': max
                 }
             });
 
