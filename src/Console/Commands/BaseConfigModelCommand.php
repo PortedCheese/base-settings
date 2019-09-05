@@ -158,7 +158,7 @@ class BaseConfigModelCommand extends Command
         foreach ($this->controllers[$place] as $controller) {
             if (file_exists(app_path("Http/Controllers/Vendor/{$this->packageName}/{$place}/{$controller}.php"))) {
                 if (! $this->confirm("The [{$place}/$controller.php] controller already exists. Do you want to replace it?")) {
-                    return;
+                    continue;
                 }
             }
 
