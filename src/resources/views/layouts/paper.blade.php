@@ -16,7 +16,7 @@
 
     <!-- Scripts -->
     @stack('js-lib')
-    <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/admin.js') }}" defer></script>
 
     @stack('more-scripts')

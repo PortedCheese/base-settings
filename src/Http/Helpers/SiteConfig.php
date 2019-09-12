@@ -9,6 +9,8 @@
 namespace PortedCheese\BaseSettings\Http\Helpers;
 
 
+use Illuminate\Support\Arr;
+
 class SiteConfig
 {
 
@@ -92,7 +94,7 @@ class SiteConfig
         }
         if (count($this->configData) == 1) {
             $arrayKeys = array_keys($this->configData);
-            $this->configData = $this->configData[array_first($arrayKeys)];
+            $this->configData = $this->configData[Arr::first($arrayKeys)];
         }
     }
 
