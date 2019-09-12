@@ -2,18 +2,17 @@
 
 namespace PortedCheese\BaseSettings\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Container\Container;
 
-class BaseMakeCommand extends Command
+class BaseMakeCommand extends BaseConfigModelCommand
 {
-    use DetectsApplicationNamespace;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
+    // TODO: add more options.
     protected $signature = 'make:base-settings
                     {--views : Only scaffold views}
                     {--force : Overwrite existing views by default}';
@@ -65,6 +64,16 @@ class BaseMakeCommand extends Command
         'Site' => ['ProfileController'],
     ];
 
+    protected $vueIncludes = [
+        'admin' => [
+            'confirm-delete-model-button' => "ConfirmDeleteModelButtonComponent",
+            'gallery' => "GalleryComponent",
+        ],
+        'app' => [],
+    ];
+
+    protected $vueFolder = "base-settings";
+
     /**
      * Create a new command instance.
      *
@@ -83,16 +92,17 @@ class BaseMakeCommand extends Command
      */
     public function handle()
     {
-        $this->createDirectories();
-
-        $this->exportViews();
-
-        if (!$this->option('views')) {
-            $this->exportModels();
-            $this->exportFilters();
-            $this->exportControllers("Admin");
-            $this->exportControllers("Site");
-        }
+        $this->makeVueIncludes();
+//        $this->createDirectories();
+//
+//        $this->exportViews();
+//
+//        if (!$this->option('views')) {
+//            $this->exportModels();
+//            $this->exportFilters();
+//            $this->exportControllers("Admin");
+//            $this->exportControllers("Site");
+//        }
     }
 
     /**
@@ -163,28 +173,9 @@ class BaseMakeCommand extends Command
     }
 
     /**
-     * Create models files.
-     */
-    protected function exportModels()
-    {
-        foreach ($this->models as $key => $model) {
-            if (file_exists(app_path($model))) {
-                if (!$this->confirm("The [{$model}] model already exists. Do you want to replace it?")) {
-                    continue;
-                }
-            }
-
-            file_put_contents(
-                app_path($model),
-                $this->compileModetStub($key)
-            );
-
-            $this->info("Model [{$model}] generated successfully.");
-        }
-    }
-
-    /**
-     * Create controllers.
+     * Переписать что бы помещались не в вендор.
+     *
+     * @param $place
      */
     protected function exportControllers($place)
     {
@@ -229,7 +220,7 @@ class BaseMakeCommand extends Command
     /**
      * Replace namespace in filter.
      *
-     * @param $model
+     * @param $filter
      * @return mixed
      */
     protected function compileFilterStub($filter)
@@ -238,21 +229,6 @@ class BaseMakeCommand extends Command
             '{{namespace}}',
             $this->namespace,
             file_get_contents(__DIR__ . "/stubs/make/filters/$filter")
-        );
-    }
-
-    /**
-     * Replace namespace in model.
-     *
-     * @param $model
-     * @return mixed
-     */
-    protected function compileModetStub($model)
-    {
-        return str_replace(
-        '{{namespace}}',
-            $this->namespace,
-            file_get_contents(__DIR__ . "/stubs/make/models/$model")
         );
     }
 

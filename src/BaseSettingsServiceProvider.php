@@ -42,14 +42,16 @@ class BaseSettingsServiceProvider extends ServiceProvider
         // Assets.
         $this->publishes([
             __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/base-settings'),
-            __DIR__ . '/resources/sass' => resource_path('sass/'),
-            __DIR__ . '/resources/js/scripts' => resource_path("js/"),
+            __DIR__ . '/resources/sass' => resource_path('sass/vendor'),
+            __DIR__ . '/resources/js/scripts' => resource_path("js/vendor"),
         ], 'public');
 
         // Config.
         $this->publishes([
+            // TODO: add config for package variables.
             __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
             __DIR__ . '/config/theme.php' => config_path('theme.php'),
+            // TODO: remove siteconf.
             __DIR__ . '/config/siteconfigurations.php' => config_path('siteconfigurations.php'),
         ], 'config');
 
@@ -66,6 +68,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
             ]);
         }
 
+        // TODO: change all captcha logic.
         $this->app['validator']->extend('hidden_captcha', function ($attribute, $value) {
             return empty($value);
         });
@@ -153,6 +156,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
      */
     private function bladeComponents()
     {
+        // TODO: change to include.
         Blade::component("base-settings::components.image", 'image');
         Blade::component("base-settings::components.picture", 'picture');
         Blade::component("base-settings::components.gallery", 'gallery');

@@ -3,11 +3,10 @@
 namespace PortedCheese\BaseSettings\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Container\Container;
 
 class BaseConfigModelCommand extends Command
 {
-    use DetectsApplicationNamespace;
 
     /**
      * Список моделей.
@@ -59,6 +58,13 @@ class BaseConfigModelCommand extends Command
     protected $vueIncludes = [];
 
     /**
+     * Vue folder name.
+     *
+     * @var string
+     */
+    protected $vueFolder = "";
+
+    /**
      * Директория.
      *
      * @var string
@@ -97,10 +103,40 @@ class BaseConfigModelCommand extends Command
 
     protected function makeVueIncludes()
     {
-        // TODO: copy vue files.
-//        foreach ($this->vueIncludes as $vueInclude) {
-//
-//        }
+        $this->compileVueStub("admin");
+        $this->compileVueStub("app");
+    }
+
+    protected function compileVueStub($key)
+    {
+        $filePath = resource_path("js/vendor/$key-vue-includes.js");
+        // Создать файл для компонентов сайта, если его нет.
+        if (! file_exists($filePath)) {
+            file_put_contents(
+                $filePath,
+                ""
+            );
+            $this->info("Added file $filePath");
+        }
+        if (! empty($this->vueIncludes[$key])) {
+            foreach ($this->vueIncludes[$key] as $name => $vueInclude) {
+                if (! $this->confirm("Add $name => $vueInclude.vue component to $filePath?")) {
+                    continue;
+                }
+                $data = [
+                    "Vue.component(",
+                    "'$name', ",
+                    "require('../components/vendor/{$this->vueFolder}/{$vueInclude}.vue').default",
+                    ");\n\n",
+                ];
+                file_put_contents(
+                    $filePath,
+                    implode("", $data),
+                    FILE_APPEND
+                );
+                $this->info("$name added to $filePath");
+            }
+        }
     }
 
     /**
@@ -118,7 +154,7 @@ class BaseConfigModelCommand extends Command
             try {
                 file_put_contents(
                     app_path($model),
-                    $this->compileModetStub($key)
+                    $this->compileModelStub($key)
                 );
 
                 $this->info("Model [{$model}] generated successfully.");
@@ -135,7 +171,7 @@ class BaseConfigModelCommand extends Command
      * @param $model
      * @return mixed
      */
-    protected function compileModetStub($model)
+    protected function compileModelStub($model)
     {
         return str_replace(
             '{{namespace}}',
@@ -193,5 +229,9 @@ class BaseConfigModelCommand extends Command
             $this->getAppNamespace(),
             file_get_contents("{$this->dir}/stubs/make/controllers/{$place}{$controller}.stub")
         );
+    }
+
+    protected function getAppNamespace() {
+        return Container::getInstance()->getNamespace();
     }
 }
