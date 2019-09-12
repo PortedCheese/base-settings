@@ -2,8 +2,6 @@
 
 namespace PortedCheese\BaseSettings\Console\Commands;
 
-use Illuminate\Container\Container;
-
 class BaseMakeCommand extends BaseConfigModelCommand
 {
 
@@ -74,6 +72,11 @@ class BaseMakeCommand extends BaseConfigModelCommand
 
     protected $vueFolder = "base-settings";
 
+    protected $jsIncludes = [
+        'app' => ['app-base'],
+        'admin' => ['admin-base'],
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -92,17 +95,23 @@ class BaseMakeCommand extends BaseConfigModelCommand
      */
     public function handle()
     {
-        $this->makeVueIncludes();
-//        $this->createDirectories();
-//
-//        $this->exportViews();
-//
-//        if (!$this->option('views')) {
-//            $this->exportModels();
-//            $this->exportFilters();
-//            $this->exportControllers("Admin");
-//            $this->exportControllers("Site");
-//        }
+        $this->createDirectories();
+
+        $this->exportViews();
+
+        if (!$this->option('views')) {
+            $this->exportModels();
+            $this->exportFilters();
+
+            $this->exportControllers("Admin");
+            $this->exportControllers("Site");
+
+            $this->makeVueIncludes('admin');
+            $this->makeVueIncludes('app');
+
+            $this->makeJsIncludes('admin');
+            $this->makeJsIncludes('app');
+        }
     }
 
     /**

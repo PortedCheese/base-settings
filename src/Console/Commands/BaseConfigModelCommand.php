@@ -7,7 +7,6 @@ use Illuminate\Container\Container;
 
 class BaseConfigModelCommand extends Command
 {
-
     /**
      * Список моделей.
      *
@@ -65,6 +64,13 @@ class BaseConfigModelCommand extends Command
     protected $vueFolder = "";
 
     /**
+     * Js файлы.
+     *
+     * @var array
+     */
+    protected $jsIncludes = [];
+
+    /**
      * Директория.
      *
      * @var string
@@ -101,13 +107,12 @@ class BaseConfigModelCommand extends Command
         $this->info("Config {$this->configName} added to siteconfig");
     }
 
-    protected function makeVueIncludes()
-    {
-        $this->compileVueStub("admin");
-        $this->compileVueStub("app");
-    }
-
-    protected function compileVueStub($key)
+    /**
+     * Создать файлы для компонентов vue.
+     *
+     * @param $key
+     */
+    protected function makeVueIncludes($key)
     {
         $filePath = resource_path("js/vendor/$key-vue-includes.js");
         // Создать файл для компонентов сайта, если его нет.
@@ -135,6 +140,37 @@ class BaseConfigModelCommand extends Command
                     FILE_APPEND
                 );
                 $this->info("$name added to $filePath");
+            }
+        }
+    }
+
+    /**
+     * Включить js файлы.
+     *
+     * @param $key
+     */
+    protected function makeJsIncludes($key)
+    {
+        $filePath = resource_path("js/vendor/$key-js-includes.js");
+        // Создать файл для компонентов сайта, если его нет.
+        if (! file_exists($filePath)) {
+            file_put_contents(
+                $filePath,
+                ""
+            );
+            $this->info("Added file $filePath");
+        }
+        if (! empty($this->jsIncludes[$key])) {
+            foreach ($this->jsIncludes[$key] as $jsInclude) {
+                if (! $this->confirm("Add $jsInclude.js file to $filePath?")) {
+                    continue;
+                }
+                file_put_contents(
+                    $filePath,
+                    "require('./$jsInclude.js');\n",
+                    FILE_APPEND
+                );
+                $this->info("$jsInclude added to $filePath");
             }
         }
     }
@@ -231,6 +267,11 @@ class BaseConfigModelCommand extends Command
         );
     }
 
+    /**
+     * Замена устаревшего метода.
+     *
+     * @return mixed
+     */
     protected function getAppNamespace() {
         return Container::getInstance()->getNamespace();
     }

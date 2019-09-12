@@ -8,7 +8,7 @@
 
 `php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force`
 
-Комманда make так же предложит наполнить файл компонентами vue. В app.js добавить `require("./vendor/app-vue-includes");` и в admin.js добавить `require("./vendor/admin-vue-includes");`
+Комманда make так же предложит наполнить файлы компонентами vue и js. В app.js добавить `require("./vendor/app-vue-includes");` и `require('./vendor/app-js-includes');`, а в admin.js добавить `require("./vendor/admin-vue-includes");` и `require('./vendor/admin-js-includes');`
 
 Выгрузить конфигурацию, добавится конфигурация для галлереи и темизации. Если нужно для конкретной страницы сделать отдельную тему, то есть переменная `$customTheme`. Еще добавлен конфиг для сайта, который связан с фасадом `siteconf`, через него можно программно получить значение этого конфига и изменить его.
 

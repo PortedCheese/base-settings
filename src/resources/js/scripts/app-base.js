@@ -4,11 +4,9 @@ window.noUiSlider = require('nouislider');
 
 (function ($) {
     $(document).ready(function(){
-        ckExample();
-        ckDescription();
-        customFileInput();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
+        customFileInput();
         activateChosen();
         rangeSlider();
         ajaxLogin();
@@ -123,23 +121,5 @@ window.noUiSlider = require('nouislider');
                         .html(fileName);
                 })
         });
-    }
-
-    function ckExample() {
-        let $element = $('#ckExample');
-        if ($element.length && typeof CKEDITOR !== 'undefined') {
-            CKEDITOR.replace('ckExample', {
-                customConfig : '/config/ckeditor_config.js'
-            });
-        }
-    }
-
-    function ckDescription() {
-        let $element = $('#ckDescription');
-        if ($element.length && typeof CKEDITOR !== 'undefined') {
-            CKEDITOR.replace('ckDescription', {
-                customConfig : '/config/ckeditor_config.js'
-            });
-        }
     }
 })(jQuery);
