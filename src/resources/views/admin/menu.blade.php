@@ -20,4 +20,4 @@
     </div>
 </li>
 
-@includeIf('layouts.menu.index', ['menu' => $adminMenu])
+@includeIf('admin-site-menu::layouts.index', ['menu' => $adminMenu])
