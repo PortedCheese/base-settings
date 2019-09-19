@@ -112,7 +112,7 @@
                                                id="check-{{ $role->name }}"
                                                name="check-{{ $role->id }}">
                                         <label class="custom-control-label" for="check-{{ $role->name }}">
-                                            {{ $role->name }}
+                                            {{ empty($role->title) ? $role->name : $role->title }}
                                         </label>
                                     </div>
                                 @endforeach

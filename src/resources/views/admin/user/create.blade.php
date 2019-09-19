@@ -7,10 +7,11 @@
         <div class="card">
             <div class="card-body">
                 <form method="post"
+                      class="col-12"
                       action="{{ route('admin.users.store') }}">
                     @csrf
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="login">Login</label>
                                 <input type="text"
@@ -35,7 +36,7 @@
                                        class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}">
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="surname">Фимилия</label>
                                 <input type="text"
@@ -61,7 +62,7 @@
                                        class="form-control">
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sex">Пол</label>
                                 <select name="sex"
@@ -82,7 +83,6 @@
 
                                 <input id="password"
                                        type="password"
-                                       id="password"
                                        class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                        name="password">
 
@@ -98,7 +98,7 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-md-6">
                             <label>Роли</label>
                             @foreach($roles as $role)
                                 <div class="custom-control custom-checkbox">
@@ -111,7 +111,7 @@
                                            id="check-{{ $role->name }}"
                                            name="check-{{ $role->id }}">
                                     <label class="custom-control-label" for="check-{{ $role->name }}">
-                                        {{ $role->name }}
+                                        {{ empty($role->title) ? $role->name : $role->title }}
                                     </label>
                                 </div>
                             @endforeach
