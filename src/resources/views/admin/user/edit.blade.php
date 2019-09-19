@@ -9,121 +9,144 @@
                 <form method="post"
                       action="{{ route('admin.users.update', ['user' => $user]) }}"
                       enctype="multipart/form-data"
-                      class="col-12">
+                      class="row">
                     @csrf
                     @method('put')
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            @if($image)
-                                <div class="form-group">
-                                    <img src="{{ route('imagecache', ['template' => 'avatar', 'filename' => $image->file_name]) }}"
-                                         class="img-thumbnail rounded-circle"
-                                         alt="{{ $image->name }}">
-                                </div>
-                            @endif
+                    <div class="col-md-6">
+                        @if($image)
+                            <div class="form-group">
+                                <img src="{{ route('imagecache', ['template' => 'avatar', 'filename' => $image->file_name]) }}"
+                                     class="img-thumbnail rounded-circle"
+                                     alt="{{ $image->name }}">
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="customFile">Изображение</label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="customFile" name="avatar">
                                 <label class="custom-file-label" for="customFile">Изображение</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="login">Login</label>
-                                <input type="text"
-                                       id="login"
-                                       name="login"
-                                       value="{{ old('login') ? old('login') : $user->login }}"
-                                       required
-                                       class="form-control{{ $errors->has('login') ? ' is-invalid' : '' }}">
-                                @if ($errors->has('login'))
-                                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('login') }}</strong>
-                        </span>
-                                @endif
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="login">Login</label>
+                            <input type="text"
+                                   id="login"
+                                   name="login"
+                                   value="{{ old("login", $user->login) }}"
+                                   class="form-control @error("login") is-invalid @enderror">
+                            @error("login")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
                             </div>
-                            <div class="form-group">
-                                <label for="email">E-mail</label>
-                                <input type="email"
-                                       id="email"
-                                       name="email"
-                                       value="{{ old('email') ? old('email') : $user->email }}"
-                                       required
-                                       class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}">
-                            </div>
+                            @enderror
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="surname">Фамилия</label>
-                                <input type="text"
-                                       id="surname"
-                                       name="surname"
-                                       value="{{ old('surname') ? old('surname') : $user->surname }}"
-                                       class="form-control">
+
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email"
+                                   id="email"
+                                   name="email"
+                                   value="{{ old("email", $user->email) }}"
+                                   class="form-control @error("email") is-invalid @enderror">
+                            @error("email")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
                             </div>
-                            <div class="form-group">
-                                <label for="firstname">Имя</label>
-                                <input type="text"
-                                       id="firstname"
-                                       name="firstname"
-                                       value="{{ old('firstname') ? old('firstname') : $user->firstname }}"
-                                       class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="fathername">Отчество</label>
-                                <input type="text"
-                                       id="fathername"
-                                       name="fathername"
-                                       value="{{ old('fathername') ? old('fathername') : $user->fathername }}"
-                                       class="form-control">
-                            </div>
+                            @enderror
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="sex">Пол</label>
-                                <select name="sex"
-                                        id="sex"
-                                        class="custom-select">
-                                    @foreach($sex as $key => $value)
-                                        <option value="{{ $key }}"
-                                                @if(old('sex'))
-                                                selected
-                                                @elseif(($key == $user->sex) && !old('sex'))
-                                                selected
-                                                @endif>
-                                            {{ $value }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="surname">Фамилия</label>
+                            <input type="text"
+                                   id="surname"
+                                   name="surname"
+                                   value="{{ old("surname", $user->surname) }}"
+                                   class="form-control @error("surname") is-invalid @enderror">
+                            @error("surname")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
                             </div>
-                            <div class="form-group">
-                                <label>Роли</label>
-                                @foreach($roles as $role)
-                                    <div class="custom-control custom-checkbox">
-                                        <input class="custom-control-input"
-                                               type="checkbox"
-                                               @if ($user->hasRole($role->name) or old('check-' . $role->id))
-                                               checked
-                                               @if ($auth->id == $user->id and $role->name == 'admin')
-                                               disabled
-                                               @endif
-                                               @endif
-                                               value="{{ $role->id }}"
-                                               id="check-{{ $role->name }}"
-                                               name="check-{{ $role->id }}">
-                                        <label class="custom-control-label" for="check-{{ $role->name }}">
-                                            {{ empty($role->title) ? $role->name : $role->title }}
-                                        </label>
-                                    </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstname">Имя</label>
+                            <input type="text"
+                                   id="firstname"
+                                   name="firstname"
+                                   value="{{ old("firstname", $user->firstname) }}"
+                                   class="form-control @error("firstname") is-invalid @enderror">
+                            @error("firstname")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fathername">Отчество</label>
+                            <input type="text"
+                                   id="fathername"
+                                   name="fathername"
+                                   value="{{ old("fathername", $user->fathername) }}"
+                                   class="form-control @error("fathername") is-invalid @enderror">
+                            @error("fathername")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sex">Пол</label>
+                            <select name="sex"
+                                    id="sex"
+                                    class="form-control custom-select @error("sex") is-invalid @enderror">
+                                <option value="">Выберите...</option>
+                                @foreach($sex as $key => $value)
+                                    <option value="{{ $key }}"
+                                            {{ old("sex", $user->sex) == $key ? "selected" : "" }}>
+                                        {{ $value }}
+                                    </option>
                                 @endforeach
+                            </select>
+                            @error("sex")
+                            <div class="invalid-feedback" role="alert">
+                                {{ $message }}
                             </div>
+                            @enderror
                         </div>
-                        <div class="col-12">
-                            <div class="btn-group"
-                                 role="group">
-                                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">К списку пользователей</a>
-                                <button type="submit" class="btn btn-success">Обновить</button>
-                            </div>
+
+                        <div class="form-group">
+                            <label>Роли</label>
+                            @foreach ($roles as $role)
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           value="{{ $role->id }}"
+                                           {{ (! count($errors->all()) && $user->hasRole($role->name)) || old("check-{$role->id}") ? "checked" : "" }}
+                                           {{ ($auth->id == $user->id) && $role->name == "admin" ? "disabled" : "" }}
+                                           id="check-{{ $role->name }}"
+                                           name="check-{{ $role->id }}"
+                                           type="checkbox">
+                                    <label class="custom-control-label" for="check-{{ $role->name }}">
+                                        {{ empty($role->title) ? $role->name : $role->title }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="btn-group"
+                             role="group">
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">К списку пользователей</a>
+                            <button type="submit" class="btn btn-success">Обновить</button>
                         </div>
                     </div>
                 </form>

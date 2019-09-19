@@ -98,7 +98,7 @@
                                     <ul class="list-unstyled">
                                         @foreach($user->roles as $role)
                                             <li>
-                                                {{ $role->name }}
+                                                {{ empty($role->title) ? $role->name : $role->title }}
                                             </li>
                                         @endforeach
                                     </ul>
