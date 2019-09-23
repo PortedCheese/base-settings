@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Vendor\{{pkgName}}\{{place}};
+
+use PortedCheese\{{pkgName}}\Http\Controllers\{{place}}\{{name}} as VendorController;
+
+class {{name}} extends VendorController
+{
+
+}

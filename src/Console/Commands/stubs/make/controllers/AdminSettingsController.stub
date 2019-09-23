@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+
+class SettingsController extends \PortedCheese\BaseSettings\Http\Controllers\Admin\SettingsController
+{
+
+}

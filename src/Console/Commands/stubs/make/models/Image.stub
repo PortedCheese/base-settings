@@ -1,9 +1,0 @@
-<?php
-
-namespace {{namespace}};
-
-
-class Image extends \PortedCheese\BaseSettings\Models\Image
-{
-
-}

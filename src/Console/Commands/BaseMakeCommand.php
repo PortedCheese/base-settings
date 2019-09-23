@@ -22,14 +22,14 @@ class BaseMakeCommand extends BaseConfigModelCommand
      */
     protected $description = 'Scaffold basic models';
 
+    protected $packageName = "BaseSettings";
+
     /**
      * The models that need to be exported.
      * @var array
      */
     protected $models = [
-        'Role.stub' => 'Role.php',
-        'Image.stub' => 'Image.php',
-        'User.stub' => 'User.php',
+        'Role', 'Image', 'User',
     ];
 
     /**
@@ -58,7 +58,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
     ];
 
     protected $controllers = [
-        'Admin' => ['UserController'],
+        'Admin' => ['UserController', "SettingsController"],
         'Site' => ['ProfileController'],
     ];
 
@@ -192,10 +192,11 @@ class BaseMakeCommand extends BaseConfigModelCommand
             $this->info("$place not found in controllers");
             return;
         }
+
         foreach ($this->controllers[$place] as $controller) {
             if (file_exists(app_path("Http/Controllers/{$place}/{$controller}.php"))) {
                 if (! $this->confirm("The [{$place}/$controller.php] controller already exists. Do you want to replace it?")) {
-                    return;
+                    continue;
                 }
             }
 

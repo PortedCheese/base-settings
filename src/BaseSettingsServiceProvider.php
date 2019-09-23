@@ -38,6 +38,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         // Подключение роутов.
         $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/admin.php');
 
         // Assets.
         $this->publishes([

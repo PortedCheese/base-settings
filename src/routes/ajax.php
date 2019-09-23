@@ -1,5 +1,7 @@
 <?php
-// Админка.
+
+use Illuminate\Support\Facades\Route;
+
 Route::group([
     'prefix' => "admin",
     'middleware' => ['web', 'role:admin|editor'],

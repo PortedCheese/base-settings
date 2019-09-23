@@ -36,6 +36,20 @@ class BaseConfigModelCommand extends Command
     protected $configName = '';
 
     /**
+     * Заголовок конфига.
+     *
+     * @var string
+     */
+    protected $configTitle = "";
+
+    /**
+     * Шаблон конфига.
+     *
+     * @var string
+     */
+    protected $configTemplate = "";
+
+    /**
      * Значения конфига.
      *
      * @var array
@@ -71,13 +85,6 @@ class BaseConfigModelCommand extends Command
     protected $jsIncludes = [];
 
     /**
-     * Директория.
-     *
-     * @var string
-     */
-    protected $dir = __DIR__;
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -95,16 +102,23 @@ class BaseConfigModelCommand extends Command
      */
     protected function makeConfig()
     {
-        $config = siteconf()->get($this->configName);
-        if (!empty($config)) {
-            if (! $this->confirm("{$this->configName} config already exists. Replace it?")) {
+        $data = [
+            'title' => $this->configTitle,
+            'template' => $this->configTemplate,
+            'pkg' => true,
+        ];
+        $result = siteconf()->create($this->configName, $this->configValues, $data);
+        if ($result == "exists") {
+            if (! $this->confirm("{$this->configTitle} config already exists. Replace it?")) {
                 return;
             }
         }
 
-        siteconf()->save($this->configName, $this->configValues);
+        if ($result !== "created") {
+            $result = siteconf()->create($this->configName, $this->configValues, $data, true);
+        }
 
-        $this->info("Config {$this->configName} added to siteconfig");
+        $this->info("Config {$this->configTitle} $result");
     }
 
     /**
@@ -180,23 +194,23 @@ class BaseConfigModelCommand extends Command
      */
     protected function exportModels()
     {
-        foreach ($this->models as $key => $model) {
-            if (file_exists(app_path($model))) {
-                if (!$this->confirm("The [{$model}] model already exists. Do you want to replace it?")) {
+        foreach ($this->models as $model) {
+            if (file_exists(app_path("$model.php"))) {
+                if (!$this->confirm("The [{$model}.php] model already exists. Do you want to replace it?")) {
                     continue;
                 }
             }
 
             try {
                 file_put_contents(
-                    app_path($model),
-                    $this->compileModelStub($key)
+                    app_path("$model.php"),
+                    $this->compileModelStub($model)
                 );
 
                 $this->info("Model [{$model}] generated successfully.");
             }
             catch (\Exception $e) {
-                $this->error("Filed put model");
+                $this->error("Failed put model");
             }
         }
     }
@@ -210,9 +224,9 @@ class BaseConfigModelCommand extends Command
     protected function compileModelStub($model)
     {
         return str_replace(
-            '{{namespace}}',
-            $this->namespace,
-            file_get_contents("{$this->dir}/stubs/make/models/{$model}")
+            ['{{namespace}}', "{{model}}", "{{pkgName}}"],
+            [$this->namespace, $model, $this->packageName],
+            file_get_contents(__DIR__ . "/stubs/make/models/StubModel.stub")
         );
     }
 
@@ -238,7 +252,6 @@ class BaseConfigModelCommand extends Command
                 mkdir($directory, 0755, true);
             }
 
-
             try {
                 file_put_contents(
                     app_path("Http/Controllers/Vendor/{$this->packageName}/{$place}/{$controller}.php"),
@@ -256,14 +269,16 @@ class BaseConfigModelCommand extends Command
     /**
      * Compiles the Controller stub.
      *
-     * @return string
+     * @param $place
+     * @param $controller
+     * @return mixed
      */
     protected function compileControllerStub($place, $controller)
     {
         return str_replace(
-            '{{namespace}}',
-            $this->getAppNamespace(),
-            file_get_contents("{$this->dir}/stubs/make/controllers/{$place}{$controller}.stub")
+            ['{{namespace}}', '{{pkgName}}', "{{place}}", "{{name}}"],
+            [$this->getAppNamespace(), $this->packageName, $place, $controller],
+            file_get_contents(__DIR__ . "/stubs/make/controllers/StubController.stub")
         );
     }
 
