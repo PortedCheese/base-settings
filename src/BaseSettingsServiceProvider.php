@@ -52,8 +52,6 @@ class BaseSettingsServiceProvider extends ServiceProvider
             // TODO: add config for package variables.
             __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
             __DIR__ . '/config/theme.php' => config_path('theme.php'),
-            // TODO: remove siteconf.
-            __DIR__ . '/config/siteconfigurations.php' => config_path('siteconfigurations.php'),
         ], 'config');
 
         // Подключение миграций.

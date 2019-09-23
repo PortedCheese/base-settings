@@ -32,22 +32,27 @@
                                 <td>{{ $setting->template }}</td>
                                 <td>{{ $setting->package ? "Да" : "Нет" }}</td>
                                 <td>
-                                    <confirm-delete-model-button model-id="{{ $setting->id }}">
-                                        <template slot="edit">
-                                            <a href="{{ route('admin.settings.edit', ['setting' => $setting]) }}" class="btn btn-primary">
+                                    <div role="toolbar" class="btn-toolbar">
+                                        <div class="btn-group mr-1">
+                                            <a href="{{ route("admin.settings.edit", ["setting" => $setting]) }}" class="btn btn-primary">
                                                 <i class="far fa-edit"></i>
                                             </a>
-                                        </template>
-                                        <template slot="delete">
+                                            <button type="button" class="btn btn-danger" data-confirm="{{ "delete-form-{$setting->id}" }}">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <confirm-form :id="'{{ "delete-form-{$setting->id}" }}'">
+                                        <template>
                                             <form action="{{ route('admin.settings.destroy', ['setting' => $setting]) }}"
-                                                  id="delete-{{ $setting->id }}"
+                                                  id="delete-form-{{ $setting->id }}"
                                                   class="btn-group"
                                                   method="post">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                             </form>
                                         </template>
-                                    </confirm-delete-model-button>
+                                    </confirm-form>
                                 </td>
                             </tr>
                         @endforeach
