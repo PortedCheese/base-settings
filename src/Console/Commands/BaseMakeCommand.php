@@ -10,10 +10,15 @@ class BaseMakeCommand extends BaseConfigModelCommand
      *
      * @var string
      */
-    // TODO: add more options.
     protected $signature = 'make:base-settings
-                    {--views : Only scaffold views}
-                    {--force : Overwrite existing views by default}';
+                    {--all : Run all}
+                    {--views : Scaffold views}
+                    {--force : Overwrite existing views by default}
+                    {--models : Export models}
+                    {--filters : Export filters}
+                    {--controllers : Export controllers}
+                    {--vue : Export vue files}
+                    {--js : Export js files}';
 
     /**
      * The console command description.
@@ -97,18 +102,31 @@ class BaseMakeCommand extends BaseConfigModelCommand
     {
         $this->createDirectories();
 
-        $this->exportViews();
+        $all = $this->option("all");
 
-        if (!$this->option('views')) {
+        if ($this->option("views") || $all) {
+            $this->exportViews();
+        }
+
+        if ($this->option("models") || $all) {
             $this->exportModels();
-            $this->exportFilters();
+        }
 
+        if ($this->option("filters") || $all) {
+            $this->exportFilters();
+        }
+
+        if ($this->option("controllers") || $all) {
             $this->exportControllers("Admin");
             $this->exportControllers("Site");
+        }
 
+        if ($this->option("vue") || $all) {
             $this->makeVueIncludes('admin');
             $this->makeVueIncludes('app');
+        }
 
+        if ($this->option('js') || $all) {
             $this->makeJsIncludes('admin');
             $this->makeJsIncludes('app');
         }
