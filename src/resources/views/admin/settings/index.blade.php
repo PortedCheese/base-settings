@@ -33,7 +33,7 @@
                                 <td>{{ $setting->package ? "Да" : "Нет" }}</td>
                                 <td>
                                     <div role="toolbar" class="btn-toolbar">
-                                        <div class="btn-group mr-1">
+                                        <div class="btn-group btn-group-sm mr-1">
                                             <a href="{{ route("admin.settings.edit", ["setting" => $setting]) }}" class="btn btn-primary">
                                                 <i class="far fa-edit"></i>
                                             </a>

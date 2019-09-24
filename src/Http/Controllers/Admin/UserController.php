@@ -33,8 +33,12 @@ class UserController extends Controller
             $users->where('email', 'LIKE', "%$email%");
         }
         if ($query->get('surname')) {
-            $surname = trim($query->get('surname'));
-            $users->where('surname', 'LIKE', "%$surname%");
+            $title = $query->get('surname');
+            $users->where(function ($query) use ($title) {
+                $query->where("firstname", "like", "%$title%")
+                    ->orWhere("surname", "like", "%$title%")
+                    ->orWhere("fathername", "like", "%$title%");
+            });
         }
         if ($query->get('verified', 'all') != 'all') {
             $verified = $query->get('verified');
