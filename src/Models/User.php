@@ -124,7 +124,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getVerifiedAttribute() {
         if (!empty($this->email_verified_at)) {
-            return $this->email_verified_at;
+            return datehelper()->format($this->email_verified_at);
         }
         else {
             return 'Ожидается подтверждение';

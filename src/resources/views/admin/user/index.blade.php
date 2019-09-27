@@ -95,7 +95,7 @@
                                         @endforeach
                                     </ul>
                                 </td>
-                                <td>{{ datehelper()->format($user->verified) }}</td>
+                                <td>{{ $user->verified }}</td>
                                 <td class="text-center">
                                     <div role="toolbar" class="btn-toolbar">
                                         <div class="btn-group btn-group-sm mr-1">
