@@ -20,7 +20,7 @@
            aria-expanded="false"
            v-pre
         >
-            {{ Auth::user()->name }}
+            {{ !empty(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
