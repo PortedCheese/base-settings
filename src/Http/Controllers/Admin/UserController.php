@@ -24,20 +24,16 @@ class UserController extends Controller
     {
         $query = $request->query;
         $users = User::query();
-        if ($query->get('login')) {
-            $login = trim($query->get('login'));
-            $users->where('login', 'LIKE', "%$login%");
-        }
         if ($query->get('email')) {
             $email = trim($query->get('email'));
             $users->where('email', 'LIKE', "%$email%");
         }
-        if ($query->get('surname')) {
-            $title = $query->get('surname');
+        if ($query->get('full_name')) {
+            $title = $query->get('full_name');
             $users->where(function ($query) use ($title) {
-                $query->where("firstname", "like", "%$title%")
-                    ->orWhere("surname", "like", "%$title%")
-                    ->orWhere("fathername", "like", "%$title%");
+                $query->where("name", "like", "%$title%")
+                    ->orWhere("last_name", "like", "%$title%")
+                    ->orWhere("middle_name", "like", "%$title%");
             });
         }
         if ($query->get('verified', 'all') != 'all') {
@@ -50,10 +46,14 @@ class UserController extends Controller
             }
         }
         $users->orderBy('created_at', 'desc');
+
+        $perPage = env("USER_ADMIN_PAGER", self::PAGER);
         return view('base-settings::admin.user.index', [
-            'users' => $users->paginate(env("USER_ADMIN_PAGER", self::PAGER))->appends($request->input()),
+            'users' => $users
+                ->paginate($perPage)
+                ->appends($request->input()),
             'query' => $query,
-            'per' => self::PAGER,
+            'per' => $perPage,
             'page' => $query->get('page', 1) - 1
         ]);
     }
@@ -66,7 +66,6 @@ class UserController extends Controller
     public function create()
     {
         return view('base-settings::admin.user.create', [
-            'sex' => Auth::user()->getSexList(),
             'roles' => Role::getForAdmin(),
         ]);
     }
@@ -103,7 +102,6 @@ class UserController extends Controller
     {
         return view('base-settings::admin.user.edit', [
             'user' => $user,
-            'sex' => $user->getSexList(),
             'roles' => Role::getForAdmin(),
             'auth' => Auth::user(),
             'image' => $user->avatar,

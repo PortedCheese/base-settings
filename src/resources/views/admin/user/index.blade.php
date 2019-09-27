@@ -9,17 +9,6 @@
                 <form method="get" action="{{ route($currentRoute) }}">
                     <div class="form-row align-items-center">
                         <div class="col-auto">
-                            <label class="sr-only" for="login">Login</label>
-                            <div class="input-group mb-2">
-                                <input type="text"
-                                       value="{{ $query->get('login') }}"
-                                       class="form-control"
-                                       name="login"
-                                       id="login"
-                                       placeholder="Login">
-                            </div>
-                        </div>
-                        <div class="col-auto">
                             <label class="sr-only" for="email">E-mail</label>
                             <div class="input-group mb-2">
                                 <input type="text"
@@ -82,10 +71,8 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Login</th>
                             <th>E-mail</th>
                             <th>ФИО</th>
-                            <th>Пол</th>
                             <th>Роли</th>
                             <th>Подтвержден</th>
                             <th>Действия</th>
@@ -97,10 +84,8 @@
                                 <td>
                                     {{ $page * $per + $loop->iteration }}
                                 </td>
-                                <td>{{ $user->login }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->full_name }}</td>
-                                <td>{{ $user->sex_text }}</td>
                                 <td>
                                     <ul class="list-unstyled">
                                         @foreach($user->roles as $role)

@@ -12,20 +12,6 @@
                     @csrf
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="login">Login</label>
-                            <input type="text"
-                                   id="login"
-                                   name="login"
-                                   value="{{ old('login') }}"
-                                   class="form-control @error("login") is-invalid @enderror">
-                            @error("login")
-                                <div class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
                             <label for="email">E-mail</label>
                             <input type="email"
                                    id="email"
@@ -38,16 +24,33 @@
                                 </div>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label>Роли</label>
+                            @foreach ($roles as $role)
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                           value="{{ $role->id }}"
+                                           {{ old("check-{$role->id}") ? "checked" : "" }}
+                                           id="check-{{ $role->name }}"
+                                           name="check-{{ $role->id }}"
+                                           type="checkbox">
+                                    <label class="custom-control-label" for="check-{{ $role->name }}">
+                                        {{ empty($role->title) ? $role->name : $role->title }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="surname">Фамилия</label>
+                            <label for="name">Имя</label>
                             <input type="text"
-                                   id="surname"
-                                   name="surname"
-                                   value="{{ old('surname') }}"
-                                   class="form-control @error("surname") is-invalid @enderror">
-                            @error("surname")
+                                   id="name"
+                                   name="name"
+                                   value="{{ old('name') }}"
+                                   class="form-control @error("name") is-invalid @enderror">
+                            @error("name")
                                 <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
@@ -55,13 +58,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="firstname">Имя</label>
+                            <label for="last_name">Фамилия</label>
                             <input type="text"
-                                   id="firstname"
-                                   name="firstname"
-                                   value="{{ old('firstname') }}"
-                                   class="form-control @error("firstname") is-invalid @enderror">
-                            @error("firstname")
+                                   id="last_name"
+                                   name="last_name"
+                                   value="{{ old('last_name') }}"
+                                   class="form-control @error("last_name") is-invalid @enderror">
+                            @error("last_name")
                                 <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
@@ -69,13 +72,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="fathername">Отчество</label>
+                            <label for="middle_name">Отчество</label>
                             <input type="text"
-                                   id="fathername"
-                                   name="fathername"
-                                   value="{{ old('fathername') }}"
-                                   class="form-control @error("fathername") is-invalid @enderror">
-                            @error("fathername")
+                                   id="middle_name"
+                                   name="middle_name"
+                                   value="{{ old('middle_name') }}"
+                                   class="form-control @error("middle_name") is-invalid @enderror">
+                            @error("middle_name")
                                 <div class="invalid-feedback" role="alert">
                                     {{ $message }}
                                 </div>
@@ -113,44 +116,6 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="sex">Пол</label>
-                            <select name="sex"
-                                    id="sex"
-                                    class="form-control custom-select @error("sex") is-invalid @enderror">
-                                <option value="">Выберите...</option>
-                                @foreach($sex as $key => $value)
-                                    <option value="{{ $key }}"
-                                            {{ old("sex") == $key ? "selected" : "" }}>
-                                        {{ $value }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error("sex")
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Роли</label>
-                            @foreach ($roles as $role)
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input"
-                                           value="{{ $role->id }}"
-                                           {{ old("check-{$role->id}") ? "checked" : "" }}
-                                           id="check-{{ $role->name }}"
-                                           name="check-{{ $role->id }}"
-                                           type="checkbox">
-                                    <label class="custom-control-label" for="check-{{ $role->name }}">
-                                        {{ empty($role->title) ? $role->name : $role->title }}
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
                     <div class="col-12">
                         <div class="btn-group"
                              role="group">

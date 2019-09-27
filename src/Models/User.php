@@ -22,13 +22,11 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'login',
+        'name',
         'email',
         'password',
-        'firstname',
-        'surname',
-        'fathername',
-        'sex',
+        'last_name',
+        'middle_name',
     ];
 
     protected static function boot()
@@ -70,19 +68,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
-    const SEX = [
-        0 => "Не выбрано",
-        1 => "Мужской",
-        2 => "Женский",
-    ];
-
     /**
      * У пользователя один аватар.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function avatar() {
-        return $this->belongsTo('App\Image', 'avatar_id');
+        return $this->belongsTo(\App\Image::class, 'image_id');
     }
 
     /**
@@ -91,7 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function images() {
-        return $this->morphMany('App\Image', 'imageable');
+        return $this->morphMany(\App\Image::class, 'imageable');
     }
 
     /**
@@ -100,7 +92,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles() {
-        return $this->belongsToMany('App\Role');
+        return $this->belongsToMany(\App\Role::class);
     }
 
     /**
@@ -140,38 +132,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Определяем пол по значению, это по стандарту DB.
-     *
-     * @return string
-     */
-    public function getSexTextAttribute() {
-        if (!empty(self::SEX[$this->sex])) {
-            return self::SEX[$this->sex];
-        }
-        else {
-            return "Error";
-        }
-    }
-
-    /**
-     * Список для селектов выбора пола.
-     *
-     * @return array
-     */
-    public function getSexList() {
-        return self::SEX;
-    }
-
-    /**
      * Собираем ФИО.
      *
      * @return string
      */
     public function getFullNameAttribute() {
         $fullName = [
-            $this->surname,
-            $this->firstname,
-            $this->fathername,
+            $this->last_name,
+            $this->name,
+            $this->middle_name,
         ];
         $fullName = implode(' ', $fullName);
         return trim($fullName);
@@ -193,7 +162,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param $roles
      */
     public function setRoles($roles) {
-        $adminRole = Role::where('name', 'admin')->first();
+        $adminRole = Role::query()
+            ->where('name', 'admin')
+            ->first();
         if (
             $this->id == Auth::user()->id &&
             !in_array($adminRole->id, $roles)

@@ -2,6 +2,7 @@
 
 namespace PortedCheese\BaseSettings\Http\Controllers\Site;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,8 @@ class ProfileController extends Controller
         $this->middleware('auth');
 
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
+            $userId = Auth::user()->getAuthIdentifier();
+            $this->user = User::find($userId);
 
             return $next($request);
         });
@@ -43,7 +45,6 @@ class ProfileController extends Controller
     public function edit() {
         return view('base-settings::profile.edit', [
             'user' => $this->user,
-            'sex' => $this->user->getSexList(),
             'routeName' => $this->routeName,
             'image' => $this->user->avatar,
         ]);
@@ -51,9 +52,9 @@ class ProfileController extends Controller
 
 
     public function update(Request $request) {
+        // TODO: move to request file.
         $userInput = $request->all();
         $rules = [
-            'login' => "required|unique:users,login,{$this->user->id}|min:2",
             'email' => "required|email|unique:users,email,{$this->user->id}",
             'password' => 'string|min:6|confirmed',
         ];
