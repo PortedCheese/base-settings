@@ -20,19 +20,19 @@
            aria-expanded="false"
            v-pre
         >
-            {{ Auth::user()->login }}
+            {{ Auth::user()->name }}
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             @role('admin|editor')
-            <a href="{{ route('admin') }}" class="dropdown-item">
-                Dashboard
-            </a>
+                <a href="{{ route('admin') }}" class="dropdown-item">
+                    Dashboard
+                </a>
             @endrole
             @role('admin')
-            <a class="dropdown-item" target="_blank" href="{{ route('admin.logs') }}">
-                Логи
-            </a>
+                <a class="dropdown-item" target="_blank" href="{{ route('admin.logs') }}">
+                    Логи
+                </a>
             @endrole
             <a class="dropdown-item"
                href="{{ route('profile.show') }}">
