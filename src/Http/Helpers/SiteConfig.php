@@ -2,13 +2,11 @@
 
 namespace PortedCheese\BaseSettings\Http\Helpers;
 
-
-use Illuminate\Support\Arr;
 use PortedCheese\BaseSettings\Models\SiteConfig as ConfigModel;
 
 class SiteConfig
 {
-    const ACTIONS = ['get', 'create'];
+    const ACTIONS = ['get', 'create', 'update'];
 
     protected $configData;
 
@@ -35,7 +33,37 @@ class SiteConfig
             case "create":
                 $this->makeCreateMethod($args);
                 break;
+
+            case "update":
+                $this->makeUpdateMethod($args);
+                break;
         }
+    }
+
+    /**
+     * Обновить значение конфига.
+     *
+     * @param $args
+     */
+    protected function makeUpdateMethod($args)
+    {
+        if (count($args) !== 3) {
+            return;
+        }
+        list($name, $var, $value) = $args;
+
+        try {
+            $config = ConfigModel::query()
+                ->where("name", $name)
+                ->firstOrFail();
+        }
+        catch (\Exception $exception) {
+            return;
+        }
+        $data = $config->data;
+        $data[$var] = $value;
+        $config->data = $data;
+        $config->save();
     }
 
     /**
@@ -108,29 +136,28 @@ class SiteConfig
      */
     protected function makeGetMethod($args)
     {
+        // Если аргумент один, то вернется конфиг,
+        // если несколько, то вренется значение.
         if (empty($args)) {
             return;
         }
         $name = array_shift($args);
         $data = ConfigModel::getByName($name);
         $this->configData = [];
-        foreach ($args as $arg) {
-            if (isset($data[$arg])) {
-                $this->configData[$arg] = $data[$arg];
+        if (! empty($args)) {
+            $value = array_shift($args);
+            if (isset($data[$value])) {
+                $this->configData = $data[$value];
+            }
+            elseif (! empty($args[0])) {
+                $this->configData = $args[0];
             }
             else {
-                $this->configData[$arg] = false;
+                $this->configData = false;
             }
+            return;
         }
-        // Если аргумент один, то вернется конфиг,
-        // если несколько, то вренется набор значений, либо одно значение.
-        if (empty($this->configData)) {
-            $this->configData = $data;
-        }
-        elseif (count($this->configData) == 1) {
-            $arrayKeys = array_keys($this->configData);
-            $this->configData = $this->configData[Arr::first($arrayKeys)];
-        }
+        $this->configData = $data;
     }
 
 }
