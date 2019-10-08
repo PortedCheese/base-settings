@@ -14,6 +14,14 @@
 
 `php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config`
 
-`php artisan make:base-settings --all` - создает модели и шаблоны.
+`php artisan make:base-settings {--all : Run all}
+                                {--views : Scaffold views}
+                                {--force : Overwrite existing views by default}
+                                {--models : Export models}
+                                {--filters : Export filters}
+                                {--controllers : Export controllers}
+                                {--config : Make config}
+                                {--vue : Export vue files}
+                                {--js : Export js files}` - создает модели и шаблоны.
 
 Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.

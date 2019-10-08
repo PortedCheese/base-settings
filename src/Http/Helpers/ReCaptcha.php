@@ -23,8 +23,8 @@ class ReCaptcha
 
     public function __construct()
     {
-        $this->siteKey = env("RECAPTCHA_SITEKEY", "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI");
-        $this->secretKey = env("RECAPTCHA_SECRETKEY", "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe");
+        $this->siteKey = siteconf()->get("base-settings", "recaptchaSiteKey");
+        $this->secretKey = siteconf()->get("base-settings", "recaptchaSecretKey");
         $this->client = new Client();
     }
 

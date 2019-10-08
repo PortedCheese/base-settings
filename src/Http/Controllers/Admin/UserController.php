@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    const PAGER = 10;
-
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +45,7 @@ class UserController extends Controller
         }
         $users->orderBy('created_at', 'desc');
 
-        $perPage = env("USER_ADMIN_PAGER", self::PAGER);
+        $perPage = siteconf()->get("base-settings", "userAdminPager");
         return view('base-settings::admin.user.index', [
             'users' => $users
                 ->paginate($perPage)

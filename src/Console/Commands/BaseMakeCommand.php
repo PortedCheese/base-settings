@@ -17,6 +17,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
                     {--models : Export models}
                     {--filters : Export filters}
                     {--controllers : Export controllers}
+                    {--config : Make config}
                     {--vue : Export vue files}
                     {--js : Export js files}';
 
@@ -83,6 +84,15 @@ class BaseMakeCommand extends BaseConfigModelCommand
         'admin' => ['admin-base'],
     ];
 
+    protected $configName = "base-settings";
+    protected $configTitle = "Базовые настройки";
+    protected $configTemplate = "base-settings::admin.settings";
+    protected $configValues = [
+        "userAdminPager" => 10,
+        "recaptchaSiteKey" => "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+        "recaptchaSecretKey" => "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -130,6 +140,10 @@ class BaseMakeCommand extends BaseConfigModelCommand
         if ($this->option('js') || $all) {
             $this->makeJsIncludes('admin');
             $this->makeJsIncludes('app');
+        }
+
+        if ($this->option("config") || $all) {
+            $this->makeConfig();
         }
     }
 
