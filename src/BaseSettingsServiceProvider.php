@@ -31,6 +31,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->hasRoleBlade();
         $this->extendViews();
         $this->bladeComponents();
+        $this->bladeIncludes();
         $this->extendImages();
 
         // Задать middleware.
@@ -67,7 +68,6 @@ class BaseSettingsServiceProvider extends ServiceProvider
             ]);
         }
 
-        // TODO: change all captcha logic.
         $this->app['validator']->extend('hidden_captcha', function ($attribute, $value) {
             return empty($value);
         });
@@ -151,7 +151,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Компоненты изображений.
+     * Компоненты приложения.
      */
     private function bladeComponents()
     {
@@ -163,4 +163,12 @@ class BaseSettingsServiceProvider extends ServiceProvider
         Blade::component("base-settings::components.google-captcha", "gCaptcha");
     }
 
+    /**
+     * Инклуды приложения.
+     */
+    private function bladeIncludes()
+    {
+        Blade::include("base-settings::includes.google-captcha-v2", "googleCaptcha2");
+        Blade::include("base-settings::includes.hidden-captcha", "hiddenCaptcha");
+    }
 }

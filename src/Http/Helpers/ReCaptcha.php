@@ -8,7 +8,6 @@
 
 namespace PortedCheese\BaseSettings\Http\Helpers;
 
-
 use GuzzleHttp\Client;
 
 class ReCaptcha
