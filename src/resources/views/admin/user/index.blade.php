@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="col-auto">
-                            <label class="sr-only" for="surname">ФИО</label>
+                            <label class="sr-only" for="full_name">ФИО</label>
                             <div class="input-group mb-2">
                                 <input type="text"
                                        value="{{ $query->get('surname') }}"
