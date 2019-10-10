@@ -58,6 +58,7 @@ class SettingsController extends Controller
     {
         return view("base-settings::admin.settings.edit", [
             'config' => $setting,
+            'name' => $setting->name,
         ]);
     }
 

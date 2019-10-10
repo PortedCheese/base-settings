@@ -27,15 +27,15 @@ class SiteConfig
     {
         switch ($method) {
             case 'get':
-                $this->makeGetMethod($args);
+                call_user_func_array([$this, "makeGetMethod"], $args);
                 break;
 
             case "create":
-                $this->makeCreateMethod($args);
+                call_user_func_array([$this, "makeCreateMethod"], $args);
                 break;
 
             case "update":
-                $this->makeUpdateMethod($args);
+                call_user_func_array([$this, "makeUpdateMethod"], $args);
                 break;
         }
     }
@@ -43,15 +43,12 @@ class SiteConfig
     /**
      * Обновить значение конфига.
      *
-     * @param $args
+     * @param string $name
+     * @param string $var
+     * @param mixed $value
      */
-    protected function makeUpdateMethod($args)
+    protected function makeUpdateMethod(string $name, string $var, $value)
     {
-        if (count($args) !== 3) {
-            return;
-        }
-        list($name, $var, $value) = $args;
-
         try {
             $config = ConfigModel::query()
                 ->where("name", $name)
@@ -69,15 +66,17 @@ class SiteConfig
     /**
      * Создание нового конфига.
      *
-     * @param $args
+     * @param string $name
+     * @param array $data
+     * @param array $info
+     * @param bool $force
      */
-    protected function makeCreateMethod($args)
+    protected function makeCreateMethod(string $name, array $data, array $info, $force = false)
     {
         // Проверяем, достаточно ли данных для создания.
-        if (! $this->checkCreate($args)) {
+        if (! $this->checkCreate($info)) {
             return;
         }
-        list($name, $data, $info) = $args;
         $modelData = [
             'name' => $name,
             'data' => $data,
@@ -93,10 +92,10 @@ class SiteConfig
             $this->configData = "exists";
 
             // Обновить существующий.
-            if (! empty($args[3])) {
+            if ($force) {
                 $config->update($modelData);
 
-                $this->configData = "replaces";
+                $this->configData = "replaced";
             }
         }
         catch (\Exception $exception) {
@@ -112,17 +111,13 @@ class SiteConfig
      * @param $args
      * @return bool
      */
-    protected function checkCreate($args)
+    protected function checkCreate($info)
     {
-        if (count($args) < 3) {
-            $this->configData = "not enough arg";
-            return false;
-        }
-        if (! is_array($args[2])) {
+        if (! is_array($info)) {
             $this->configData = "third arg not array";
             return false;
         }
-        if (empty($args[2]['title']) || empty($args[2]['template'])) {
+        if (empty($info['title']) || empty($info['template'])) {
             $this->configData = "title or template is empty";
             return false;
         }
@@ -132,32 +127,20 @@ class SiteConfig
     /**
      * Получить значения конфигов.
      *
-     * @param $args
+     * @param string $name
+     * @param string $value
+     * @param mixed|null $default
      */
-    protected function makeGetMethod($args)
+    protected function makeGetMethod(string $name, $value = "", $default = null)
     {
-        // Если аргумент один, то вернется конфиг,
-        // если несколько, то вренется значение.
-        if (empty($args)) {
-            return;
-        }
-        $name = array_shift($args);
         $data = ConfigModel::getByName($name);
         $this->configData = [];
-        if (! empty($args)) {
-            $value = array_shift($args);
-            if (isset($data[$value])) {
-                $this->configData = $data[$value];
-            }
-            elseif (! empty($args[0])) {
-                $this->configData = $args[0];
-            }
-            else {
-                $this->configData = false;
-            }
-            return;
+        if (! empty($value)) {
+            $this->configData = ! empty($data[$value]) ? $data[$value] : $default;
         }
-        $this->configData = $data;
+        else {
+            $this->configData = $data;
+        }
     }
 
 }

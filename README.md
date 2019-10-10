@@ -25,3 +25,11 @@
                                 {--js : Export js files}` - создает модели и шаблоны.
 
 Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.
+
+`@googleCaptcha2` - Google ReCaptcha для форм, `google_captcha` - правило валидации
+
+`@hiddenCaptcha` - Скрытая капча, `hidden_captcha` - валидация
+
+`datehelper()` - функция для работы с датами: `{->forFilter(date, date to condition = false)}
+                                               {->changeTz(date)}
+                                               {->format(date, format = "d.m.Y H:i")`

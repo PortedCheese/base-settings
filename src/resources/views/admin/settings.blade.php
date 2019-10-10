@@ -5,7 +5,7 @@
            required
            id="userAdminPager"
            name="data-userAdminPager"
-           value="{{ old("data-userAdminPager", $config->data["userAdminPager"]) }}"
+           value="{{ old("data-userAdminPager", siteconf()->get($name, "userAdminPager", 10)) }}"
            class="form-control @error("data-userAdminPager") is-invalid @enderror">
     @error("data-userAdminPager")
         <div class="invalid-feedback" role="alert">
@@ -20,7 +20,7 @@
            required
            id="recaptchaSiteKey"
            name="data-recaptchaSiteKey"
-           value="{{ old("data-recaptchaSiteKey", $config->data["recaptchaSiteKey"]) }}"
+           value="{{ old("data-recaptchaSiteKey", siteconf()->get($name, "recaptchaSiteKey", "") }}"
            class="form-control @error("data-recaptchaSiteKey") is-invalid @enderror">
     @error("data-recaptchaSiteKey")
         <div class="invalid-feedback" role="alert">
@@ -35,7 +35,7 @@
            required
            id="recaptchaSecretKey"
            name="data-recaptchaSecretKey"
-           value="{{ old("data-recaptchaSecretKey", $config->data["recaptchaSecretKey"]) }}"
+           value="{{ old("data-recaptchaSecretKey", siteconf()->get($name, "recaptchaSecretKey", "") }}"
            class="form-control @error("data-recaptchaSecretKey") is-invalid @enderror">
     @error("data-recaptchaSecretKey")
         <div class="invalid-feedback" role="alert">
