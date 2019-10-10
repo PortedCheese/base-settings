@@ -5,6 +5,8 @@ namespace PortedCheese\BaseSettings\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use PortedCheese\BaseSettings\Http\Requests\SettingsStoreRequest;
 use PortedCheese\BaseSettings\Http\Requests\SettingsUpdateRequest;
 use PortedCheese\BaseSettings\Models\SiteConfig;
@@ -113,5 +115,27 @@ class SettingsController extends Controller
         return redirect()
             ->route("admin.settings.index")
             ->with("success", "Конфигурация удалена");
+    }
+
+    /**
+     * Обновить фавиконку.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateFavicon(Request $request)
+    {
+        return redirect()
+            ->back()
+            ->with("danger", "Disabled");
+        Validator::make($request->all(), [
+            'favicon' => "required|file:mimes:ico",
+        ])->validate();
+        if ($request->has("favicon")) {
+            $request->file("favicon")->storeAs("", "favicon.ico", "public");
+        }
+        return redirect()
+            ->back()
+            ->with("Обновлено");
     }
 }

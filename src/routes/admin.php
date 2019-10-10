@@ -10,4 +10,6 @@ Route::group([
     "as" => "admin."
 ], function () {
     Route::resource("settings", "SettingsController")->except(["show"]);
+    Route::put("settings/favicon", "SettingsController@updateFavicon")
+        ->name("settings.favicon");
 });
