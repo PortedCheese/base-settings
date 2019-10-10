@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" rel="stylesheet">
     @stack('more-css')
 </head>
 <body>
@@ -61,7 +61,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" defer></script>
     @stack('more-scripts')
 </body>
 </html>

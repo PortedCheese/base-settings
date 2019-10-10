@@ -20,7 +20,7 @@
            required
            id="recaptchaSiteKey"
            name="data-recaptchaSiteKey"
-           value="{{ old("data-recaptchaSiteKey", siteconf()->get($name, "recaptchaSiteKey", "") }}"
+           value="{{ old("data-recaptchaSiteKey", siteconf()->get($name, "recaptchaSiteKey", "")) }}"
            class="form-control @error("data-recaptchaSiteKey") is-invalid @enderror">
     @error("data-recaptchaSiteKey")
         <div class="invalid-feedback" role="alert">
@@ -35,7 +35,7 @@
            required
            id="recaptchaSecretKey"
            name="data-recaptchaSecretKey"
-           value="{{ old("data-recaptchaSecretKey", siteconf()->get($name, "recaptchaSecretKey", "") }}"
+           value="{{ old("data-recaptchaSecretKey", siteconf()->get($name, "recaptchaSecretKey", "")) }}"
            class="form-control @error("data-recaptchaSecretKey") is-invalid @enderror">
     @error("data-recaptchaSecretKey")
         <div class="invalid-feedback" role="alert">
@@ -43,3 +43,18 @@
         </div>
     @enderror
 </div>
+
+<div class="form-group">
+    <label for="data-frontendDate">Дата frontend</label>
+    <input type="date"
+           id="data-frontendDate"
+           name="data-frontendDate"
+           value="{{ old("data-frontendDate", siteconf()->get($name, "frontendDate", "")) }}"
+           class="form-control @error("data-frontendDate") is-invalid @enderror">
+    @error("data-frontendDate")
+        <div class="invalid-feedback" role="alert">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
+

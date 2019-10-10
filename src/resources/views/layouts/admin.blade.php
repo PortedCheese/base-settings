@@ -13,7 +13,7 @@
     <!-- Scripts -->
     @stack('js-lib')
     <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/admin.js') }}" defer></script>
+    <script src="{{ asset('js/admin.js') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" defer></script>
     @stack('more-scripts')
 
     <!-- Fonts -->
@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" rel="stylesheet">
     @stack('more-css')
 </head>
 <body>

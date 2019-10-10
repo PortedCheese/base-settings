@@ -91,6 +91,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
         "userAdminPager" => 10,
         "recaptchaSiteKey" => "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
         "recaptchaSecretKey" => "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",
+        "frontendDate" => "",
     ];
 
     /**
