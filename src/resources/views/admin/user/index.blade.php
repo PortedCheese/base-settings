@@ -23,10 +23,10 @@
                             <label class="sr-only" for="full_name">ФИО</label>
                             <div class="input-group mb-2">
                                 <input type="text"
-                                       value="{{ $query->get('surname') }}"
+                                       value="{{ $query->get('full_name') }}"
                                        class="form-control"
-                                       name="surname"
-                                       id="surname"
+                                       name="full_name"
+                                       id="full_name"
                                        placeholder="ФИО">
                             </div>
                         </div>
