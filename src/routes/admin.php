@@ -12,4 +12,6 @@ Route::group([
     Route::resource("settings", "SettingsController")->except(["show"]);
     Route::put("settings/favicon", "SettingsController@updateFavicon")
         ->name("settings.favicon");
+    Route::put("settings/{user}/token", "SettingsController@updateToken")
+        ->name("settings.token");
 });

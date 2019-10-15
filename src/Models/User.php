@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use PortedCheese\BaseSettings\Events\UserUpdate;
 use PortedCheese\BaseSettings\Notifications\CustomResetPasswordNotify;
 
@@ -216,4 +217,16 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+    /**
+     * Обновить или задать токен для пользователя.
+     *
+     * @return string
+     */
+    public function setBaseToken()
+    {
+        $token = Str::random(60);
+        $this->base_token = $token;
+        $this->save();
+        return $token;
+    }
 }

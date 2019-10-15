@@ -5,7 +5,9 @@ namespace PortedCheese\BaseSettings\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\BaseSettings\Http\Requests\SettingsStoreRequest;
 use PortedCheese\BaseSettings\Http\Requests\SettingsUpdateRequest;
@@ -22,6 +24,7 @@ class SettingsController extends Controller
     {
         return view("base-settings::admin.settings.index", [
             'settings' => SiteConfig::query()->orderBy("title")->get(),
+            'user' => Auth::user(),
         ]);
     }
 
@@ -128,14 +131,28 @@ class SettingsController extends Controller
         return redirect()
             ->back()
             ->with("danger", "Disabled");
-        Validator::make($request->all(), [
-            'favicon' => "required|file:mimes:ico",
-        ])->validate();
-        if ($request->has("favicon")) {
-            $request->file("favicon")->storeAs("", "favicon.ico", "public");
-        }
+//        Validator::make($request->all(), [
+//            'favicon' => "required|file:mimes:ico",
+//        ])->validate();
+//        if ($request->has("favicon")) {
+//            $request->file("favicon")->storeAs("", "favicon.ico", "public");
+//        }
+//        return redirect()
+//            ->back()
+//            ->with("Обновлено");
+    }
+
+    /**
+     * Обновить токен.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateToken(User $user)
+    {
+        $token = $user->setBaseToken();
         return redirect()
             ->back()
-            ->with("Обновлено");
+            ->with("success", $token);
     }
 }

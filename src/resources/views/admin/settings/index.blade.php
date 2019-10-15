@@ -10,35 +10,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-{{--                <form action="{{ route("admin.settings.favicon") }}" method="post" enctype="multipart/form-data">--}}
-{{--                    @csrf--}}
-{{--                    @method("put")--}}
-{{--                    <div class="form-group">--}}
-{{--                        <div class="custom-file">--}}
-{{--                            <input type="file"--}}
-{{--                                   class="custom-file-input{{ $errors->has('favicon') ? ' is-invalid' : '' }}"--}}
-{{--                                   id="custom-file-input"--}}
-{{--                                   lang="ru"--}}
-{{--                                   name="favicon"--}}
-{{--                                   aria-describedby="inputGroupFavicon">--}}
-{{--                            <label class="custom-file-label"--}}
-{{--                                   for="custom-file-input">--}}
-{{--                                Выберите файл иконки--}}
-{{--                            </label>--}}
-{{--                            @if ($errors->has('favicon'))--}}
-{{--                                <div class="invalid-feedback">--}}
-{{--                                    <strong>{{ $errors->first('favicon') }}</strong>--}}
-{{--                                </div>--}}
-{{--                            @endif--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="btn-group"--}}
-{{--                         role="group">--}}
-{{--                        <button type="submit" class="btn btn-primary">Обновить иконку</button>--}}
-{{--                        <a href="{{ route("admin.settings.create") }}" class="btn btn-success">Добавить конфиг</a>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
                 <a href="{{ route("admin.settings.create") }}" class="btn btn-success">Добавить конфиг</a>
             </div>
             <div class="card-body">
@@ -88,6 +59,16 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="card-footer">
+                <form action="{{ route("admin.settings.token", ['user' => $user]) }}" method="post">
+                    @csrf
+                    @method("put")
+                    <div class="btn-group"
+                         role="group">
+                        <button type="submit" class="btn btn-warning">Обновить токен пользователя</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
