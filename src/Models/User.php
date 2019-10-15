@@ -162,16 +162,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param $roles
      */
     public function setRoles($roles) {
-        // WTF?
-//        $adminRole = Role::query()
-//            ->where('name', 'admin')
-//            ->first();
-//        if (
-//            $this->id == Auth::user()->id &&
-//            !in_array($adminRole->id, $roles)
-//        ) {
-//            $roles[] = $adminRole->id;
-//        }
+        $adminRole = Role::query()
+            ->where('name', 'admin')
+            ->first();
+        if (
+            $this->id == Auth::id() &&
+            !in_array($adminRole->id, $roles) &&
+            $this->hasRole('admin')
+        ) {
+            $roles[] = $adminRole->id;
+        }
         $this->roles()->sync($roles);
     }
 
