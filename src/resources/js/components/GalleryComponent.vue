@@ -21,8 +21,7 @@
                         <button class="btn btn-success"
                                 type="button"
                                 @click.prevent="send"
-                                :disabled="loading"
-                                v-if="fileContents.length">
+                                :disabled="loading || ! fileContents.length">
                             <span v-if="loading">Идет обработка запроса</span>
                             <span v-else>Загрузить</span>
                         </button>
@@ -67,8 +66,27 @@
                     <td>
                         <img class="rounded float-left" :src="image.src" :alt="image.id">
                     </td>
-                    <td>
-                        {{ image.name }}
+                    <td width="20%">
+                        <div v-if="image.nameInput">
+                            <div class="input-group input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       v-model="image.nameChanged">
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger"
+                                            @click="image.nameInput = false">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                    <button class="btn btn-success"
+                                            @click="changeName(image)">
+                                        <i class="far fa-check-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-secondary" v-else @click="image.nameInput = true">
+                            {{ image.name }}
+                        </button>
                     </td>
                     <td width="20%">
                         <div v-if="image.input">
@@ -77,8 +95,8 @@
                                        min="0"
                                        step="1"
                                        class="form-control weight-changer"
-                                       v-model="image.changed" aria-describedby="button-addon">
-                                <div class="input-group-append" id="button-addon">
+                                       v-model="image.weightChanged">
+                                <div class="input-group-append">
                                     <button class="btn btn-danger"
                                             @click="image.input = false">
                                         <i class="fas fa-ban"></i>
@@ -161,11 +179,11 @@
 
         methods: {
             downWeight (image) {
-                image.changed++;
+                image.weightChanged++;
                 this.changeWeight(image);
             },
             upWeight (image) {
-                image.changed--;
+                image.weightChanged--;
                 this.changeWeight(image);
             },
             // Меняем на введенный вес.
@@ -174,20 +192,39 @@
                 this.loading = true;
                 this.message = "";
                 let formData = new FormData();
-                formData.append('changed', image.changed);
-                formData.append('weight', image.weight);
+                formData.append('changed', image.weightChanged);
                 axios
-                    .post(image.weightUrl, formData, {
-                        headers: {
-                            'X-CSRF-TOKEN': this.csrfToken
-                        }
-                    })
+                    .post(image.weightUrl, formData)
                     .then(response => {
                         this.error = false;
                         let result = response.data;
                         if (result.success) {
                             this.images = result.images;
                             this.message = 'Вес изменен';
+                        }
+                        else {
+                            this.message = result.message;
+                        }
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            },
+            // Меняем имя.
+            changeName (image) {
+                image.nameInput = false;
+                this.loading = true;
+                this.message = "";
+                let formData = new FormData();
+                formData.append('changed', image.nameChanged);
+                axios
+                    .post(image.nameUrl, formData)
+                    .then(response => {
+                        this.error = false;
+                        let result = response.data;
+                        if (result.success) {
+                            this.images = result.images;
+                            this.message = 'Имя изменено';
                         }
                         else {
                             this.message = result.message;

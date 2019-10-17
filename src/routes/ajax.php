@@ -27,6 +27,9 @@ Route::group([
             // Сменить вес изображения.
             Route::post('/{model}/{id}/{image}/weight', 'ImageController@weight')
                 ->name('weight');
+            // Сменить имя изображения.
+            Route::post('/{model}/{id}/{image}/name', 'ImageController@name')
+                ->name('name');
         });
     });
 });

@@ -113,7 +113,7 @@ class ImageController extends Controller
      * @return array
      */
     public function weight(Request $request, $model, $id, $image) {
-        if (!($request->has('changed') && is_numeric($request->get('changed')))) {
+        if (! ($request->has('changed') && is_numeric($request->get('changed')))) {
             return [
                 'success' => FALSE,
                 'message' => "Вес не найден",
@@ -126,7 +126,9 @@ class ImageController extends Controller
             ];
         }
         try {
-            $imageObject = Image::findOrFail($image);
+            $imageObject = Image::query()
+                ->where("id", $image)
+                ->firstOrFail();
         } catch (\Exception $e) {
             return [
                 'success' => FALSE,
@@ -134,6 +136,47 @@ class ImageController extends Controller
             ];
         }
         $imageObject->weight = $request->get('changed');
+        $imageObject->save();
+        return [
+            'success' => TRUE,
+            'images' => Image::prepareImage($modelClass),
+        ];
+    }
+
+    /**
+     * Изменить имя.
+     *
+     * @param Request $request
+     * @param $model
+     * @param $id
+     * @param $image
+     * @return array
+     */
+    public function name(Request $request, $model, $id, $image)
+    {
+        if (! $request->has("changed")) {
+            return [
+                'success' => FALSE,
+                'message' => "Вес не найден",
+            ];
+        }
+        if (!$modelClass = Image::getGalleryModel($model, $id)) {
+            return [
+                'success' => FALSE,
+                'message' => 'Model not found',
+            ];
+        }
+        try {
+            $imageObject = Image::query()
+                ->where("id", $image)
+                ->firstOrFail();
+        } catch (\Exception $e) {
+            return [
+                'success' => FALSE,
+                'message' => 'Image not found',
+            ];
+        }
+        $imageObject->name = $request->get('changed');
         $imageObject->save();
         return [
             'success' => TRUE,

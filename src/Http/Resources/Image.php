@@ -28,15 +28,23 @@ class Image extends JsonResource
             ]),
             'id' => $this->id,
             'name' => $this->name,
+            'nameChanged' => $this->name,
+            'nameInput' => false,
+            "nameUrl" => route("admin.vue.gallery.name", [
+                "model" => $modelName,
+                'id' => $this->imageable_id,
+                'image' => $this->id,
+            ]),
+
             'weight' => $this->weight,
-            'changed' => $this->weight,
-            'delete' => route('admin.vue.gallery.delete', [
+            'weightChanged' => $this->weight,
+            'input' => false,
+            'weightUrl' => route('admin.vue.gallery.weight', [
                 'model' => $modelName,
                 'id' => $this->imageable_id,
                 'image' => $this->id,
             ]),
-            'input' => FALSE,
-            'weightUrl' => route('admin.vue.gallery.weight', [
+            'delete' => route('admin.vue.gallery.delete', [
                 'model' => $modelName,
                 'id' => $this->imageable_id,
                 'image' => $this->id,
