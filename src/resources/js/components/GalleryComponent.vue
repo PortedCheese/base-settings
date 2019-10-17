@@ -1,6 +1,51 @@
 <template>
     <div class="row">
         <div class="col-12">
+            <div class="row h-150">
+                <div class="col-12">
+                    <form v-if="!loading">
+                        <div class="form-group">
+                            <div class="custom-file" id="galleryInputFile">
+                                <input type="file"
+                                       @change.prevent="getImage"
+                                       class="custom-file-input"
+                                       multiple
+                                       id="custom-file-input">
+                                <label class="custom-file-label text-center border border-primary"
+                                       for="custom-file-input">
+                                    Нажмите или перетащите сюда файлы
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-success"
+                                type="button"
+                                @click.prevent="send"
+                                :disabled="loading"
+                                v-if="fileContents.length">
+                            Загрузить
+                        </button>
+                    </form>
+                    <p class="text-info" v-else>Идет обработка запроса</p>
+                    <p :class="{ 'text-success': !error, 'text-danger': error}">{{ message }}</p>
+                    <p v-for="item in errors" class="text-danger">{{ item }}</p>
+                </div>
+
+                <div class="col-6 col-md-2 mb-2" v-for="(item, name) in fileContents">
+                    <button type="button"
+                            @click="fileContents.splice(name, 1)"
+                            class="close"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <img :src="item.content"
+                         class="rounded preview-image"
+                         alt="Предпросмотр">
+                    <p>{{ item.name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
             <table class="table">
                 <thead>
                 <th>Изображение</th>
@@ -14,8 +59,13 @@
                     </td>
                     <td width="20%">
                         <div v-if="image.input">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group-prepend" id="button-addon">
+                            <div class="input-group input-group">
+                                <input type="number"
+                                       min="0"
+                                       step="1"
+                                       class="form-control weight-changer"
+                                       v-model="image.changed" aria-describedby="button-addon">
+                                <div class="input-group-append" id="button-addon">
                                     <button class="btn btn-danger"
                                             @click="image.input = false">
                                         <i class="fas fa-ban"></i>
@@ -25,20 +75,16 @@
                                         <i class="far fa-check-circle"></i>
                                     </button>
                                 </div>
-                                <input type="text"
-                                       class="form-control"
-                                       v-model="image.changed" aria-describedby="button-addon">
                             </div>
                         </div>
-                        <p v-else @click="image.input = true">
-                            {{ image.weight }}
-                        </p>
+                        <button class="btn btn-outline-secondary" v-else @click="image.input = true">
+                            Вес <span class="badge badge-primary">{{ image.weight }}</span>
+                        </button>
                     </td>
                     <td>
                         <div class="btn-group" role="group">
                             <button class="btn btn-primary"
-                                    v-if="image.weight > 1"
-                                    :disabled="loading"
+                                    :disabled="loading || image.weight <= 1"
                                     @click="upWeight(image)">
                                 <i class="fas fa-level-up-alt"></i>
                             </button>
@@ -58,61 +104,31 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-12">
-            <div class="row h-150">
-                <div class="col">
-                    <form v-if="!loading">
-                        <div class="form-group">
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                        <span class="input-group-text"
-                              id="inputGroupAvatar">
-                            Файл
-                        </span>
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file"
-                                           @change.prevent="getImage"
-                                           class="custom-file-input"
-                                           id="custom-file-input"
-                                           lang="ru"
-                                           name="avatar"
-                                           aria-describedby="inputGroupAvatar">
-                                    <label class="custom-file-label"
-                                           for="custom-file-input">
-                                        Выберите файл
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-success"
-                                type="button"
-                                @click.prevent="send"
-                                :disabled="loading"
-                                v-if="content">
-                            Загрузить
-                        </button>
-                    </form>
-                    <p class="text-info" v-else>Идет обработка запроса</p>
-                    <p :class="{ 'text-success': !error, 'text-danger': error}">{{ message }}</p>
-                </div>
-                <div class="col-3">
-                    <img v-if="content"
-                         :src="content"
-                         class="rounded float-left preview-image"
-                         alt="Предпросмотр">
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
 <style>
-    .h-150 {
-        min-height: 150px;
-    }
     .preview-image {
         width: 150px;
+    }
+    .weight-changer {
+        max-width: 75px;
+    }
+    .custom-file-label {
+        overflow: hidden;
+    }
+    #galleryInputFile .custom-file-label::after {
+        display: none;
+    }
+    #galleryInputFile .custom-file-label,
+    #galleryInputFile .custom-file-input,
+    #galleryInputFile {
+        height: 10em;
+        cursor: pointer;
+        padding: 4em;
+    }
+    #galleryInputFile .custom-file-label {
+        border-style: dashed !important;
     }
 </style>
 
@@ -121,12 +137,13 @@
         props: ['getUrl', 'uploadUrl', 'csrfToken'],
         data: function() {
             return {
-                uploadFile: false,
-                content: false,
+                fileContents: [],
                 loading: false,
                 message: '',
+                errors: [],
                 error: false,
-                images: []
+                images: [],
+                iteration: 0,
             }
         },
 
@@ -168,93 +185,103 @@
                         this.loading = false;
                     });
             },
-
             // Удаление изображения.
             deleteImage (image) {
-                this.loading = true;
-                this.message = "";
-                axios
-                    .delete(image.delete, {
-                        headers: {
-                            'X-CSRF-TOKEN': this.csrfToken
-                        }
-                    })
-                    .then(response => {
-                        this.error = false;
-                        this.loading = false;
-                        let result = response.data;
-                        if (result.success) {
-                            this.images = result.images;
-                            this.message = 'Удалено';
-                        }
-                        else {
-                            this.message = result.message;
-                        }
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
+                Swal.fire({
+                    title: 'Вы уверены?',
+                    text: "Изображение будет невозможно восстановить!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Да, удалить!',
+                    cancelButtonText: "Отмена"
+                }).then((result) => {
+                    if (result.value) {
+                        this.loading = true;
+                        this.message = "";
+                        axios
+                            .delete(image.delete)
+                            .then(response => {
+                                this.error = false;
+                                let result = response.data;
+                                if (result.success) {
+                                    this.images = result.images;
+                                    this.message = 'Удалено';
+                                }
+                                else {
+                                    this.message = result.message;
+                                }
+                            })
+                            .finally(() => {
+                                this.loading = false;
+                            });
+                    }
+                });
             },
-
             // Отправляем на сервер.
             send () {
-                this.loading = true;
                 this.message = "";
+                this.errors = [];
+                this.sendSingleFile();
+            },
+            sendSingleFile() {
+                this.loading = true;
                 let formData = new FormData();
-                formData.append('image', this.uploadFile);
+                let file = this.fileContents[0].file;
+                formData.append('image', file);
                 axios
                     .post(this.uploadUrl, formData, {
-                        headers: {
-                            'X-CSRF-TOKEN': this.csrfToken
-                        },
                         responseType: 'json'
                     })
                     .then(response => {
-                        this.error = false;
                         let result = response.data;
                         if (result.success) {
                             this.images = result.images;
-                            this.message = 'Загружено';
+                            this.fileContents.shift();
+                            if (this.fileContents.length) {
+                                this.sendSingleFile();
+                            }
                         }
                         else {
-                            this.message = result.message;
+                            this.errors.push(result.message);
                         }
                     })
                     .catch(error => {
-                        this.error = true;
                         let data = error.response.data;
                         if (data.errors.image.length) {
-                            this.message = data.errors.image[0];
+                            this.errors.push(data.errors.image[0]);
                         }
                     })
                     .finally(() => {
-                        this.content = false;
-                        this.uploadFile = false;
                         this.loading = false;
                     });
             },
-
             // Получаем выбранное изображение.
             getImage (event) {
                 this.message = '';
-                this.selectImage(event.target.files[0]);
+                this.fileContents = [];
+                for (let item in event.target.files) {
+                    if (event.target.files.hasOwnProperty(item)) {
+                        this.selectImage(event.target.files[item]);
+                    }
+                }
             },
 
             selectImage (file) {
-                this.uploadFile = file;
                 let reader = new FileReader();
-                reader.onload = this.onImageLoad;
+                reader.onload = (function (inputFile, contents) {
+                    return function(event) {
+                        let content = event.target.result;
+                        contents.push({
+                            file: inputFile,
+                            name: inputFile.name,
+                            content: content
+                        })
+                    };
+                })(file, this.fileContents);
                 reader.readAsDataURL(file);
             },
-
-            onImageLoad (event) {
-                this.content = event.target.result;
-                let filename = this.uploadFile instanceof File ? this.uploadFile.name : '';
-                // Dispatch new input event with filename
-                this.$emit('input', filename);
-                // Dispatch new event with image content
-                this.$emit('image-changed', this.content);
-            }
         },
 
         created() {

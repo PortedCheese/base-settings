@@ -19,6 +19,11 @@ class Image extends Model {
     {
         parent::boot();
 
+        static::created(function ($model) {
+            $count = \App\Image::query()->select("id")->count();
+            $model->weight = $count + 1;
+        });
+
         static::updated(function ($model) {
             event(new ImageUpdate($model));
         });

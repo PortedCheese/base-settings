@@ -1,12 +1,11 @@
 <?php
 
-namespace PortedCheese\BaseSettings\Http\Controllers;
+namespace PortedCheese\BaseSettings\Http\Controllers\Site;
 
 use App\Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\BaseSettings\Http\Requests\ImagePostRequest;
 
@@ -176,7 +175,8 @@ class ImageController extends Controller
      */
     private function parseImages($modelObject, $modelName) {
         $images = [];
-        foreach ($modelObject->images->sortBy('id')->sortBy('weight') as $image) {
+        $collection = $modelObject->images->sortBy('id')->sortBy('weight');
+        foreach ($collection as $image) {
             $images[] = [
                 'src' => route('imagecache', [
                     'template' => 'small',

@@ -113,9 +113,14 @@ window.noUiSlider = require('nouislider');
             let $element = $(element);
             $element
                 .on('change', function() {
-                    let fileName = $(this)[0]
-                        .files[0]
-                        .name;
+                    let files = $(this)[0].files;
+                    let names = [];
+                    for (let item in files) {
+                        if (files.hasOwnProperty(item)) {
+                            names.push(files[item].name);
+                        }
+                    }
+                    let fileName = names.join(", ");
                     $(this)
                         .next('.custom-file-label')
                         .html(fileName);
