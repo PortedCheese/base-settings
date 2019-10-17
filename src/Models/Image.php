@@ -4,6 +4,7 @@ namespace PortedCheese\BaseSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageCache;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
@@ -13,16 +14,12 @@ class Image extends Model {
     protected $fillable = [
         'path',
         'name',
+        'weight',
     ];
 
     protected static function boot()
     {
         parent::boot();
-
-        static::created(function ($model) {
-            $count = \App\Image::query()->select("id")->count();
-            $model->weight = $count + 1;
-        });
 
         static::updated(function ($model) {
             event(new ImageUpdate($model));
@@ -82,6 +79,73 @@ class Image extends Model {
             }
         }
         return '';
+    }
+
+    /**
+     * Подготовить для js.
+     *
+     * @param $modelObject
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public static function prepareImage($modelObject)
+    {
+        $collection = $modelObject->images->sortBy('id')->sortBy('weight');
+        return \PortedCheese\BaseSettings\Http\Resources\Image::collection($collection);
+    }
+
+    /**
+     * Найти модель по имени в конфиге.
+     *
+     * @param $modelName
+     * @param $id
+     * @return bool
+     */
+    public static function getGalleryModel($modelName, $id)
+    {
+        $model = false;
+        foreach (config('gallery.models') as $name => $class) {
+            if (
+                $name == $modelName &&
+                class_exists($class)
+            ) {
+                try {
+                    $model = $class::findOrFail($id);
+                } catch (\Exception $e) {
+                    return false;
+                }
+                break;
+            }
+        }
+        return $model;
+    }
+
+    /**
+     * Получить имя класса по имени из конфига.
+     *
+     * @param $modelName
+     * @return bool|mixed
+     */
+    public static function getModelClass($modelName)
+    {
+        foreach (config('gallery.models') as $name => $class) {
+            if ($name == $modelName) {
+                return $class;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Получить следующий вес.
+     */
+    public function setMax()
+    {
+        $max = \App\Image::query()
+            ->where("imageable_type", $this->imageable_type)
+            ->where("imageable_id", $this->imageable_id)
+            ->max("weight");
+        $this->weight = $max + 1;
+        $this->save();
     }
 
     /**

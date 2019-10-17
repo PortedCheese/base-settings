@@ -3,7 +3,6 @@
 namespace PortedCheese\BaseSettings\Http\Controllers\Site;
 
 use App\Image;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
@@ -19,11 +18,11 @@ class ImageController extends Controller
      * @return array
      */
     public function get($model, $id) {
-        $modelObject = $this->getModel($model, $id);
+        $modelObject = Image::getGalleryModel($model, $id);
         if ($modelObject) {
             return [
                 'success' => TRUE,
-                'images' => $this->parseImages($modelObject, $model),
+                'images' => Image::prepareImage($modelObject),
             ];
         }
         else {
@@ -43,46 +42,45 @@ class ImageController extends Controller
      * @return array
      */
     public function post(ImagePostRequest $request, $model, $id) {
-        if ($modelClass = $this->getModel($model, $id)) {
-            if ($request->hasFile('image')) {
-                $path = $request->file('image')->store("gallery/$model");
-                $image = Image::create([
-                    'path' => $path,
-                    'name' => "$model-$id" . Carbon::now()->timestamp,
-                ]);
-                $modelClass->images()->save($image);
-                event(new ImageUpdate($image));
-                return [
-                    'success' => TRUE,
-                    'images' => $this->parseImages($modelClass, $model),
-                ];
-            }
-            else {
-                return [
-                    'success' => FALSE,
-                    'message' => 'File not found',
-                ];
-            }
-        }
-        else {
+        $modelClass = Image::getGalleryModel($model, $id);
+        if (! $modelClass) {
             return [
                 'success' => FALSE,
                 'message' => 'Model not found',
             ];
         }
+
+        if (! $request->hasFile('image')) {
+            return [
+                'success' => FALSE,
+                'message' => 'File not found',
+            ];
+        }
+
+        $path = $request->file('image')->store("gallery/$model");
+        $image = Image::create([
+            'path' => $path,
+            'name' => $request->get("name", "$model-$id"),
+        ]);
+        $modelClass->images()->save($image);
+        $image->setMax();
+        event(new ImageUpdate($image));
+        return [
+            'success' => TRUE,
+            'images' => Image::prepareImage($modelClass),
+        ];
     }
 
     /**
      * Пробуем удалить картинку.
      *
-     * @param Request $request
      * @param $model
      * @param $id
      * @param $image
      * @return array
      */
-    public function delete(Request $request, $model, $id, $image) {
-        if ($modelClass = $this->getModel($model, $id)) {
+    public function delete($model, $id, $image) {
+        if ($modelClass = Image::getGalleryModel($model, $id)) {
             try {
                 $imageObject = Image::findOrFail($image);
             } catch (\Exception $e) {
@@ -94,7 +92,7 @@ class ImageController extends Controller
             $imageObject->delete();
             return [
                 'success' => TRUE,
-                'images' => $this->parseImages($modelClass, $model),
+                'images' => Image::prepareImage($modelClass),
             ];
         }
         else {
@@ -121,7 +119,7 @@ class ImageController extends Controller
                 'message' => "Вес не найден",
             ];
         }
-        if (!$modelClass = $this->getModel($model, $id)) {
+        if (!$modelClass = Image::getGalleryModel($model, $id)) {
             return [
                 'success' => FALSE,
                 'message' => 'Model not found',
@@ -139,66 +137,7 @@ class ImageController extends Controller
         $imageObject->save();
         return [
             'success' => TRUE,
-            'images' => $this->parseImages($modelClass, $model),
+            'images' => Image::prepareImage($modelClass),
         ];
-    }
-
-    /**
-     * Пробуем создать экземпляр класса модели.
-     * @param $modelName
-     * @param $id
-     * @return bool
-     */
-    private function getModel($modelName, $id) {
-        $model = FALSE;
-        foreach (config('gallery.models') as $name => $class) {
-            if (
-                $name == $modelName &&
-                class_exists($class)
-            ) {
-                try {
-                    $model = $class::findOrFail($id);
-                } catch (\Exception $e) {
-                    return FALSE;
-                }
-                break;
-            }
-        }
-        return $model;
-    }
-
-    /**
-     * Подготавливаем картинки для vue.
-     *
-     * @param $model
-     * @return array
-     */
-    private function parseImages($modelObject, $modelName) {
-        $images = [];
-        $collection = $modelObject->images->sortBy('id')->sortBy('weight');
-        foreach ($collection as $image) {
-            $images[] = [
-                'src' => route('imagecache', [
-                    'template' => 'small',
-                    'filename' => $image->file_name,
-                ]),
-                'id' => $image->id,
-                'weight' => $image->weight,
-                'changed' => $image->weight,
-                'delete' => route('admin.vue.gallery.delete', [
-                    'model' => $modelName,
-                    'id' => $modelObject->id,
-                    'image' => $image->id,
-                ]),
-                'input' => FALSE,
-                'weightUrl' => route('admin.vue.gallery.weight', [
-                    'model' => $modelName,
-                    'id' => $modelObject->id,
-                    'image' => $image->id,
-                ]),
-            ];
-
-        }
-        return $images;
     }
 }

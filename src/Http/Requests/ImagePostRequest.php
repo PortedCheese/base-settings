@@ -25,6 +25,7 @@ class ImagePostRequest extends FormRequest
     {
         return [
             'image' => 'bail|required|image',
+            'name' => ["bail", "string", "max:100"],
         ];
     }
 

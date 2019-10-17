@@ -3,15 +3,16 @@
         <div class="col-12">
             <div class="row h-150">
                 <div class="col-12">
-                    <form v-if="!loading">
+                    <form>
                         <div class="form-group">
                             <div class="custom-file" id="galleryInputFile">
                                 <input type="file"
+                                       :disabled="loading"
                                        @change.prevent="getImage"
                                        class="custom-file-input"
                                        multiple
                                        id="custom-file-input">
-                                <label class="custom-file-label text-center border border-primary"
+                                <label class="drop-zone-label text-center border border-primary bg-light"
                                        for="custom-file-input">
                                     Нажмите или перетащите сюда файлы
                                 </label>
@@ -22,25 +23,31 @@
                                 @click.prevent="send"
                                 :disabled="loading"
                                 v-if="fileContents.length">
-                            Загрузить
+                            <span v-if="loading">Идет обработка запроса</span>
+                            <span v-else>Загрузить</span>
                         </button>
                     </form>
-                    <p class="text-info" v-else>Идет обработка запроса</p>
                     <p :class="{ 'text-success': !error, 'text-danger': error}">{{ message }}</p>
                     <p v-for="item in errors" class="text-danger">{{ item }}</p>
                 </div>
 
                 <div class="col-6 col-md-2 mb-2" v-for="(item, name) in fileContents">
                     <button type="button"
+                            v-if="! loading"
                             @click="fileContents.splice(name, 1)"
                             class="close"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
+                    <div class="form-group">
+                        <label :for="name" class="sr-only">Имя</label>
+                        <input :id="name" class="form-control" type="text" v-model="item.name">
+                    </div>
+
                     <img :src="item.content"
-                         class="rounded preview-image"
+                         class="rounded preview-image m-auto d-block"
                          alt="Предпросмотр">
-                    <p>{{ item.name }}</p>
                 </div>
             </div>
         </div>
@@ -48,14 +55,20 @@
         <div class="col-12">
             <table class="table">
                 <thead>
-                <th>Изображение</th>
-                <th>Вес</th>
-                <th>Действия</th>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Имя</th>
+                    <th>Вес</th>
+                    <th>Действия</th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr v-for="image in images">
                     <td>
                         <img class="rounded float-left" :src="image.src" :alt="image.id">
+                    </td>
+                    <td>
+                        {{ image.name }}
                     </td>
                     <td width="20%">
                         <div v-if="image.input">
@@ -114,21 +127,20 @@
     .weight-changer {
         max-width: 75px;
     }
-    .custom-file-label {
-        overflow: hidden;
-    }
-    #galleryInputFile .custom-file-label::after {
-        display: none;
-    }
-    #galleryInputFile .custom-file-label,
+    #galleryInputFile .drop-zone-label,
     #galleryInputFile .custom-file-input,
     #galleryInputFile {
         height: 10em;
         cursor: pointer;
-        padding: 4em;
     }
-    #galleryInputFile .custom-file-label {
+    #galleryInputFile .drop-zone-label {
         border-style: dashed !important;
+        padding: 4em;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
 </style>
 
@@ -229,17 +241,21 @@
                 this.loading = true;
                 let formData = new FormData();
                 let file = this.fileContents[0].file;
+                let name = this.fileContents[0].name;
                 formData.append('image', file);
+                formData.append("name", name);
                 axios
                     .post(this.uploadUrl, formData, {
                         responseType: 'json'
                     })
                     .then(response => {
                         let result = response.data;
+                        this.loading = false;
                         if (result.success) {
                             this.images = result.images;
                             this.fileContents.shift();
                             if (this.fileContents.length) {
+                                this.loading = true;
                                 this.sendSingleFile();
                             }
                         }
@@ -249,13 +265,11 @@
                     })
                     .catch(error => {
                         let data = error.response.data;
+                        this.loading = false;
                         if (data.errors.image.length) {
                             this.errors.push(data.errors.image[0]);
                         }
                     })
-                    .finally(() => {
-                        this.loading = false;
-                    });
             },
             // Получаем выбранное изображение.
             getImage (event) {
@@ -273,9 +287,15 @@
                 reader.onload = (function (inputFile, contents) {
                     return function(event) {
                         let content = event.target.result;
+                        let originalName = inputFile.name;
+                        let exploded = originalName.split(".");
+                        let name = originalName;
+                        if (exploded.length > 1) {
+                            name = exploded[0];
+                        }
                         contents.push({
                             file: inputFile,
-                            name: inputFile.name,
+                            name: name,
                             content: content
                         })
                     };
