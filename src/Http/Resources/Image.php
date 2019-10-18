@@ -27,6 +27,8 @@ class Image extends JsonResource
                 'filename' => $this->file_name,
             ]),
             'id' => $this->id,
+            'weight' => $this->weight,
+
             'name' => $this->name,
             'nameChanged' => $this->name,
             'nameInput' => false,
@@ -36,14 +38,6 @@ class Image extends JsonResource
                 'image' => $this->id,
             ]),
 
-            'weight' => $this->weight,
-            'weightChanged' => $this->weight,
-            'input' => false,
-            'weightUrl' => route('admin.vue.gallery.weight', [
-                'model' => $modelName,
-                'id' => $this->imageable_id,
-                'image' => $this->id,
-            ]),
             'delete' => route('admin.vue.gallery.delete', [
                 'model' => $modelName,
                 'id' => $this->imageable_id,

@@ -1,10 +1,11 @@
 <?php
 
-namespace PortedCheese\BaseSettings\Http\Controllers\Site;
+namespace PortedCheese\BaseSettings\Http\Controllers;
 
 use App\Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 use PortedCheese\BaseSettings\Http\Requests\ImagePostRequest;
 
@@ -104,46 +105,6 @@ class ImageController extends Controller
     }
 
     /**
-     * Пробуем изменить вес.
-     *
-     * @param Request $request
-     * @param $model
-     * @param $id
-     * @param $image
-     * @return array
-     */
-    public function weight(Request $request, $model, $id, $image) {
-        if (! ($request->has('changed') && is_numeric($request->get('changed')))) {
-            return [
-                'success' => FALSE,
-                'message' => "Вес не найден",
-            ];
-        }
-        if (!$modelClass = Image::getGalleryModel($model, $id)) {
-            return [
-                'success' => FALSE,
-                'message' => 'Model not found',
-            ];
-        }
-        try {
-            $imageObject = Image::query()
-                ->where("id", $image)
-                ->firstOrFail();
-        } catch (\Exception $e) {
-            return [
-                'success' => FALSE,
-                'message' => 'Image not found',
-            ];
-        }
-        $imageObject->weight = $request->get('changed');
-        $imageObject->save();
-        return [
-            'success' => TRUE,
-            'images' => Image::prepareImage($modelClass),
-        ];
-    }
-
-    /**
      * Изменить имя.
      *
      * @param Request $request
@@ -178,6 +139,46 @@ class ImageController extends Controller
         }
         $imageObject->name = $request->get('changed');
         $imageObject->save();
+        return [
+            'success' => TRUE,
+            'images' => Image::prepareImage($modelClass),
+        ];
+    }
+
+    /**
+     * Порядок картинок.
+     *
+     * @param Request $request
+     * @param $model
+     * @param $id
+     * @return array
+     */
+    public function updateOrder(Request $request, $model, $id)
+    {
+        Validator::make($request->all(), [
+            'images' => ['required', 'array'],
+        ])->validate();
+
+        $modelClass = Image::getGalleryModel($model, $id);
+        if (! $modelClass) {
+            return [
+                'success' => FALSE,
+                'message' => 'Model not found',
+            ];
+        }
+
+        $ids = $request->get("images");
+        foreach ($ids as $weight => $id) {
+            try {
+                $image = Image::find($id);
+                $image->weight = $weight;
+                $image->save();
+            }
+            catch (\Exception $exception) {
+                continue;
+            }
+        }
+
         return [
             'success' => TRUE,
             'images' => Image::prepareImage($modelClass),

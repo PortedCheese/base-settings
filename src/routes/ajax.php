@@ -13,20 +13,19 @@ Route::group([
         Route::group([
             'prefix' => "gallery",
             'as' => "admin.vue.gallery.",
-            'namespace' => "Site",
         ], function () {
             // Получить изображения.
             Route::get('/{model}/{id}', 'ImageController@get')
                 ->name('get');
             // Загрузка изображения.
-            Route::post('/{model}/{id}/create', 'ImageController@post')
+            Route::post('/{model}/{id}', 'ImageController@post')
                 ->name('post');
+            // Изменить порядок изображений.
+            Route::put("/{model}/{id}", "ImageController@updateOrder")
+                ->name("order");
             // Удаление изображения.
             Route::delete('/{model}/{id}/{image}/delete', 'ImageController@delete')
                 ->name('delete');
-            // Сменить вес изображения.
-            Route::post('/{model}/{id}/{image}/weight', 'ImageController@weight')
-                ->name('weight');
             // Сменить имя изображения.
             Route::post('/{model}/{id}/{image}/name', 'ImageController@name')
                 ->name('name');

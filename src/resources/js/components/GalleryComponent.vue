@@ -1,5 +1,12 @@
 <template>
     <div class="row">
+        <button class="btn btn-success position-fixed fixed-bottom mx-auto mb-3"
+                v-if="weightChanged"
+                @click="changeOrder"
+                :class="weightChanged ? 'animated bounceIn' : ''">
+            Сохранить порядок
+        </button>
+
         <div class="col-12">
             <div class="row h-150">
                 <div class="col-12">
@@ -52,88 +59,59 @@
         </div>
 
         <div class="col-12">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Изображение</th>
-                    <th>Имя</th>
-                    <th>Вес</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="image in images">
-                    <td>
-                        <img class="rounded float-left" :src="image.src" :alt="image.id">
-                    </td>
-                    <td width="20%">
-                        <div v-if="image.nameInput">
-                            <div class="input-group input-group">
-                                <input type="text"
-                                       class="form-control"
-                                       v-model="image.nameChanged">
-                                <div class="input-group-append">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Изображение</th>
+                        <th>Имя</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <draggable :list="images" group="images" tag="tbody" handle=".handle" @change="checkMove">
+                        <tr v-for="image in images" :key="image.id">
+                            <th>
+                                <i class="fa fa-align-justify handle cursor-move"></i>
+                            </th>
+                            <td>
+                                <img class="rounded float-left" :src="image.src" :alt="image.id">
+                            </td>
+                            <td width="40%">
+                                <div v-if="image.nameInput">
+                                    <div class="input-group input-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               v-model="image.nameChanged">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger"
+                                                    @click="image.nameInput = false">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                            <button class="btn btn-success"
+                                                    @click="changeName(image)">
+                                                <i class="far fa-check-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-secondary" v-else @click="image.nameInput = true">
+                                    {{ image.name }}
+                                </button>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
                                     <button class="btn btn-danger"
-                                            @click="image.nameInput = false">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                    <button class="btn btn-success"
-                                            @click="changeName(image)">
-                                        <i class="far fa-check-circle"></i>
+                                            :disabled="loading"
+                                            @click="deleteImage(image)">
+                                        Удалить
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline-secondary" v-else @click="image.nameInput = true">
-                            {{ image.name }}
-                        </button>
-                    </td>
-                    <td width="20%">
-                        <div v-if="image.input">
-                            <div class="input-group input-group">
-                                <input type="number"
-                                       min="0"
-                                       step="1"
-                                       class="form-control weight-changer"
-                                       v-model="image.weightChanged">
-                                <div class="input-group-append">
-                                    <button class="btn btn-danger"
-                                            @click="image.input = false">
-                                        <i class="fas fa-ban"></i>
-                                    </button>
-                                    <button class="btn btn-success"
-                                            @click="changeWeight(image)">
-                                        <i class="far fa-check-circle"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline-secondary" v-else @click="image.input = true">
-                            Вес <span class="badge badge-primary">{{ image.weight }}</span>
-                        </button>
-                    </td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <button class="btn btn-primary"
-                                    :disabled="loading || image.weight <= 1"
-                                    @click="upWeight(image)">
-                                <i class="fas fa-level-up-alt"></i>
-                            </button>
-                            <button class="btn btn-danger"
-                                    :disabled="loading"
-                                    @click="deleteImage(image)">
-                                Удалить
-                            </button>
-                            <button class="btn btn-primary"
-                                    :disabled="loading"
-                                    @click="downWeight(image)">
-                                <i class="fas fa-level-down-alt"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </draggable>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -141,9 +119,6 @@
 <style>
     .preview-image {
         width: 150px;
-    }
-    .weight-changer {
-        max-width: 75px;
     }
     #galleryInputFile .drop-zone-label,
     #galleryInputFile .custom-file-input,
@@ -163,8 +138,13 @@
 </style>
 
 <script>
+    import draggable from 'vuedraggable'
+
     export default {
-        props: ['getUrl', 'uploadUrl', 'csrfToken'],
+        components: {
+            draggable,
+        },
+        props: ['getUrl', 'uploadUrl'],
         data: function() {
             return {
                 fileContents: [],
@@ -174,41 +154,60 @@
                 error: false,
                 images: [],
                 iteration: 0,
+                weightChanged: false,
+            }
+        },
+
+        computed: {
+            orderData() {
+                let ids = [];
+                for (let item in this.images) {
+                    if (this.images.hasOwnProperty(item)) {
+                        ids.push(this.images[item].id);
+                    }
+                }
+                return ids;
             }
         },
 
         methods: {
-            downWeight (image) {
-                image.weightChanged++;
-                this.changeWeight(image);
+            // Восстановить переменные.
+            reset() {
+                this.loading = false;
+                this.weightChanged = false;
+                this.error = false;
+                this.errors = [];
+                this.iteration = 0;
             },
-            upWeight (image) {
-                image.weightChanged--;
-                this.changeWeight(image);
+            // Показать кнопку если порядок изменен.
+            checkMove() {
+                this.weightChanged = true;
             },
-            // Меняем на введенный вес.
-            changeWeight (image) {
-                image.input = false;
+            // Сохранить порядок.
+            changeOrder() {
                 this.loading = true;
-                this.message = "";
-                let formData = new FormData();
-                formData.append('changed', image.weightChanged);
                 axios
-                    .post(image.weightUrl, formData)
+                    .put(this.uploadUrl, {
+                        images: this.orderData,
+                    })
                     .then(response => {
-                        this.error = false;
                         let result = response.data;
                         if (result.success) {
                             this.images = result.images;
-                            this.message = 'Вес изменен';
                         }
                         else {
-                            this.message = result.message;
+                            this.errors.push(result.message);
+                        }
+                    })
+                    .catch(error => {
+                        let data = error.response.data;
+                        if (data.errors.image.length) {
+                            this.errors.push(data.errors.image[0]);
                         }
                     })
                     .finally(() => {
-                        this.loading = false;
-                    });
+                        this.reset();
+                    })
             },
             // Меняем имя.
             changeName (image) {
@@ -220,7 +219,6 @@
                 axios
                     .post(image.nameUrl, formData)
                     .then(response => {
-                        this.error = false;
                         let result = response.data;
                         if (result.success) {
                             this.images = result.images;
@@ -231,7 +229,7 @@
                         }
                     })
                     .finally(() => {
-                        this.loading = false;
+                        this.reset();
                     });
             },
             // Удаление изображения.
@@ -263,7 +261,7 @@
                                 }
                             })
                             .finally(() => {
-                                this.loading = false;
+                                this.reset();
                             });
                     }
                 });
@@ -274,6 +272,7 @@
                 this.errors = [];
                 this.sendSingleFile();
             },
+            // Отправка по одному файлу.
             sendSingleFile() {
                 this.loading = true;
                 let formData = new FormData();
@@ -287,7 +286,7 @@
                     })
                     .then(response => {
                         let result = response.data;
-                        this.loading = false;
+                        this.reset();
                         if (result.success) {
                             this.images = result.images;
                             this.fileContents.shift();
@@ -302,7 +301,7 @@
                     })
                     .catch(error => {
                         let data = error.response.data;
-                        this.loading = false;
+                        this.reset();
                         if (data.errors.image.length) {
                             this.errors.push(data.errors.image[0]);
                         }
@@ -318,7 +317,7 @@
                     }
                 }
             },
-
+            // Данные по изображению.
             selectImage (file) {
                 let reader = new FileReader();
                 reader.onload = (function (inputFile, contents) {
