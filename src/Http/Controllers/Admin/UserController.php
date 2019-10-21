@@ -8,7 +8,9 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class UserController extends Controller
 {
@@ -148,5 +150,25 @@ class UserController extends Controller
         $user->delete();
         return redirect()->back()
             ->with('success', 'Пользователь удален!');
+    }
+
+    /**
+     * Получить ссылку на вход.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getLoginLink(User $user)
+    {
+        $output = new BufferedOutput;
+
+        Artisan::call("generate:login-link", [
+            'email' => $user->email,
+            "--get" => true,
+        ], $output);
+
+        return redirect()
+            ->back()
+            ->with("success", $output->fetch());
     }
 }

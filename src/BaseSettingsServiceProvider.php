@@ -67,9 +67,11 @@ class BaseSettingsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BaseMakeCommand::class,
-                GenerateLoginLink::class,
             ]);
         }
+        $this->commands([
+            GenerateLoginLink::class,
+        ]);
 
         $this->app['validator']->extend('hidden_captcha', function ($attribute, $value) {
             return empty($value);

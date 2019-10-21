@@ -106,18 +106,38 @@
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </div>
+
+                                        @role("admin")
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" class="btn btn-warning" data-confirm="{{ "user-link-form-{$user->id}" }}">
+                                                    <i class="fas fa-link"></i>
+                                                </button>
+                                            </div>
+                                        @endrole
                                     </div>
                                     <confirm-form :id="'{{ "delete-form-{$user->id}" }}'">
                                         <template>
                                             <form action="{{ route('admin.users.destroy', ['user' => $user]) }}"
                                                   id="delete-form-{{ $user->id }}"
-                                                  class="btn-group"
                                                   method="post">
                                                 @csrf
-                                                <input type="hidden" name="_method" value="DELETE">
+                                                @method("delete")
                                             </form>
                                         </template>
                                     </confirm-form>
+                                    @role("admin")
+                                        <confirm-form :id="'{{ "user-link-form-{$user->id}" }}'"
+                                                      confirm-text="Сгенерировать!"
+                                                      text="Будет сгенерирована одноразовая ссылка на вход">
+                                            <template>
+                                                <form action="{{ route("admin.users.auth.get-login", ['user' => $user]) }}"
+                                                      id="user-link-form-{{ $user->id }}"
+                                                      method="post">
+                                                    @csrf
+                                                </form>
+                                            </template>
+                                        </confirm-form>
+                                    @endrole
                                 </td>
                             </tr>
                         @endforeach
