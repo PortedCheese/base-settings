@@ -6,6 +6,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
+use PortedCheese\BaseSettings\Models\LoginLink;
 
 class ProfileController extends Controller
 {
@@ -14,14 +16,17 @@ class ProfileController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('auth');
 
-        $this->middleware(function ($request, $next) {
-            $userId = Auth::user()->getAuthIdentifier();
-            $this->user = User::find($userId);
+        if (Route::currentRouteName() !== "profile.auth.email-authenticate") {
+            $this->middleware('auth');
 
-            return $next($request);
-        });
+            $this->middleware(function ($request, $next) {
+                $userId = Auth::user()->getAuthIdentifier();
+                $this->user = User::find($userId);
+
+                return $next($request);
+            });
+        }
     }
 
     /**
@@ -67,5 +72,21 @@ class ProfileController extends Controller
         $this->user->uploadAvatar($request);
 
         return redirect()->back()->with('success', 'Успешно обновлено');
+    }
+
+    public function authenticateEmail(string $token)
+    {
+        $user = LoginLink::validFromToken($token);
+
+        if ($user) {
+            Auth::login($user);
+            return redirect()
+                ->route("login");
+        }
+        else {
+            return redirect()
+                ->route("login")
+                ->with("danger", "Некорректный токен");
+        }
     }
 }

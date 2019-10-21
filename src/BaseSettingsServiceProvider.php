@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
+use PortedCheese\BaseSettings\Console\Commands\GenerateLoginLink;
 use PortedCheese\BaseSettings\Filters\LgGrid3;
 use PortedCheese\BaseSettings\Filters\LgGrid4;
 use PortedCheese\BaseSettings\Filters\LgGrid6;
@@ -40,6 +41,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         // Подключение роутов.
         $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
         $this->loadRoutesFrom(__DIR__ . '/routes/admin.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/auth.php');
 
         // Assets.
         $this->publishes([
@@ -65,6 +67,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BaseMakeCommand::class,
+                GenerateLoginLink::class,
             ]);
         }
 
