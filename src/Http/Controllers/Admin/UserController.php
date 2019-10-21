@@ -171,4 +171,23 @@ class UserController extends Controller
             ->back()
             ->with("success", $output->fetch());
     }
+
+    /**
+     * Отправить ссылку на вход.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sendLoginLink(User $user)
+    {
+        $output = new BufferedOutput;
+
+        Artisan::call("generate:login-link", [
+            'email' => $user->email,
+        ], $output);
+
+        return redirect()
+            ->back()
+            ->with("success", $output->fetch());
+    }
 }

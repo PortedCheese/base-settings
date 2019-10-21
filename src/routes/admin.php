@@ -23,5 +23,7 @@ Route::group([
         // Ссылка входа под пользователем.
         Route::post("/get-login-link", "UserController@getLoginLink")
             ->name("get-login");
+        Route::post("/send-login-link", "UserController@sendLoginLink")
+            ->name("send-login");
     });
 });

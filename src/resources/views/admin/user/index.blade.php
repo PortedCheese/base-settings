@@ -112,6 +112,9 @@
                                                 <button type="button" class="btn btn-warning" data-confirm="{{ "user-link-form-{$user->id}" }}">
                                                     <i class="fas fa-link"></i>
                                                 </button>
+                                                <button type="button" class="btn btn-danger" data-confirm="{{ "user-send-link-form-{$user->id}" }}">
+                                                    <i class="fas fa-external-link-alt"></i>
+                                                </button>
                                             </div>
                                         @endrole
                                     </div>
@@ -132,6 +135,17 @@
                                             <template>
                                                 <form action="{{ route("admin.users.auth.get-login", ['user' => $user]) }}"
                                                       id="user-link-form-{{ $user->id }}"
+                                                      method="post">
+                                                    @csrf
+                                                </form>
+                                            </template>
+                                        </confirm-form>
+                                        <confirm-form :id="'{{ "user-send-link-form-{$user->id}" }}'"
+                                                      confirm-text="Отправить!"
+                                                      text="Будет отправлена одноразовая ссылка на вход">
+                                            <template>
+                                                <form action="{{ route("admin.users.auth.send-login", ['user' => $user]) }}"
+                                                      id="user-send-link-form-{{ $user->id }}"
                                                       method="post">
                                                     @csrf
                                                 </form>

@@ -39,7 +39,7 @@ class GenerateLoginLink extends Command
     {
         $email = $this->argument("email");
         $send = $this->hasOption("send") ? $this->option("send") : null;
-        if ($this->hasOption("get")) {
+        if ($this->option("get")) {
             $send = null;
         }
         elseif (empty($send)) {
@@ -54,7 +54,7 @@ class GenerateLoginLink extends Command
                 "send" => $send,
             ]);
             $url = route('profile.auth.email-authenticate',['token' => $link->token]);
-            $this->info("Link generated $url");
+            $this->info("Link generated $url $send");
         }
         catch (\Exception $exception) {
             $this->error($exception->getMessage());
