@@ -207,6 +207,6 @@ class UserController extends Controller
         ], $output);
 
         return response()
-            ->json($output->fetch());
+            ->json("Ссылка отправлена");
     }
 }
