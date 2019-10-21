@@ -27,3 +27,13 @@ Route::group([
             ->name("send-login");
     });
 });
+
+Route::group([
+    'middleware' => ["auth:api", "role:admin"],
+    'prefix' => "api",
+    'namespace' => 'App\Http\Controllers\Admin',
+    "as" => "api.admin."
+], function () {
+    Route::get("/auth/{email}/send-link", "UserController@sendLoginLinkForCurrentUserTo")
+        ->name("get-current-link");
+});

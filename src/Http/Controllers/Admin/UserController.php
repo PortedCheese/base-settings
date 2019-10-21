@@ -190,4 +190,23 @@ class UserController extends Controller
             ->back()
             ->with("success", $output->fetch());
     }
+
+    /**
+     * Отправить ссылку на вход для текущего пользователя на конкретный e-mail.
+     *
+     * @param string $email
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendLoginLinkForCurrentUserTo(string $email)
+    {
+        $output = new BufferedOutput;
+
+        Artisan::call("generate:login-link", [
+            'email' => Auth::user()->email,
+            '--send' => $email,
+        ], $output);
+
+        return response()
+            ->json($output->fetch());
+    }
 }
