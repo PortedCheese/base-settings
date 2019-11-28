@@ -48,16 +48,18 @@
     }
   }
 
-  .states {
-    position: absolute;
+  .card-footer {
+    border: none;
+  }
+}
+
+.states {
+  position: absolute;
+  &.left {
     .badge {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
-  }
-
-  .card-footer {
-    border: none;
   }
 }
 

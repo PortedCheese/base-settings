@@ -38,7 +38,7 @@ class GenerateLoginLink extends Command
     public function handle()
     {
         $email = $this->argument("email");
-        $send = $this->hasOption("send") ? $this->option("send") : null;
+        $send = $this->option("send");
         if ($this->option("get")) {
             $send = null;
         }
