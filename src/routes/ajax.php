@@ -30,5 +30,8 @@ Route::group([
             Route::post('/{model}/{id}/{image}/name', 'ImageController@name')
                 ->name('name');
         });
+        // Роуты для приоритета.
+        Route::put("priority/{table}/{field}", "Admin\SettingsController@changePriority")
+            ->name("admin.vue.priority");
     });
 });

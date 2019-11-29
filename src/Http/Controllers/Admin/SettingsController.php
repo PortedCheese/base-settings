@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use PortedCheese\BaseSettings\Http\Requests\SettingsStoreRequest;
 use PortedCheese\BaseSettings\Http\Requests\SettingsUpdateRequest;
@@ -154,5 +156,45 @@ class SettingsController extends Controller
         return redirect()
             ->back()
             ->with("success", $token);
+    }
+
+    /**
+     * Изменить приоритет.
+     *
+     * @param Request $request
+     * @param string $table
+     * @param string $field
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePriority(Request $request, string $table, string $field)
+    {
+        if (!Schema::hasTable($table)) {
+            return response()
+                ->json([
+                    'success' => false,
+                    "message" => "Таблица не найдена",
+                ]);
+        }
+        if (! Schema::hasColumn($table, $field) || ! Schema::hasColumn($table, "id")) {
+            return response()
+                ->json([
+                    'success' => false,
+                    "message" => "Поле не найдено",
+                ]);
+        }
+        Validator::make($request->all(), [
+            "items" => ["required", "array"]
+        ])->validate();
+        $items = $request->get("items");
+        foreach ($items as $priority => $id) {
+            DB::table($table)
+                ->where("id", $id)
+                ->update(["$field" => $priority]);
+        }
+        return response()
+            ->json([
+                "success" => true,
+                "message" => "Success",
+            ]);
     }
 }

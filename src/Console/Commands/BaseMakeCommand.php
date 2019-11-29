@@ -73,6 +73,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
             'confirm-delete-model-button' => "ConfirmDeleteModelButtonComponent",
             'gallery' => "GalleryComponent",
             'confirm-form' => "ConfirmForm",
+            'universal-priority' => "UniversalPriorityComponent",
         ],
         'app' => [],
     ];
