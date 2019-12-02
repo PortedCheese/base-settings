@@ -2,8 +2,6 @@
 
 namespace PortedCheese\BaseSettings;
 
-use App\Menu;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +15,9 @@ use PortedCheese\BaseSettings\Filters\MdGrid4;
 use PortedCheese\BaseSettings\Filters\MdGrid6;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
-use PortedCheese\BaseSettings\Http\Helpers\DateHelper;
-use PortedCheese\BaseSettings\Http\Helpers\ReCaptcha;
-use PortedCheese\BaseSettings\Http\Helpers\SiteConfig;
+use PortedCheese\BaseSettings\Helpers\DateHelper;
+use PortedCheese\BaseSettings\Helpers\ReCaptcha;
+use PortedCheese\BaseSettings\Helpers\SiteConfig;
 use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
 
 class BaseSettingsServiceProvider extends ServiceProvider
@@ -160,12 +158,12 @@ class BaseSettingsServiceProvider extends ServiceProvider
      */
     private function bladeComponents()
     {
-        // TODO: change to include.
-        Blade::component("base-settings::components.image", 'image');
-        Blade::component("base-settings::components.picture", 'picture');
-        Blade::component("base-settings::components.gallery", 'gallery');
-        Blade::component("base-settings::components.hidden-captcha", "hCaptcha");
         Blade::component("base-settings::components.google-captcha", "gCaptcha");
+        Blade::component("base-settings::components.hidden-captcha", "hCaptcha");
+
+        Blade::component("base-settings::components.picture", 'picture');
+        Blade::component("base-settings::components.image", 'image');
+        Blade::component("base-settings::components.gallery", 'gallery');
     }
 
     /**
@@ -175,5 +173,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         Blade::include("base-settings::includes.google-captcha-v2", "googleCaptcha2");
         Blade::include("base-settings::includes.hidden-captcha", "hiddenCaptcha");
+
+        Blade::include("base-settings::components.picture", "pic");
+        Blade::include("base-settings::components.image", "img");
+        Blade::include("base-settings::components.gallery", "images");
     }
 }

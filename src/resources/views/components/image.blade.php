@@ -1,19 +1,14 @@
 <figure class="figure">
     @php($imgClass = empty($imgClass) ? "img-thumbnail" : $imgClass)
     <a href="{{ route('imagecache', ['template' => 'original', 'filename' => $image->file_name]) }}"
-       @empty($lightbox)
-       data-lightbox="image-{{ $image->id }}"
-       @endempty
-       @isset($lightbox)
-       data-lightbox="{{ $lightbox }}"
-       @endisset>
+       data-lightbox="{{ ! empty($lightbox) ? $lightbox : "image-{$image->id}" }}">
         @if(! empty($grid))
-            @picture([
+            @pic([
                 'image' => $image,
                 'template' => $template,
                 'grid' => $grid,
                 'imgClass' => $imgClass,
-            ])@endpicture
+            ])
         @else
             <img src="{{ route('imagecache', [
                         'template' => $template,

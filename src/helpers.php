@@ -8,12 +8,12 @@ if (!function_exists('siteconf')) {
      */
     function siteconf()
     {
-        return app(\PortedCheese\BaseSettings\Http\Helpers\SiteConfig::class);
+        return app(\PortedCheese\BaseSettings\Helpers\SiteConfig::class);
     }
 }
 
 if (!function_exists('datehelper')) {
     function datehelper() {
-        return app(\PortedCheese\BaseSettings\Http\Helpers\DateHelper::class);
+        return app(\PortedCheese\BaseSettings\Helpers\DateHelper::class);
     }
 }

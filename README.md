@@ -2,7 +2,9 @@
 
 Набор классов, представлений и компонентов для разворачивания базового сайта.
 
-### Установка
+Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.
+
+## Установка
 
 Выгрузить компоненты VueJs, стили и скрипт.
 
@@ -24,8 +26,6 @@
                                    {--vue : Export vue files}
                                    {--js : Export js files}
 
-Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.
-
 `@googleCaptcha2` - Google ReCaptcha для форм, `google_captcha` - правило валидации
 
 `@hiddenCaptcha` - Скрытая капча, `hidden_captcha` - валидация
@@ -36,3 +36,40 @@
     {->forFilter(date, date to condition = false)}
     {->changeTz(date)}
     {->format(date, format = "d.m.Y H:i")
+    
+### Includes
+Вывод тега `picture`:
+
+    @pic([
+        "image" => (object) ["file_name" => "example.jpg", "name" => "example"],
+        "template" => "small",
+        "grid" => [
+            "example-grid" => 768,
+        ],
+        "imgClass" => "example-class",
+    ])
+
+Вывод изображения с `lightbox`:
+
+    @img([
+        "image" => (object) ["file_name" => "example.jpg", "name" => "example", "id" => "unique"], (id требуется если lightbox не указан)
+        "template" => "small",
+        "lightbox" => "lightGroupExample",
+        "imgClass" => "example-class",
+        "grid" => [
+            "example-grid" => 768,
+        ],
+    ])
+    
+Вывод галереии с `lightbox`:
+    
+    @images([
+        "gallery" => [(object) ..., (object) ...],
+        "lightbox" => "lightExampleGroup",
+        "template" => "sm-grid-6",
+        "grid" => [
+            "lg-grid-3" => 992,
+            "md-grid-6" => 768,
+        ],
+        "imgClass" => "img-fluid",
+    ])

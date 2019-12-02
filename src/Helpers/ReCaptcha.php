@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vladimirpeskov
- * Date: 2019-07-02
- * Time: 13:15
- */
 
-namespace PortedCheese\BaseSettings\Http\Helpers;
+namespace PortedCheese\BaseSettings\Helpers;
 
 use GuzzleHttp\Client;
 

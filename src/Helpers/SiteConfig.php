@@ -1,6 +1,6 @@
 <?php
 
-namespace PortedCheese\BaseSettings\Http\Helpers;
+namespace PortedCheese\BaseSettings\Helpers;
 
 use PortedCheese\BaseSettings\Models\SiteConfig as ConfigModel;
 

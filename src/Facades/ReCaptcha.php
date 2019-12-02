@@ -2,19 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: vladimirpeskov
- * Date: 2019-06-28
- * Time: 09:51
+ * Date: 2019-07-02
+ * Time: 13:15
  */
 
-namespace PortedCheese\BaseSettings\Http\Facades;
-
+namespace PortedCheese\BaseSettings\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class DateHelper extends Facade
+class ReCaptcha extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "datehelper";
+        return "geocaptcha";
     }
 }
