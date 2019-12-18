@@ -14,7 +14,12 @@
                         v-for="element in list"
                         :key="element.name">
                     <i class="fa fa-align-justify handle cursor-move mr-2"></i>
-                    {{ element.name }}
+                    <a :href="element.url" v-if="element.url">
+                        {{ element.name }}
+                    </a>
+                    <span v-else>
+                        {{ element.name }}
+                    </span>
                 </div>
             </draggable>
         </div>
