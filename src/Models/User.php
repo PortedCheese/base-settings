@@ -30,6 +30,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'middle_name',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -45,12 +54,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
         static::creating(function($model) {
             if (
-                !empty(Auth::user()) &&
+                ! empty(Auth::user()) &&
                 Auth::user()->hasRole('admin')
             ) {
                 $model->email_verified_at = Carbon::now();
             }
-            if (!empty(app('request')->getClientIp())) {
+            if (! empty(app('request')->getClientIp())) {
                 $model->creator_address = app('request')->getClientIp();
             }
         });
@@ -59,15 +68,6 @@ class User extends Authenticatable implements MustVerifyEmail
             event(new UserUpdate($model));
         });
     }
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 
     /**
      * У пользователя один аватар.

@@ -44,15 +44,6 @@ class Image extends Model {
     }
 
     /**
-     * У пользователя есть аватар.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function user() {
-        return $this->hasOne('App\User', 'avatar_id');
-    }
-
-    /**
      * Получить путь к файлу для вывода.
      *
      * @return mixed
@@ -61,6 +52,11 @@ class Image extends Model {
         return Storage::url($this->path);
     }
 
+    /**
+     * Имя файла.
+     *
+     * @return mixed
+     */
     public function getFileNameAttribute() {
         $exploded = explode('/', $this->path);
         return $exploded[count($exploded) - 1];
@@ -149,7 +145,7 @@ class Image extends Model {
     }
 
     /**
-     * Elfляем все кэши размеров у картинки.
+     * Удаляем все кэши размеров у картинки.
      */
     public function cacheClear() {
         $path = $this->image_path;
