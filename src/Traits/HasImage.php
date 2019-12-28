@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 trait HasImage
 {
-    protected static function boot()
-    {
-        parent::boot();
-        static::imageBoot();
-    }
-
     protected static function imageBoot()
     {
         static::deleting(function($model) {

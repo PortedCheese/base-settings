@@ -6,12 +6,6 @@ use Illuminate\Support\Str;
 
 trait HasSlug
 {
-    protected static function boot()
-    {
-        parent::boot();
-        self::slugBoot();
-    }
-
     protected static function slugBoot()
     {
         static::creating(function($model) {
