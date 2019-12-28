@@ -23,6 +23,16 @@ trait HasImage
         });
     }
 
+    protected function getImageKey()
+    {
+        if ($this->imageKey) {
+            return $this->imageKey;
+        }
+        else {
+            return "image_id";
+        }
+    }
+
     /**
      * Основное изображение.
      *
@@ -30,7 +40,7 @@ trait HasImage
      */
     public function image()
     {
-        return $this->belongsTo(Image::class, 'image_id');
+        return $this->belongsTo(Image::class, $this->getImageKey());
     }
 
     /**
