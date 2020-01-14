@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('paper/css/paper-dashboard.css') }}">
 
