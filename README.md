@@ -73,3 +73,8 @@
         ],
         "imgClass" => "img-fluid",
     ])
+    
+### Versions
+
+    v1.4.2:
+    - Изменение css в paper layout на admin.css
