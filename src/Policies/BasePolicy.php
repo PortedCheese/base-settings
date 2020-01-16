@@ -2,35 +2,22 @@
 
 namespace PortedCheese\BaseSettings\Policies;
 
-use App\RoleRule;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use PortedCheese\BaseSettings\Traits\InitPolicy;
 
 class BasePolicy
 {
     use HandlesAuthorization;
+    use InitPolicy {
+        InitPolicy::__construct as private __ipoConstruct;
+    }
 
     const SITE_MANAGEMENT = 2;
 
-    protected $model;
-
     public function __construct()
     {
-        try {
-            $this->model = RoleRule::query()
-                ->where("policy", "LIKE", "%BasePolicy")
-                ->firstOrFail();
-        }
-        catch (\Exception $exception) {
-            $this->model = null;
-        }
-    }
-
-    public function before($user, $ability)
-    {
-        if (! $this->model) {
-            return false;
-        }
+        $this->__ipoConstruct("BasePolicy");
     }
 
     /**
