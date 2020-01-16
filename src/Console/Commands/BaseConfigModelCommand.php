@@ -343,6 +343,9 @@ class BaseConfigModelCommand extends Command
             }
 
             try {
+                if (! is_dir($directory = app_path('Policies'))) {
+                    mkdir($directory, 0755, true);
+                }
                 file_put_contents(
                     app_path("Policies/$policy.php"),
                     $this->compilePolicyStub($policy)
