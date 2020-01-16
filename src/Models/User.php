@@ -281,6 +281,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isEditorUser()
     {
-        return $this->hasRole("editor");
+        return $this->hasRole("editor") || $this->hasRole("admin");
     }
 }

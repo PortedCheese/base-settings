@@ -20,7 +20,7 @@ class EditorUser
         }
         $user = $request->user();
         // Доступ для редактора или админа.
-        if (! $user->isEditorUser() || ! $user->isSuperUser()) {
+        if (! $user->isEditorUser()) {
             abort(403, trans('Forbidden.'));
         }
         return $next($request);
