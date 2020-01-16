@@ -106,6 +106,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         });
 
         Gate::define("site-management", "App\Policies\BasePolicy@siteManagement");
+        Gate::define("settings-management", "App\Policies\BasePolicy@settingsManagement");
     }
 
     /**

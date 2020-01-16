@@ -24,16 +24,16 @@
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            @role('admin|editor')
+            @can('site-management')
                 <a href="{{ route('admin') }}" class="dropdown-item">
                     Dashboard
                 </a>
-            @endrole
-            @role('admin')
+            @endcan
+            @can('settings-management')
                 <a class="dropdown-item" target="_blank" href="{{ route('admin.logs') }}">
                     Логи
                 </a>
-            @endrole
+            @endcan
             <a class="dropdown-item"
                href="{{ route('profile.show') }}">
                 Профиль

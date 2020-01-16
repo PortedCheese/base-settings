@@ -33,6 +33,11 @@ class BasePolicy
         }
     }
 
+    /**
+     * Получить список доступов.
+     *
+     * @return array
+     */
     public static function getPermissions()
     {
         return [
@@ -40,8 +45,25 @@ class BasePolicy
         ];
     }
 
+    /**
+     * Управление сайтом.
+     *
+     * @param User $user
+     * @return bool
+     */
     public function siteManagement(User $user)
     {
         return $user->hasPermission($this->model, self::SITE_MANAGEMENT);
+    }
+
+    /**
+     * Управление настройками.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function settingsManagement(User $user)
+    {
+        return $user->isSuperUser();
     }
 }

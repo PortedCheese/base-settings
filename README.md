@@ -87,6 +87,7 @@
         - доблены Gates:
             - site-management: право доступа к админке.
             - пропуск админов во все
+            - settings-management: открыто для админа
         - Права доступа на редактирование пользователей
     Обновление:
         - php artisan make:base-settings --models --controllers --policies
