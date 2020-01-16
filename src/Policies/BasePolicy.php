@@ -33,6 +33,16 @@ class BasePolicy
     }
 
     /**
+     * Стандартные права.
+     *
+     * @return int
+     */
+    public static function defaultRules()
+    {
+        return self::SITE_MANAGEMENT;
+    }
+
+    /**
      * Управление сайтом.
      *
      * @param User $user

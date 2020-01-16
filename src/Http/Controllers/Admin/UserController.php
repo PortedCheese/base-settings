@@ -71,7 +71,6 @@ class UserController extends Controller
      */
     public function create()
     {
-
         return view('base-settings::admin.user.create', [
             'roles' => Role::getForAdmin(),
         ]);
