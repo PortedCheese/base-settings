@@ -19,7 +19,7 @@ class EditorUser
             return redirect('login');
         }
         $user = $request->user();
-        if (! $user->isEditorUser()) {
+        if (! $user->isEditorUser() || ! $user->isSuperUser()) {
             abort(403, trans('Forbidden.'));
         }
         return $next($request);

@@ -110,7 +110,7 @@
         - php artisan migrate
         - php artisan make:base-settings --models --controllers --policies
         - изменить в роутере для админки ограничение по ролям и поставить management
-        - добавить ограничения на редактирование пользователей (поставить editor middleware)
+        - добавить ограничения на редактирование пользователей (поставить "editor" middleware)
     
     v1.4.2:
         - Изменение css в paper layout на admin.css
