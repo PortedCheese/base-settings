@@ -22,6 +22,7 @@
                                    {--models : Export models}
                                    {--filters : Export filters}
                                    {--controllers : Export controllers}
+                                   {--policies : Export and create rules}
                                    {--config : Make config}
                                    {--vue : Export vue files}
                                    {--js : Export js files}
@@ -37,7 +38,20 @@
     {->changeTz(date)}
     {->format(date, format = "d.m.Y H:i")
     
+### Middleware
+
+- management: доступ в административную часть сайта.
+- super: пропускает админа
+- editor: пропускает редактора
+
+### Gates
+
+- пользователи с ролью admin имею доступ ко всему
+- site-management: право доступа к админке.
+- settings-management: открыто для админа
+
 ### Includes
+
 Вывод тега `picture`:
 
     @pic([
