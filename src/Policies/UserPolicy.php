@@ -23,6 +23,11 @@ class UserPolicy
         $this->__ipoConstruct("UserPolicy");
     }
 
+    /**
+     * Получить права доступа.
+     *
+     * @return array
+     */
     public static function getPermissions()
     {
         return [
@@ -31,6 +36,16 @@ class UserPolicy
             self::UPDATE => "Обновление",
             self::DELETE => "Удаление",
         ];
+    }
+
+    /**
+     * Стандартные права.
+     *
+     * @return int
+     */
+    public static function defaultRules()
+    {
+        return self::VIEW_ALL + self::CREATE + self::UPDATE + self::DELETE;
     }
 
     /**
@@ -52,7 +67,6 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        debugbar()->info($this->model);
         return $user->hasPermission($this->model, self::CREATE);
     }
 

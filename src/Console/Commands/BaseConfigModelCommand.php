@@ -2,6 +2,7 @@
 
 namespace PortedCheese\BaseSettings\Console\Commands;
 
+use App\Role;
 use App\RoleRule;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
@@ -304,6 +305,9 @@ class BaseConfigModelCommand extends Command
      */
     protected function makeRules()
     {
+        $editorRole = Role::query()
+            ->where("name", "editor")
+            ->first();
         foreach ($this->ruleRules as $rule) {
             if (empty($rule['title']) || empty($rule['slug']) || empty($rule['policy'])) {
                 $this->error("Не хватает параметров");
@@ -311,11 +315,11 @@ class BaseConfigModelCommand extends Command
             }
             $policy = $rule['policy'];
 
-            $modelCount = RoleRule::query()
+            $model = RoleRule::query()
                 ->where("slug", $rule['slug'])
-                ->count();
+                ->first();
 
-            if (! $modelCount) {
+            if (! $model) {
                 try {
                     $model = RoleRule::create([
                         "title" => $rule['title'],
@@ -329,11 +333,15 @@ class BaseConfigModelCommand extends Command
                 }
             }
 
+            $class = "App\Policies\\" . $policy;
+
             if (file_exists(app_path("Policies/$policy.php"))) {
                 if (! $this->confirm("The [{$policy}.php] policy already exists. Do you want to replace it?")) {
+                    $this->setDefaultPermissions($class, $editorRole, $model);
                     continue;
                 }
             }
+
             try {
                 file_put_contents(
                     app_path("Policies/$policy.php"),
@@ -345,6 +353,53 @@ class BaseConfigModelCommand extends Command
             catch (\Exception $e) {
                 $this->error("Failed put policy");
             }
+
+            $this->setDefaultPermissions($class, $editorRole, $model);
+        }
+    }
+
+    /**
+     * Задать права по умолчанию.
+     *
+     * @param $class
+     * @param $role
+     * @param $rule
+     */
+    protected function setDefaultPermissions($class, $role, $rule)
+    {
+        $this->info(method_exists($class, "defaultRules") ? "exist" : "no");
+        try {
+            if (
+                $role &&
+                $rule &&
+                method_exists($class, "defaultRules") &&
+                $this->confirm("Set default permissions for editor by $class?") &&
+                is_numeric($class::defaultRules())
+            ) {
+                $exist = false;
+                $rights = $class::defaultRules();
+                foreach ($role->rules as $item) {
+                    if ($item->slug == $rule->slug) {
+                        $exist = true;
+                        break;
+                    }
+                }
+                if (! $exist) {
+                    $role->rules()->save($rule, [
+                        'rights' => $rights,
+                    ]);
+                    $this->info("Rules created");
+                }
+                else {
+                    $role->rules()->updateExistingPivot($rule->id, [
+                        'rights' => $rights,
+                    ]);
+                    $this->info("Rules updated");
+                }
+            }
+        }
+        catch (\Exception $exception) {
+            $this->error("Fail while creating default rules");
         }
     }
 
