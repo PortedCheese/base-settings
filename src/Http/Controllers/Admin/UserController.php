@@ -14,6 +14,12 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->authorizeResource(User::class, "user");
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -65,6 +71,7 @@ class UserController extends Controller
      */
     public function create()
     {
+
         return view('base-settings::admin.user.create', [
             'roles' => Role::getForAdmin(),
         ]);

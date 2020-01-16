@@ -12,6 +12,13 @@
         <i class="fas fa-cogs"></i> Настройки
     </a>
 </li>
+
+<li class="nav-item">
+    <a href="{{ route("admin.roles.index") }}"
+       class="nav-link{{ strstr($currentRoute, "admin.roles") !== false ? ' active' : "" }}">
+        <i class="fas fa-project-diagram"></i> Роли
+    </a>
+</li>
 @endrole
 
 @includeIf('admin-site-menu::layouts.index', ['menu' => $adminMenu])

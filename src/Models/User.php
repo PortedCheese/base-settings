@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PortedCheese\BaseSettings\Events\UserUpdate;
@@ -228,5 +229,58 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->base_token = $token;
         $this->save();
         return $token;
+    }
+
+    /**
+     * Проверить право доступа.
+     *
+     * @param \App\RoleRule $rule
+     * @param $permission
+     * @return bool
+     */
+    public function hasPermission(\App\RoleRule $rule, $permission)
+    {
+        $roles = $this
+            ->roles()
+            ->select("id")
+            ->get();
+        $roleIds = [];
+        foreach ($roles as $role) {
+            $roleIds[] = $role->id;
+        }
+        $rules = DB::table("role_role_rule")
+            ->select("rights")
+            ->where("role_rule_id", $rule->id)
+            ->whereIn("role_id", $roleIds)
+            ->get();
+        $condition = false;
+        foreach ($rules as $item) {
+            $rights = $item->rights;
+            if ($rights & $permission) {
+                $condition = true;
+                break;
+            }
+        }
+        return $condition;
+    }
+
+    /**
+     * Пользователь с доступом ко всему.
+     *
+     * @return bool
+     */
+    public function isSuperUser()
+    {
+        return $this->hasRole("admin");
+    }
+
+    /**
+     * Пользователь с доступом к основному редактированию.
+     *
+     * @return bool
+     */
+    public function isEditorUser()
+    {
+        return $this->hasRole("editor");
     }
 }

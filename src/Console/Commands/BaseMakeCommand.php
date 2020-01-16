@@ -17,6 +17,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
                     {--models : Export models}
                     {--filters : Export filters}
                     {--controllers : Export controllers}
+                    {--policies : Export and create rules}
                     {--config : Make config}
                     {--vue : Export vue files}
                     {--js : Export js files}';
@@ -35,7 +36,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $models = [
-        'Role', 'Image', 'User',
+        'Role', 'Image', 'User', "RoleRule",
     ];
 
     /**
@@ -64,7 +65,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
     ];
 
     protected $controllers = [
-        'Admin' => ['UserController', "SettingsController"],
+        'Admin' => ['UserController', "SettingsController", "RoleController", "RuleController"],
         'Site' => ['ProfileController'],
     ];
 
@@ -93,6 +94,19 @@ class BaseMakeCommand extends BaseConfigModelCommand
         "recaptchaSiteKey" => "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
         "recaptchaSecretKey" => "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",
         "frontendDate" => "",
+    ];
+
+    protected $ruleRules = [
+        [
+            "title" => "Базовые права",
+            "slug" => "base",
+            "policy" => "BasePolicy",
+        ],
+        [
+            "title" => "Управление пользователями",
+            "slug" => "user",
+            "policy" => "UserPolicy",
+        ]
     ];
 
     /**
@@ -146,6 +160,10 @@ class BaseMakeCommand extends BaseConfigModelCommand
 
         if ($this->option("config") || $all) {
             $this->makeConfig();
+        }
+
+        if ($this->option("policies") || $all) {
+            $this->makeRules();
         }
     }
 

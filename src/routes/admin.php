@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 // Админка.
 Route::group([
     'prefix' => "admin",
-    'middleware' => ['web', 'role:admin'],
+    'middleware' => ['web', 'super'],
     'namespace' => 'App\Http\Controllers\Admin',
     "as" => "admin."
 ], function () {
@@ -26,10 +26,22 @@ Route::group([
         Route::post("/send-login-link", "UserController@sendLoginLink")
             ->name("send-login");
     });
+    // Роли.
+    Route::resource("roles", "RoleController");
+    // Права доступа.
+    Route::group([
+        "prefix" => "roles/{role}/rules/{rule}",
+        "as" => "roles.rules."
+    ], function () {
+        Route::get("/", "RuleController@show")
+            ->name("show");
+        Route::put("/", "RuleController@update")
+            ->name("update");
+    });
 });
 
 Route::group([
-    'middleware' => ["auth:api", "role:admin"],
+    'middleware' => ["auth:api", "super"],
     'prefix' => "api",
     'namespace' => 'App\Http\Controllers\Admin',
     "as" => "api.admin."

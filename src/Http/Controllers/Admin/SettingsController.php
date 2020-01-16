@@ -17,6 +17,13 @@ use PortedCheese\BaseSettings\Models\SiteConfig;
 
 class SettingsController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+
+    }
+
     /**
      * Список настроек.
      *

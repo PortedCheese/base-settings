@@ -4,6 +4,7 @@ namespace PortedCheese\BaseSettings;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
@@ -19,6 +20,9 @@ use PortedCheese\BaseSettings\Helpers\DateHelper;
 use PortedCheese\BaseSettings\Helpers\ReCaptcha;
 use PortedCheese\BaseSettings\Helpers\SiteConfig;
 use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
+use PortedCheese\BaseSettings\Http\Middleware\EditorUser;
+use PortedCheese\BaseSettings\Http\Middleware\Management;
+use PortedCheese\BaseSettings\Http\Middleware\SuperUser;
 
 class BaseSettingsServiceProvider extends ServiceProvider
 {
@@ -27,14 +31,13 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         setlocale(LC_ALL, 'ru_RU.UTF-8');
 
+        $this->setGates();
         $this->hasRoleBlade();
         $this->extendViews();
         $this->bladeComponents();
         $this->bladeIncludes();
         $this->extendImages();
-
-        // Задать middleware.
-        $this->app['router']->aliasMiddleware('role', CheckRole::class);
+        $this->setMiddleware();
 
         // Подключение роутов.
         $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
@@ -50,7 +53,6 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         // Config.
         $this->publishes([
-            // TODO: add config for package variables.
             __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
             __DIR__ . '/config/theme.php' => config_path('theme.php'),
         ], 'config');
@@ -90,6 +92,31 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->app->singleton('geocaptcha', function ($app) {
             return new ReCaptcha();
         });
+    }
+
+    /**
+     * Задать доступы.
+     */
+    private function setGates()
+    {
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole("admin")) {
+                return true;
+            }
+        });
+
+        Gate::define("site-management", "App\Policies\BasePolicy@siteManagement");
+    }
+
+    /**
+     * Задать middleware.
+     */
+    private function setMiddleware()
+    {
+        $this->app['router']->aliasMiddleware('role', CheckRole::class);
+        $this->app['router']->aliasMiddleware('management', Management::class);
+        $this->app['router']->aliasMiddleware('super', SuperUser::class);
+        $this->app['router']->aliasMiddleware('editor', EditorUser::class);
     }
 
     /**

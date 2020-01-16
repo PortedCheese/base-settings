@@ -2,6 +2,7 @@
 
 namespace PortedCheese\BaseSettings\Console\Commands;
 
+use App\RoleRule;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 
@@ -83,6 +84,13 @@ class BaseConfigModelCommand extends Command
      * @var array
      */
     protected $jsIncludes = [];
+
+    /**
+     * Права доступа.
+     *
+     * @var array
+     */
+    protected $ruleRules = [];
 
     /**
      * Create a new command instance.
@@ -289,5 +297,69 @@ class BaseConfigModelCommand extends Command
      */
     protected function getAppNamespace() {
         return Container::getInstance()->getNamespace();
+    }
+
+    /**
+     * Создать политики.
+     */
+    protected function makeRules()
+    {
+        foreach ($this->ruleRules as $rule) {
+            if (empty($rule['title']) || empty($rule['slug']) || empty($rule['policy'])) {
+                $this->error("Не хватает параметров");
+                continue;
+            }
+            $policy = $rule['policy'];
+
+            $modelCount = RoleRule::query()
+                ->where("slug", $rule['slug'])
+                ->count();
+
+            if (! $modelCount) {
+                try {
+                    $model = RoleRule::create([
+                        "title" => $rule['title'],
+                        "slug" => $rule["slug"],
+                        "policy" => $policy,
+                    ]);
+                    $this->info("Model RoleRule  generated ({$model->title} {$model->id})");
+                }
+                catch (\Exception $exception) {
+                    $this->error("Failed to create a RoleRule model");
+                }
+            }
+
+            if (file_exists(app_path("Policies/$policy.php"))) {
+                if (! $this->confirm("The [{$policy}.php] policy already exists. Do you want to replace it?")) {
+                    continue;
+                }
+            }
+            try {
+                file_put_contents(
+                    app_path("Policies/$policy.php"),
+                    $this->compilePolicyStub($policy)
+                );
+
+                $this->info("Policy [{$policy}] generated successfully.");
+            }
+            catch (\Exception $e) {
+                $this->error("Failed put policy");
+            }
+        }
+    }
+
+    /**
+     * Replace namespace in policy.
+     *
+     * @param $policy
+     * @return mixed
+     */
+    protected function compilePolicyStub($policy)
+    {
+        return str_replace(
+            ['{{namespace}}', "{{policy}}", "{{pkgName}}"],
+            [$this->namespace, $policy, $this->packageName],
+            file_get_contents(__DIR__ . "/stubs/make/policies/StubPolicy.stub")
+        );
     }
 }
