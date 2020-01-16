@@ -105,9 +105,11 @@
             - settings-management: открыто для админа
         - Права доступа на редактирование пользователей
     Обновление:
+        - php artisan migrate
         - php artisan make:base-settings --models --controllers --policies
         - изменить в роутере для админки ограничение по ролям и поставить management
         - добавить ограничения на редактирование пользователей (поставить editor middleware)
     
     v1.4.2:
         - Изменение css в paper layout на admin.css
+        - в webpack.mix.js добавить .sass('resources/sass/admin.scss', 'public/css')
