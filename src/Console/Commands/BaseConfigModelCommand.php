@@ -370,7 +370,6 @@ class BaseConfigModelCommand extends Command
      */
     protected function setDefaultPermissions($class, $role, $rule)
     {
-        $this->info(method_exists($class, "defaultRules") ? "exist" : "no");
         try {
             if (
                 $role &&

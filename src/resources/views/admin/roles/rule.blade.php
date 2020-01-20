@@ -5,13 +5,9 @@
 @section('header-title', "Просмотр {$role->title} - {$rule->title}")
 
 @section('admin')
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                @include("base-settings::admin.roles.pills", ['role' => $role, "rule" => $rule])
-            </div>
-        </div>
+    @include("base-settings::admin.roles.pills", ['role' => $role, "rule" => $rule])
 
+    <div class="col-md-9 col-12">
         <div class="card">
             <div class="card-body">
                 <form action="{{ route("admin.roles.rules.update", ['role' => $role, "rule" => $rule]) }}" method="post">
