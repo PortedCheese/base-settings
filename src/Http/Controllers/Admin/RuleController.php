@@ -73,6 +73,7 @@ class RuleController extends Controller
                 'rights' => $rights,
             ]);
         }
+        $rule->forgetCacheByRole($role->id);
         return redirect()
             ->back()
             ->with('success', 'Обновлено');

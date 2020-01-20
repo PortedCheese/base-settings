@@ -3,6 +3,7 @@
 namespace PortedCheese\BaseSettings\Traits;
 
 use App\RoleRule;
+use Illuminate\Support\Facades\Cache;
 
 trait InitPolicy
 {
@@ -10,14 +11,17 @@ trait InitPolicy
 
     public function __construct($policy)
     {
-        try {
-            $this->model = RoleRule::query()
-                ->where("policy", "LIKE", "%$policy")
-                ->firstOrFail();
-        }
-        catch (\Exception $exception) {
-            $this->model = null;
-        }
+        $this->model = Cache::rememberForever(RoleRule::CACHE_KEY . ":{$policy}", function () use ($policy) {
+            try {
+                return RoleRule::query()
+                    ->select(["id"])
+                    ->where("policy", "LIKE", "%$policy")
+                    ->firstOrFail();
+            }
+            catch (\Exception $exception) {
+                return null;
+            }
+        });
     }
 
     public function before($user, $ability)

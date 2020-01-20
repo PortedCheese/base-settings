@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -44,16 +45,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        static::deleting(function($model) {
+        static::deleting(function(\App\User $model) {
             // Удаляем аватар.
             $model->clearAvatar();
             // Чистим таблицу ролей.
             $model->roles()->sync([]);
             // Удаляем изображения.
             $model->clearImages();
+            // Забыть кэш ролей.
+            $model->forgetRoleIdsCache();
         });
 
-        static::creating(function($model) {
+        static::creating(function(\App\User $model) {
             if (
                 ! empty(Auth::user()) &&
                 Auth::user()->hasRole('admin')
@@ -65,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         });
 
-        static::updated(function ($model) {
+        static::updated(function (\App\User $model) {
             event(new UserUpdate($model));
         });
     }
@@ -175,6 +178,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $roles[] = $adminRole->id;
         }
         $this->roles()->sync($roles);
+        $this->forgetRoleIdsCache();
     }
 
     /**
@@ -240,22 +244,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasPermission(\App\RoleRule $rule, $permission)
     {
-        $roles = $this
-            ->roles()
-            ->select("id")
-            ->get();
-        $roleIds = [];
-        foreach ($roles as $role) {
-            $roleIds[] = $role->id;
-        }
-        $rules = DB::table("role_role_rule")
-            ->select("rights")
-            ->where("role_rule_id", $rule->id)
-            ->whereIn("role_id", $roleIds)
-            ->get();
+        $roleIds = $this->getRoleIds();
+        $rules = $rule->getPermissionsByRoles($roleIds);
         $condition = false;
-        foreach ($rules as $item) {
-            $rights = $item->rights;
+        foreach ($rules as $rights) {
             if ($rights & $permission) {
                 $condition = true;
                 break;
@@ -282,5 +274,34 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isEditorUser()
     {
         return $this->hasRole("editor") || $this->hasRole("admin");
+    }
+
+    /**
+     * Получить id ролей.
+     *
+     * @return mixed
+     */
+    public function getRoleIds()
+    {
+        $user = $this;
+        return Cache::rememberForever("user-roles:{$this->id}", function () use ($user) {
+            $roles = $user
+                ->roles()
+                ->select("id")
+                ->get();
+            $roleIds = [];
+            foreach ($roles as $role) {
+                $roleIds[] = $role->id;
+            }
+            return $roleIds;
+        });
+    }
+
+    /**
+     * Забыть кэш ролей.
+     */
+    public function forgetRoleIdsCache()
+    {
+        Cache::forget("user-roles:{$this->id}");
     }
 }
