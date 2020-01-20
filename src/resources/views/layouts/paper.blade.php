@@ -81,8 +81,8 @@
             {{--End Navbar--}}
 
             <div class="content">
+                @include('base-settings::layouts.messages')
                 <div class="row">
-                    @include('base-settings::layouts.messages')
                     @hasSection('sidebar')
                         <aside class="col-3">
                             <div class="row">

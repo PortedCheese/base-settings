@@ -34,6 +34,8 @@
 @endif
 @hasSection('content')
     <div class="container">
+        @include('base-settings::layouts.messages')
+
         <div class="row">
             @hasSection('sidebar')
                 <aside class="d-none d-lg-block col-lg-3">

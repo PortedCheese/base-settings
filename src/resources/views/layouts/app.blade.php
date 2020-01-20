@@ -40,8 +40,6 @@
     <div id="app">
         @include('base-settings::layouts.nav')
 
-        @include('base-settings::layouts.messages')
-
         <main class="py-4">
             @include('base-settings::layouts.main-section')
         </main>

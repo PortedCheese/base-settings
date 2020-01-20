@@ -58,10 +58,11 @@
             </div>
         </nav>
 
-        @include('base-settings::layouts.messages')
 
         <main class="py-4">
             <div class="container">
+                @include('base-settings::layouts.messages')
+
                 <div class="row">
                     @hasSection('sidebar')
                         <aside class="col-3">
