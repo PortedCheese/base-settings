@@ -205,5 +205,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         Blade::include("base-settings::components.picture", "pic");
         Blade::include("base-settings::components.image", "img");
         Blade::include("base-settings::components.gallery", "images");
+
+        Blade::include("base-settings::components.edit-gallery", "eGall");
     }
 }

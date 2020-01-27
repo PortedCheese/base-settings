@@ -67,6 +67,10 @@ universal-priority:
 
 `@hiddenCaptcha` - Скрытая капча, `hidden_captcha` - валидация
 
+Редактирование галереи:
+
+    @eGall(["id" => Auth::user()->id, "model" => "user", "noCover" => false])
+
 Вывод тега `picture`:
 
     @pic([
@@ -104,6 +108,9 @@ universal-priority:
     ])
     
 ### Versions
+    v1.4.12:
+        - Добавлен include @eGall для редактирования галереии
+    
     v1.4.10:
         - Добавлен кэш на права доступа
         
