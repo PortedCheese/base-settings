@@ -26,17 +26,6 @@
                                    {--config : Make config}
                                    {--vue : Export vue files}
                                    {--js : Export js files}
-
-`@googleCaptcha2` - Google ReCaptcha для форм, `google_captcha` - правило валидации
-
-`@hiddenCaptcha` - Скрытая капча, `hidden_captcha` - валидация
-
-Функция для работы с датами: 
-    
-    datehelper()
-    {->forFilter(date, date to condition = false)}
-    {->changeTz(date)}
-    {->format(date, format = "d.m.Y H:i")
     
 ### Middleware
 
@@ -50,7 +39,33 @@
 - site-management: право доступа к админке.
 - settings-management: открыто для админа
 
+### Команды и функции
+
+Функция для работы с датами: 
+    
+    datehelper()
+    {->forFilter(date, date to condition = false)}
+    {->changeTz(date)}
+    {->format(date, format = "d.m.Y H:i")
+    
+Генерация ссылки на вход:
+    
+    php artisan generate:login-link {email} {--send=} {--get}
+    
+### Components
+
+universal-priority:
+
+    <universal-priority
+        :elements="{{ json_encode([['name' => "name", "id" => "id"(, "url" => "url")], [..], [..]]) }}"
+        url="{{ route("admin.vue.priority", ['table' => "table_name", "field" => "field_name"]) }}">
+    </universal-priority>
+
 ### Includes
+
+`@googleCaptcha2` - Google ReCaptcha для форм, `google_captcha` - правило валидации
+
+`@hiddenCaptcha` - Скрытая капча, `hidden_captcha` - валидация
 
 Вывод тега `picture`:
 
