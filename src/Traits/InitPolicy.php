@@ -30,4 +30,14 @@ trait InitPolicy
             return false;
         }
     }
+
+    public static function getPermissions()
+    {
+        return [];
+    }
+
+    public static function defaultRules()
+    {
+        return 0;
+    }
 }

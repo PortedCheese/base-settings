@@ -18,6 +18,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
                     {--filters : Export filters}
                     {--controllers : Export controllers}
                     {--policies : Export and create rules}
+                    {--only-default : Create default rules}
                     {--config : Make config}
                     {--vue : Export vue files}
                     {--js : Export js files}';

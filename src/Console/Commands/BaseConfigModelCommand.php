@@ -330,31 +330,36 @@ class BaseConfigModelCommand extends Command
                 }
                 catch (\Exception $exception) {
                     $this->error("Failed to create a RoleRule model");
+                    continue;
                 }
             }
 
             $class = "App\Policies\\" . $policy;
+            $options = $this->options();
+            $default = !empty($options["only-default"]);
 
-            if (file_exists(app_path("Policies/$policy.php"))) {
+            if (file_exists(app_path("Policies/$policy.php")) && ! $default) {
                 if (! $this->confirm("The [{$policy}.php] policy already exists. Do you want to replace it?")) {
                     $this->setDefaultPermissions($class, $editorRole, $model);
                     continue;
                 }
             }
 
-            try {
-                if (! is_dir($directory = app_path('Policies'))) {
-                    mkdir($directory, 0755, true);
-                }
-                file_put_contents(
-                    app_path("Policies/$policy.php"),
-                    $this->compilePolicyStub($policy)
-                );
+            if (! $default) {
+                try {
+                    if (! is_dir($directory = app_path('Policies'))) {
+                        mkdir($directory, 0755, true);
+                    }
+                    file_put_contents(
+                        app_path("Policies/$policy.php"),
+                        $this->compilePolicyStub($policy)
+                    );
 
-                $this->info("Policy [{$policy}] generated successfully.");
-            }
-            catch (\Exception $e) {
-                $this->error("Failed put policy");
+                    $this->info("Policy [{$policy}] generated successfully.");
+                }
+                catch (\Exception $e) {
+                    $this->error("Failed put policy");
+                }
             }
 
             $this->setDefaultPermissions($class, $editorRole, $model);

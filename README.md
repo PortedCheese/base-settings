@@ -23,6 +23,7 @@
                                    {--filters : Export filters}
                                    {--controllers : Export controllers}
                                    {--policies : Export and create rules}
+                                   {--only-default : Create default rules}
                                    {--config : Make config}
                                    {--vue : Export vue files}
                                    {--js : Export js files}
@@ -108,6 +109,9 @@ universal-priority:
     ])
     
 ### Versions
+    v1.4.14:
+        - В команду добалена опция --only-default, вместе с policies заполняет только значения по умолчанию.
+    
     v1.4.13:
         - Добавлен trait для комманды, который генерирует модели политик для сайта
     
