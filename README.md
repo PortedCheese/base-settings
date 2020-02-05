@@ -110,6 +110,25 @@ universal-priority:
     ])
     
 ### Versions
+
+    v1.4.17:
+        - Переделаны шаблоны layouts:
+            - В app:
+                - у main убран класс py-4, и заменен на main-section;
+                - к тэгу footer добавлен класс footer-section
+            - В content:
+                - header-title вынесен в отдельный row;
+                - добавлен класс header-title-cover и возможность его заменить через header-title-cover-class;
+                - добавлен raw-header-title, в этом случае заголовок можно сделать как угодно внутри row;
+                - contetn обернут в отдельный row, к которому добавляется класс content-cover с возможностью изменить через content-cover-class
+                - links вынесены в отдельный row
+            - В main-section:
+                - Breadcrumbs вынесены в отдельный файл;
+                - messages обернуты в row и col-12;
+                - у content и sidebar убраны обертки row
+                - к aside добавлен класс sidebar-section
+                - к section в которой content добавлен класс content-section
+            
     
     v1.4.16:
         - В команду добавдена опция --scss, создает файл инклудов стилей

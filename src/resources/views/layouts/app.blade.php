@@ -40,11 +40,11 @@
     <div id="app">
         @include('base-settings::layouts.nav')
 
-        <main class="py-4">
+        <main class="main-section">
             @include('base-settings::layouts.main-section')
         </main>
 
-        <footer>
+        <footer class="footer-section">
             @hasSection('footer')
                 <div class="container">
                     <div class="row">
