@@ -1,5 +1,3 @@
-@import "mixins";
-
 .line {
   width: 140px;
   height: 2px;
@@ -27,7 +25,7 @@
 }
 
 .card-base {
-  font-family: Montserrat, sans-serif;
+  font-family: $font-family-sans-serif;
 
   border-color: $border-grid;
 
@@ -62,5 +60,3 @@
     }
   }
 }
-
-@import "animation";

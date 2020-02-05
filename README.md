@@ -25,6 +25,7 @@
                                    {--policies : Export and create rules}
                                    {--only-default : Create default rules}
                                    {--config : Make config}
+                                   {--scss : Export scss files}
                                    {--vue : Export vue files}
                                    {--js : Export js files}
     
@@ -109,7 +110,15 @@ universal-priority:
     ])
     
 ### Versions
-    v1.4.14:
+    
+    v1.4.16:
+        - В команду добавдена опция --scss, создает файл инклудов стилей
+    Обновеление:
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+        - php artisan make:base-settings --scss
+        - В app.scss заменить импорт base на app-includes
+
+    v1.4.15:
         - В команду добалена опция --only-default, вместе с policies заполняет только значения по умолчанию.
     
     v1.4.13:

@@ -20,6 +20,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
                     {--policies : Export and create rules}
                     {--only-default : Create default rules}
                     {--config : Make config}
+                    {--scss : Export scss files}
                     {--vue : Export vue files}
                     {--js : Export js files}';
 
@@ -85,6 +86,10 @@ class BaseMakeCommand extends BaseConfigModelCommand
     protected $jsIncludes = [
         'app' => ['app-base'],
         'admin' => ['admin-base'],
+    ];
+
+    protected $scssIncludes = [
+        "app" => ["mixins", "base", "animation"],
     ];
 
     protected $configName = "base-settings";
@@ -165,6 +170,10 @@ class BaseMakeCommand extends BaseConfigModelCommand
 
         if ($this->option("policies") || $all) {
             $this->makeRules();
+        }
+
+        if ($this->option("scss") || $all) {
+            $this->makeScssIncludes("app");
         }
     }
 

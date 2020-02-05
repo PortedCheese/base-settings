@@ -94,6 +94,13 @@ class BaseConfigModelCommand extends Command
     protected $ruleRules = [];
 
     /**
+     * Scss файлы.
+     *
+     * @var array
+     */
+    protected $scssIncludes = [];
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -104,6 +111,15 @@ class BaseConfigModelCommand extends Command
 
         $namespace = $this->getAppNamespace();
         $this->namespace = str_replace("\\", '', $namespace);
+    }
+
+    /**
+     * Замена устаревшего метода.
+     *
+     * @return mixed
+     */
+    protected function getAppNamespace() {
+        return Container::getInstance()->getNamespace();
     }
 
     /**
@@ -199,6 +215,35 @@ class BaseConfigModelCommand extends Command
     }
 
     /**
+     * Включить scss файлы.
+     *
+     * @param $key
+     */
+    protected function makeScssIncludes($key) {
+        $filePath = resource_path("sass/vendor/_$key-includes.scss");
+        if (! file_exists($filePath)) {
+            file_put_contents(
+                $filePath,
+                ""
+            );
+            $this->info(" Added file $filePath");
+        }
+        if (! empty($this->scssIncludes[$key])) {
+            foreach ($this->scssIncludes[$key] as $scssInclude) {
+                if (! $this->confirm("Add $scssInclude.scss file to $filePath?")) {
+                    continue;
+                }
+                file_put_contents(
+                    $filePath,
+                    "@import '$scssInclude';\n",
+                    FILE_APPEND
+                );
+                $this->info("$scssInclude added to $filePath");
+            }
+        }
+    }
+
+    /**
      * Create models files.
      */
     protected function exportModels()
@@ -289,15 +334,6 @@ class BaseConfigModelCommand extends Command
             [$this->getAppNamespace(), $this->packageName, $place, $controller],
             file_get_contents(__DIR__ . "/stubs/make/controllers/StubController.stub")
         );
-    }
-
-    /**
-     * Замена устаревшего метода.
-     *
-     * @return mixed
-     */
-    protected function getAppNamespace() {
-        return Container::getInstance()->getNamespace();
     }
 
     /**
