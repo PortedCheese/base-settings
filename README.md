@@ -111,6 +111,10 @@ universal-priority:
     
 ### Versions
 
+    v1.4.18:
+        - В app добавлен шаблон favicon
+        - Шрифты в app вынесены в отдельный шаблон fonts
+    
     v1.4.17:
         - Переделаны шаблоны layouts:
             - В app:
