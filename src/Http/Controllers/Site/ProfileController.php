@@ -21,7 +21,7 @@ class ProfileController extends Controller
             $this->middleware('auth');
 
             $this->middleware(function ($request, $next) {
-                $userId = Auth::user()->getAuthIdentifier();
+                $userId = Auth::id();
                 $this->user = User::find($userId);
 
                 return $next($request);
