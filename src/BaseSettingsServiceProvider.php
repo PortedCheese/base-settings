@@ -186,12 +186,12 @@ class BaseSettingsServiceProvider extends ServiceProvider
      */
     private function bladeComponents()
     {
-        Blade::component("base-settings::components.google-captcha", "gCaptcha");
-        Blade::component("base-settings::components.hidden-captcha", "hCaptcha");
+        Blade::aliasComponent("base-settings::components.google-captcha", "gCaptcha");
+        Blade::aliasComponent("base-settings::components.hidden-captcha", "hCaptcha");
 
-        Blade::component("base-settings::components.picture", 'picture');
-        Blade::component("base-settings::components.image", 'image');
-        Blade::component("base-settings::components.gallery", 'gallery');
+        Blade::aliasComponent("base-settings::components.picture", 'picture');
+        Blade::aliasComponent("base-settings::components.image", 'image');
+        Blade::aliasComponent("base-settings::components.gallery", 'gallery');
     }
 
     /**
