@@ -3,6 +3,8 @@
 @section('header-title', 'Добавить пользователя')
 
 @section('admin')
+    @include("base-settings::admin.user.includes.pills")
+
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -27,16 +29,16 @@
 
                         <div class="form-group">
                             <label>Роли</label>
-                            @foreach ($roles as $role)
+                            @foreach($roles as $role)
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input"
+                                           type="checkbox"
+                                           {{ in_array($role->id, old("roles", [])) ? "checked" : "" }}
                                            value="{{ $role->id }}"
-                                           {{ old("check-{$role->id}") ? "checked" : "" }}
-                                           id="check-{{ $role->name }}"
-                                           name="check-{{ $role->id }}"
-                                           type="checkbox">
-                                    <label class="custom-control-label" for="check-{{ $role->name }}">
-                                        {{ empty($role->title) ? $role->name : $role->title }}
+                                           id="check-{{ $role->id }}"
+                                           name="roles[]">
+                                    <label class="custom-control-label" for="check-{{ $role->id }}">
+                                        {{ $role->title }}
                                     </label>
                                 </div>
                             @endforeach
@@ -119,8 +121,7 @@
                     <div class="col-12">
                         <div class="btn-group"
                              role="group">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">К списку пользователей</a>
-                            <button type="submit" class="btn btn-success">Создать</button>
+                            <button type="submit" class="btn btn-success">Добавить</button>
                         </div>
                     </div>
                 </form>

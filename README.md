@@ -110,6 +110,15 @@ universal-priority:
     ])
     
 ### Versions
+    v1.4.22:
+        - Изменен пользователь. UserStoreRequest не используется. UserUpdateRequest не используется.
+        - Роуты вынесены в пакет.
+        - Изменен путь сохранения изображений.
+    Обновление:
+        - Проверить не переписан ли UserStoreRequest и UserUpdateRequest
+        - Удалить роуты пользователя из admin.php
+        - В imagecache добавить 'storage/users',
+        
     v1.4.21:
         - Изменено подключение компоментов.
         

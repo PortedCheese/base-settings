@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PortedCheese\BaseSettings\Events\UserUpdate;
 use PortedCheese\BaseSettings\Notifications\CustomResetPasswordNotify;
+use PortedCheese\BaseSettings\Traits\HasImage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use Notifiable, HasImage;
 
     /**
      * The attributes that are mass assignable.
@@ -44,14 +45,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function boot()
     {
         parent::boot();
+        static::imageBoot();
 
         static::deleting(function(\App\User $model) {
-            // Удаляем аватар.
-            $model->clearAvatar();
             // Чистим таблицу ролей.
             $model->roles()->sync([]);
-            // Удаляем изображения.
-            $model->clearImages();
             // Забыть кэш ролей.
             $model->forgetRoleIdsCache();
         });
@@ -80,15 +78,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function avatar() {
         return $this->belongsTo(\App\Image::class, 'image_id');
-    }
-
-    /**
-     * У пользователя может быть много картинок.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function images() {
-        return $this->morphMany(\App\Image::class, 'imageable');
     }
 
     /**
@@ -170,6 +159,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $adminRole = Role::query()
             ->where('name', 'admin')
             ->first();
+        // Если админ пытается снять у себя роль админа, вернуть ее.
         if (
             $this->id == Auth::id() &&
             !in_array($adminRole->id, $roles) &&
@@ -179,47 +169,6 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         $this->roles()->sync($roles);
         $this->forgetRoleIdsCache();
-    }
-
-    /**
-     * Удалить все изображения.
-     */
-    public function clearImages()
-    {
-        $images = $this->images;
-        foreach ($images as $image) {
-            $image->delete();
-        }
-    }
-
-    /**
-     * Очистить аватар.
-     */
-    public function clearAvatar() {
-        $image = $this->avatar;
-        if (!empty($image)) {
-            $image->delete();
-        }
-        $this->avatar()->dissociate();
-        $this->save();
-    }
-
-    /**
-     * Изменить/создать аватар.
-     *
-     * @param Request $request
-     */
-    public function uploadAvatar(Request $request) {
-        if ($request->hasFile('avatar')) {
-            $this->clearAvatar();
-            $path = $request->file('avatar')->store('avatars');
-            $image = Image::create([
-                'path' => $path,
-                'name' => 'avatar-' . $this->id,
-            ]);
-            $this->avatar()->associate($image);
-            $this->save();
-        }
     }
 
     /**

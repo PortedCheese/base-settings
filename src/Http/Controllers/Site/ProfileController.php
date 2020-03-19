@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use PortedCheese\BaseSettings\Models\LoginLink;
 
 class ProfileController extends Controller
 {
+    /**
+     * @var User
+     */
     protected $user;
 
     public function __construct()
@@ -38,7 +42,7 @@ class ProfileController extends Controller
         return view('base-settings::profile.show', [
             'user' => $this->user,
             'routeName' => $this->routeName,
-            'image' => $this->user->avatar,
+            'image' => $this->user->image,
         ]);
     }
 
@@ -51,29 +55,51 @@ class ProfileController extends Controller
         return view('base-settings::profile.edit', [
             'user' => $this->user,
             'routeName' => $this->routeName,
-            'image' => $this->user->avatar,
         ]);
     }
 
-
+    /**
+     * Обновление пользователя.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request) {
-        // TODO: move to request file.
-        $userInput = $request->all();
-        $rules = [
-            'email' => "required|email|unique:users,email,{$this->user->id}",
-            'password' => 'string|min:6|confirmed',
-        ];
-        if (!$request->filled('password')) {
-            unset($rules['password']);
-            unset($userInput['password']);
-        }
-        $request->validate($rules);
-        $this->user->update($userInput);
-        $this->user->uploadAvatar($request);
+        $this->updateValidator($request->all());
 
-        return redirect()->back()->with('success', 'Успешно обновлено');
+        $this->user->update($request->all());
+        $this->user->uploadImage($request, "users");
+
+        return redirect()
+            ->back()
+            ->with('success', 'Успешно обновлено');
     }
 
+    /**
+     * Валидация обновления.
+     *
+     * @param $data
+     */
+    protected function updateValidator($data)
+    {
+        Validator::make($data, [
+            "email" => ["required", "email", "max:250", "unique:users,email,{$this->user->id}"],
+            "password" => ["nullable", "string", "min:6", "confirmed"],
+            "image" => ["nullable", "image"],
+        ], [], [
+            "email" => "E-mail",
+            "password" => "Пароль",
+            "image" => "Аватар",
+        ])->validate();
+    }
+
+    /**
+     * Авторизация по ссылке.
+     *
+     * @param string $token
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
     public function authenticateEmail(string $token)
     {
         $user = LoginLink::validFromToken($token);

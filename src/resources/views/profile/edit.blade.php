@@ -16,9 +16,9 @@
                        value="{{ old("name", $user->name) }}"
                        class="form-control @error("name") is-invalid @enderror">
                 @error("name")
-                <div class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </div>
                 @enderror
             </div>
 
@@ -30,9 +30,9 @@
                        value="{{ old("last_name", $user->last_name) }}"
                        class="form-control @error("last_name") is-invalid @enderror">
                 @error("last_name")
-                <div class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </div>
                 @enderror
             </div>
 
@@ -44,9 +44,9 @@
                        value="{{ old("middle_name", $user->middle_name) }}"
                        class="form-control @error("middle_name") is-invalid @enderror">
                 @error("middle_name")
-                <div class="invalid-feedback" role="alert">
-                    {{ $message }}
-                </div>
+                    <div class="invalid-feedback" role="alert">
+                        {{ $message }}
+                    </div>
                 @enderror
             </div>
         </div>
@@ -88,13 +88,6 @@
         </div>
 
         <div class="col-md-6">
-            @if($image)
-                <div class="form-group">
-                    <img src="{{ route('imagecache', ['template' => 'avatar', 'filename' => $image->file_name]) }}"
-                         class="img-thumbnail rounded-circle"
-                         alt="{{ $image->name }}">
-                </div>
-            @endif
             <div class="form-group">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -108,7 +101,7 @@
                                class="custom-file-input"
                                id="custom-file-input"
                                lang="ru"
-                               name="avatar"
+                               name="image"
                                aria-describedby="inputGroupAvatar">
                         <label class="custom-file-label"
                                for="custom-file-input">

@@ -3,6 +3,8 @@
 @section('header-title', 'Редактировать ' . $user->full_name)
 
 @section('admin')
+    @include("base-settings::admin.user.includes.pills")
+
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -22,25 +24,24 @@
                                    value="{{ old("email", $user->email) }}"
                                    class="form-control @error("email") is-invalid @enderror">
                             @error("email")
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <label>Роли</label>
-                            @foreach ($roles as $role)
+                            @foreach($roles as $role)
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input"
+                                           type="checkbox"
+                                           {{ (! count($errors->all()) && in_array($role->id, $user->getRoleIds())) || in_array($role->id, old("roles", [])) ? "checked" : "" }}
                                            value="{{ $role->id }}"
-                                           {{ (! count($errors->all()) && $user->hasRole($role->name)) || old("check-{$role->id}") ? "checked" : "" }}
-                                           {{ ($auth->id == $user->id) && $role->name == "admin" ? "disabled" : "" }}
-                                           id="check-{{ $role->name }}"
-                                           name="check-{{ $role->id }}"
-                                           type="checkbox">
-                                    <label class="custom-control-label" for="check-{{ $role->name }}">
-                                        {{ empty($role->title) ? $role->name : $role->title }}
+                                           id="check-{{ $role->id }}"
+                                           name="roles[]">
+                                    <label class="custom-control-label" for="check-{{ $role->id }}">
+                                        {{ $role->title }}
                                     </label>
                                 </div>
                             @endforeach
@@ -55,9 +56,9 @@
                                    value="{{ old("name", $user->name) }}"
                                    class="form-control @error("name") is-invalid @enderror">
                             @error("name")
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
 
@@ -69,9 +70,9 @@
                                    value="{{ old("last_name", $user->last_name) }}"
                                    class="form-control @error("last_name") is-invalid @enderror">
                             @error("last_name")
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
 
@@ -83,21 +84,14 @@
                                    value="{{ old("middle_name", $user->middle_name) }}"
                                    class="form-control @error("middle_name") is-invalid @enderror">
                             @error("middle_name")
-                            <div class="invalid-feedback" role="alert">
-                                {{ $message }}
-                            </div>
+                                <div class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </div>
                             @enderror
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        @if($image)
-                            <div class="form-group">
-                                <img src="{{ route('imagecache', ['template' => 'avatar', 'filename' => $image->file_name]) }}"
-                                     class="img-thumbnail rounded-circle"
-                                     alt="{{ $image->name }}">
-                            </div>
-                        @endif
                         <div class="form-group">
                             <label for="customFile">Изображение</label>
                             <div class="custom-file">
@@ -110,7 +104,6 @@
                     <div class="col-12">
                         <div class="btn-group"
                              role="group">
-                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">К списку пользователей</a>
                             <button type="submit" class="btn btn-success">Обновить</button>
                         </div>
                     </div>

@@ -41,6 +41,18 @@ Route::group([
 });
 
 Route::group([
+    'namespace' => 'App\Http\Controllers\Admin',
+    'middleware' => ['web', 'management'],
+    'as' => 'admin.',
+    'prefix' => 'admin',
+], function () {
+    // Роуты пользователя.
+    Route::resource('users', 'UserController')->except([
+        'show'
+    ]);
+});
+
+Route::group([
     'middleware' => ["auth:api", "super"],
     'prefix' => "api",
     'namespace' => 'App\Http\Controllers\Admin',
