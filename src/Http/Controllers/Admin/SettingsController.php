@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
+use PortedCheese\BaseSettings\Events\PriorityUpdate;
 use PortedCheese\BaseSettings\Http\Requests\SettingsStoreRequest;
 use PortedCheese\BaseSettings\Http\Requests\SettingsUpdateRequest;
 use PortedCheese\BaseSettings\Models\SiteConfig;
@@ -196,6 +197,7 @@ class SettingsController extends Controller
                 ->where("id", $id)
                 ->update(["$field" => $priority]);
         }
+        event(new PriorityUpdate($table));
         return response()
             ->json([
                 "success" => true,
