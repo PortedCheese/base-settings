@@ -9,10 +9,11 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="name">Имя</label>
+                <label for="name">Имя <span class="text-danger">*</span></label>
                 <input type="text"
                        id="name"
                        name="name"
+                       required
                        value="{{ old("name", $user->name) }}"
                        class="form-control @error("name") is-invalid @enderror">
                 @error("name")
@@ -53,7 +54,7 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="email">E-mail</label>
+                <label for="email">E-mail <span class="text-danger">*</span></label>
                 <input type="text"
                        id="email"
                        name="email"

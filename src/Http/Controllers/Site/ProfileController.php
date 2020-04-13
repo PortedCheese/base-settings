@@ -83,10 +83,16 @@ class ProfileController extends Controller
     protected function updateValidator($data)
     {
         Validator::make($data, [
+            "name" => ["required", "max:100"],
+            "last_name" => ["nullable", "max:100"],
+            "middle_name" => ["nullable", "max:100"],
             "email" => ["required", "email", "max:250", "unique:users,email,{$this->user->id}"],
             "password" => ["nullable", "string", "min:6", "confirmed"],
             "image" => ["nullable", "image"],
         ], [], [
+            "name" => "Имя",
+            "last_name" => "Фамилия",
+            "middle_name" => "Отчество",
             "email" => "E-mail",
             "password" => "Пароль",
             "image" => "Аватар",

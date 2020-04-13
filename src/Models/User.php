@@ -64,6 +64,15 @@ class User extends Authenticatable implements MustVerifyEmail
             if (! empty(app('request')->getClientIp())) {
                 $model->creator_address = app('request')->getClientIp();
             }
+            if (empty($model->name)) {
+                $exploded = explode("@", $model->email);
+                if (! empty($exploded[0])) {
+                    $model->name = $exploded[0];
+                }
+                else {
+                    $model->name = "";
+                }
+            }
         });
 
         static::updated(function (\App\User $model) {
