@@ -1,6 +1,6 @@
 @include("base-settings::layouts.breadcrumb")
 
-@hasSection('content')
+@if (View::hasSection("content") || View::hasSection("contents"))
     <div class="container">
         <div class="row">
             <div class="col-12">
