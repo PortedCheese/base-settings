@@ -18,7 +18,7 @@
 @yield("contents")
 
 @hasSection("links")
-    <div class="row @yield("links-cover-class", "")">
+    <div class="row @yield("links-cover-class", "justify-content-center")">
         @yield('links')
     </div>
 @endif
