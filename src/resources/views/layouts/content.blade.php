@@ -9,9 +9,13 @@
     @endif
 </div>
 
-<div class="row @yield('content-cover-class', 'content-cover')">
-    @yield('content')
-</div>
+@hasSection("content")
+    <div class="row @yield('content-cover-class', 'content-cover')">
+        @yield('content')
+    </div>
+@endif
+
+@yield("contents")
 
 <div class="row">
     @yield('links')
