@@ -111,6 +111,9 @@ universal-priority:
     
 ### Versions
     
+    v1.4.27:
+        - В шаблон content для ссылок добавлен yield "links-cover-class"
+    
     v1.4.25:
         - В шаблон content добавлена секция contents
     
