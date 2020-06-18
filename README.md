@@ -116,6 +116,9 @@ universal-priority:
     Обновление:
         - npm install tinymce
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+        - Добавить в webpack:
+            .copy("node_modules/tinymce/skins", "public/js/skins")
+            .copy("node_modules/tinymce/icons", "public/js/icons")
     
     v1.4.27:
         - В шаблон content для ссылок добавлен yield "links-cover-class"
