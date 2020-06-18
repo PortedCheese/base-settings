@@ -111,6 +111,12 @@ universal-priority:
     
 ### Versions
     
+    v1.4.29:
+        - CkEditor заменен на TinyMCE
+    Обновление:
+        - npm install tinymce
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+    
     v1.4.27:
         - В шаблон content для ссылок добавлен yield "links-cover-class"
     

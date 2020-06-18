@@ -45,19 +45,27 @@ window.Swal = require('sweetalert2');
 
     function ckExample() {
         let $element = $('#ckExample');
-        if ($element.length && typeof CKEDITOR !== 'undefined') {
-            CKEDITOR.replace('ckExample', {
-                customConfig : '/config/ckEditorConfig.js'
-            });
+        if ($element.length) {
+            $element.addClass("tiny");
         }
+        // if ($element.length && typeof CKEDITOR !== 'undefined') {
+        //     CKEDITOR.replace('ckExample', {
+        //         customConfig : '/config/ckEditorConfig.js'
+        //     });
+        // }
     }
 
     function ckDescription() {
         let $element = $('#ckDescription');
-        if ($element.length && typeof CKEDITOR !== 'undefined') {
-            CKEDITOR.replace('ckDescription', {
-                customConfig : '/config/ckEditorConfig.js'
-            });
+        if ($element.length) {
+            $element.addClass("tiny");
         }
+        // if ($element.length && typeof CKEDITOR !== 'undefined') {
+        //     CKEDITOR.replace('ckDescription', {
+        //         customConfig : '/config/ckEditorConfig.js'
+        //     });
+        // }
     }
 })(jQuery);
+
+require("./initTynyMCE");
