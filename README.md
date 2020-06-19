@@ -110,7 +110,12 @@ universal-priority:
     ])
     
 ### Versions
-    
+    v1.5.0:
+        - Добавлены новые traits: ShouldGallery, ShouldImage, ShouldSlug
+        - Теперь не нужно прописывать вызов методов в boot
+    Обновление:
+        - Можно заменить HasImage и HasSlug на новые
+        
     v1.4.29:
         - CkEditor заменен на TinyMCE
     Обновление:
