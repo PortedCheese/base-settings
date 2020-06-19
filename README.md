@@ -110,6 +110,10 @@ universal-priority:
     ])
     
 ### Versions
+    
+    v1.5.1:
+        - доблена функция base_config
+        
     v1.5.0:
         - Добавлены новые traits: ShouldGallery, ShouldImage, ShouldSlug
         - Теперь не нужно прописывать вызов методов в boot
