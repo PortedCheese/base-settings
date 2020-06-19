@@ -16,6 +16,7 @@ use PortedCheese\BaseSettings\Filters\MdGrid4;
 use PortedCheese\BaseSettings\Filters\MdGrid6;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
+use PortedCheese\BaseSettings\Helpers\ConfigManager;
 use PortedCheese\BaseSettings\Helpers\DateHelper;
 use PortedCheese\BaseSettings\Helpers\ReCaptcha;
 use PortedCheese\BaseSettings\Helpers\SiteConfig;
@@ -91,6 +92,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         });
         $this->app->singleton('geocaptcha', function ($app) {
             return new ReCaptcha();
+        });
+        $this->app->singleton("base-config", function () {
+           return new ConfigManager;
         });
     }
 

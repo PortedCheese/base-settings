@@ -5,7 +5,7 @@
            required
            id="userAdminPager"
            name="data-userAdminPager"
-           value="{{ old("data-userAdminPager", siteconf()->get($name, "userAdminPager", 10)) }}"
+           value="{{ old("data-userAdminPager", base_config()->get($name, "userAdminPager", 10)) }}"
            class="form-control @error("data-userAdminPager") is-invalid @enderror">
     @error("data-userAdminPager")
         <div class="invalid-feedback" role="alert">
@@ -20,7 +20,7 @@
            required
            id="recaptchaSiteKey"
            name="data-recaptchaSiteKey"
-           value="{{ old("data-recaptchaSiteKey", siteconf()->get($name, "recaptchaSiteKey", "")) }}"
+           value="{{ old("data-recaptchaSiteKey", base_config()->get($name, "recaptchaSiteKey", "")) }}"
            class="form-control @error("data-recaptchaSiteKey") is-invalid @enderror">
     @error("data-recaptchaSiteKey")
         <div class="invalid-feedback" role="alert">
@@ -33,9 +33,9 @@
     <label for="recaptchaSiteKey">Recaptcha secret key</label>
     <input type="text"
            required
-           id="recaptchaSecretKey"
+           id="recaptchaSiteKey"
            name="data-recaptchaSecretKey"
-           value="{{ old("data-recaptchaSecretKey", siteconf()->get($name, "recaptchaSecretKey", "")) }}"
+           value="{{ old("data-recaptchaSecretKey", base_config()->get($name, "recaptchaSecretKey", "")) }}"
            class="form-control @error("data-recaptchaSecretKey") is-invalid @enderror">
     @error("data-recaptchaSecretKey")
         <div class="invalid-feedback" role="alert">
@@ -49,7 +49,7 @@
     <input type="date"
            id="data-frontendDate"
            name="data-frontendDate"
-           value="{{ old("data-frontendDate", siteconf()->get($name, "frontendDate", "")) }}"
+           value="{{ old("data-frontendDate", base_config()->get($name, "frontendDate", "")) }}"
            class="form-control @error("data-frontendDate") is-invalid @enderror">
     @error("data-frontendDate")
         <div class="invalid-feedback" role="alert">

@@ -3,18 +3,15 @@
 namespace PortedCheese\BaseSettings\Facades;
 
 /**
- * @method static void test(string $message)
+ * @method static get(string $name, $value = "", $default = null)
  *
- * @see \PortedCheese\BaseSettings\SiteConfig
+ * @see \PortedCheese\BaseSettings\Helpers\SiteConfig
  */
 
 use Illuminate\Support\Facades\Facade;
 
 class SiteConfig extends Facade
 {
-    /**
-     * {@inheritDoc}
-     */
     protected static function getFacadeAccessor()
     {
         return "siteconf";

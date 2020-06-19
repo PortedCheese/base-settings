@@ -132,7 +132,7 @@ class BaseConfigModelCommand extends Command
             'template' => $this->configTemplate,
             'pkg' => true,
         ];
-        $result = siteconf()->create($this->configName, $this->configValues, $data);
+        $result = base_config()->create($this->configName, $this->configValues, $data);
         if ($result == "exists") {
             if (! $this->confirm("{$this->configTitle} config already exists. Replace it?")) {
                 return;
@@ -140,7 +140,7 @@ class BaseConfigModelCommand extends Command
         }
 
         if ($result !== "created") {
-            $result = siteconf()->create($this->configName, $this->configValues, $data, true);
+            $result = base_config()->create($this->configName, $this->configValues, $data, true);
         }
 
         $this->info("Config {$this->configTitle} $result");

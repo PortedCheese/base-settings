@@ -17,3 +17,9 @@ if (!function_exists('datehelper')) {
         return app(\PortedCheese\BaseSettings\Helpers\DateHelper::class);
     }
 }
+
+if (! function_exists("base_config")) {
+    function base_config() {
+        return app("base-config");
+    }
+}
