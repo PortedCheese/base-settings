@@ -110,7 +110,7 @@ class ConfigManager
      * @param $value
      * @return void|null
      */
-    protected function update(string $name, string $var, $value)
+    public function update(string $name, string $var, $value)
     {
         try {
             $config = ConfigModel::query()

@@ -111,6 +111,9 @@ universal-priority:
     
 ### Versions
     
+    v1.5.2:
+        - испралена функция update в base_config
+        
     v1.5.1:
         - доблена функция base_config
         
