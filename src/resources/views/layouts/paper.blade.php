@@ -16,20 +16,14 @@
 
     <!-- Scripts -->
     @stack('js-lib')
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/admin.js') }}" defer></script>
-
     @stack('more-scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" crossorigin="anonymous">
-
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/admin.css') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" rel="stylesheet">
+    <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('paper/css/paper-dashboard.css') }}">
 
@@ -107,5 +101,7 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ mix('js/admin.js') }}" defer></script>
 </body>
 </html>

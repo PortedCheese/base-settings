@@ -8,6 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Meta -->
     @section('tag-title')
         @empty($pageMetas['title'])
             <title>@yield('page-title'){{ config('app.name', 'Laravel') }}</title>
@@ -25,13 +26,15 @@
 
     @stack('more-meta')
 
-    @stack('js-lib')
-
     <!-- Fonts -->
     @include('base-settings::layouts.fonts')
 
+    <!-- Scripts -->
+    @stack('js-lib')
+    @include("base-settings::layouts.scripts")
+
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @stack('more-css')
 </head>
 <body>
@@ -56,7 +59,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" defer></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
     @stack('more-scripts')
 </body>
 </html>

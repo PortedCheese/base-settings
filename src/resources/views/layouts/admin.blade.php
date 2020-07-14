@@ -12,7 +12,6 @@
 
     <!-- Scripts -->
     @stack('js-lib')
-{{--    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>--}}
     <script src="{{ asset('js/admin.js') }}?{{ siteconf()->get("base-settings", "frontendDate", "") }}" defer></script>
     @stack('more-scripts')
 
