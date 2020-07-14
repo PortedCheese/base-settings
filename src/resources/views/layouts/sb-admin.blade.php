@@ -129,10 +129,6 @@
 <!-- Bootstrap core JavaScript-->
 <script src="{{ mix("js/admin.js") }}"></script>
 
-<!-- Page level custom scripts -->
-<script src="{{ asset("sb-admin/chart-area-demo.js") }}"></script>
-<script src="{{ asset("sb-admin/chart-pie-demo.js") }}"></script>
-
 </body>
 
 </html>
