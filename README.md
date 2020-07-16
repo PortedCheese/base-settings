@@ -121,10 +121,10 @@ universal-priority:
         - Установить fontawesome:
             - npm install @fortawesome/fontawesome-free
             - В app.scss и admin.scss дописать:
-                @import "@fortawesome/fontawesome-free/scss/fontawesome";
-                @import "@fortawesome/fontawesome-free/scss/regular";
-                @import "@fortawesome/fontawesome-free/scss/solid";
-                @import "@fortawesome/fontawesome-free/scss/brands";
+                @import "~@fortawesome/fontawesome-free/scss/fontawesome";
+                @import "~@fortawesome/fontawesome-free/scss/regular";
+                @import "~@fortawesome/fontawesome-free/scss/solid";
+                @import "~@fortawesome/fontawesome-free/scss/brands";
             - В webpack дописать:
                 .copy("node_modules/@fortawesome/fontawesome-free/webfonts", "public/webfonts")
             - В gitignore дописать:
