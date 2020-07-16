@@ -47,7 +47,7 @@
             </li>
 
             {{--Menu--}}
-            @includeIf('admin-site-menu::sb-admin.index', ['menu' => $adminMenu])
+            @include('base-settings::admin.menu')
 
             {{--Sidebar Toggler (Sidebar)--}}
             <hr class="sidebar-divider d-none d-md-block">
