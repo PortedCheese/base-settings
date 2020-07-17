@@ -15,7 +15,8 @@ class ImageUpdate
     /**
      * Create a new event instance.
      *
-     * @param User $user
+     * ImageUpdate constructor.
+     * @param Image $image
      */
     public function __construct(Image $image)
     {

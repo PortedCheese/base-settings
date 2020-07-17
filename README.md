@@ -5,17 +5,10 @@
 Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.
 
 ## Установка
-
-Выгрузить компоненты VueJs, стили и скрипт.
-
+    php artisan ui vue --auth
+    npm install && npm run dev
     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-
-Выгрузить конфигурацию, добавится конфигурация для галлереи и темизации. Если нужно для конкретной страницы сделать отдельную тему, то есть переменная `$customTheme`.
-
     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config
-
-Комманда make так же предложит наполнить файлы компонентами vue и js. В app.js добавить `require("./vendor/app-vue-includes");` и `require('./vendor/app-js-includes');`, а в admin.js добавить `require("./vendor/admin-vue-includes");` и `require('./vendor/admin-js-includes');`
-
     php artisan make:base-settings {--all : Run all}
                                    {--views : Scaffold views}
                                    {--force : Overwrite existing views by default}
@@ -28,6 +21,19 @@
                                    {--scss : Export scss files}
                                    {--vue : Export vue files}
                                    {--js : Export js files}
+                                       
+В контроллер `App\Http\Controllers\Controller` добавить конструктор:
+
+    public function __construct()
+    {
+        $this->routeName = Route::currentRouteName();
+    }
+
+Настроить `intervention/imagecache` что бы адрес был `imagecahce`
+Для работы изображений настроить приложение:
+    
+    php artisan storage:link
+    FILESYSTEM_DRIVER=public 
     
 ### Middleware
 
@@ -111,6 +117,13 @@ universal-priority:
     
 ### Versions
     
+    v1.7.0:
+        - Изменены зависимости
+        - Доблены базовые адреса для управления
+        - Роуты разбиты по файлам
+    Обновление:
+        - Удалить роуты: admin; admin.logs; profile.*
+        
     v1.6.0:
         - Изменено подключение стилей и скриптов на mix() вместо asset().
         - В app добавлен шаблон base-settings::layouts.scripts, для подключения метрики и прочего.

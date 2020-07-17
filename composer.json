@@ -11,7 +11,10 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "laravel/ui": "^2.0",
+        "laravel/framework": "^7.0",
+        "intervention/imagecache": "^2.4"
     },
     "autoload": {
         "psr-4": {

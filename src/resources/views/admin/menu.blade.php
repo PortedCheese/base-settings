@@ -24,7 +24,7 @@
 @endcan
 
 @if ($theme == "sb-admin")
-    @includeIf('admin-site-menu::sb-admin.index', ['menu' => $adminMenu])
+    @includeIf('admin-site-menu::sb-admin.index', ['menu' => $adminMenu ?? []])
 @else
-    @includeIf('admin-site-menu::layouts.index', ['menu' => $adminMenu])
+    @includeIf('admin-site-menu::layouts.index', ['menu' => $adminMenu ?? []])
 @endif

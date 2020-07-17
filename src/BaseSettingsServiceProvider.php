@@ -39,11 +39,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->bladeIncludes();
         $this->extendImages();
         $this->setMiddleware();
-
-        // Подключение роутов.
-        $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/admin.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/auth.php');
+        $this->addRoutes();
 
         // Assets.
         $this->publishes([
@@ -96,6 +92,16 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->app->singleton("base-config", function () {
            return new ConfigManager;
         });
+    }
+
+    private function addRoutes()
+    {
+        $this->loadRoutesFrom(__DIR__ . '/routes/admin.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/auth.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/settings.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/user.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/roles.php');
     }
 
     /**

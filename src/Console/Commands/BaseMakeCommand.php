@@ -56,6 +56,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
      */
     protected $views = [
         'admin/layout.stub' => 'admin/layout.blade.php',
+        'admin/dashboard.stub' => 'admin/dashboard.blade.php',
 
         'layouts/admin.stub' => 'layouts/admin.blade.php',
         'layouts/app.stub' => 'layouts/app.blade.php',
@@ -67,7 +68,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
     ];
 
     protected $controllers = [
-        'Admin' => ['UserController', "SettingsController", "RoleController", "RuleController"],
+        'Admin' => ['UserController', "SettingsController", "RoleController", "RuleController", "DefaultController"],
         'Site' => ['ProfileController'],
     ];
 

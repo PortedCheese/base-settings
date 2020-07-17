@@ -1,0 +1,31 @@
+@extends('admin.layout')
+
+@section('page-title', "Dashboard - ")
+
+@section('header-title', 'Dashboard')
+
+@section('admin')
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">TinyMCE example</h3>
+            </div>
+            <div class="card-body">
+                <textarea name="ckExample" class="tiny" cols="30" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Пример галереи для текущего пользователя</h3>
+            </div>
+            <div class="card-body">
+                <gallery csrf-token="{{ csrf_token() }}"
+                         upload-url="{{ route('admin.vue.gallery.post', ['id' => Auth::user()->id, 'model' => 'user']) }}"
+                         get-url="{{ route('admin.vue.gallery.get', ['id' => Auth::user()->id, 'model' => 'user']) }}">
+                </gallery>
+            </div>
+        </div>
+    </div>
+@endsection
