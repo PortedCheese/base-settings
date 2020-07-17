@@ -96,12 +96,14 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
     private function addRoutes()
     {
-        $this->loadRoutesFrom(__DIR__ . '/routes/admin.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/ajax.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/auth.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/settings.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/user.php');
-        $this->loadRoutesFrom(__DIR__ . '/routes/roles.php');
+        $baseAppRoutePath = "routes/vendor/base-settings";
+        $basePkgRoutePath = __DIR__ . "/routes";
+        $routeFiles = ["admin", "ajax", "auth", "settings", "user", "roles"];
+        foreach ($routeFiles as $routeFile) {
+            if (! file_exists(base_path("{$baseAppRoutePath}/{$routeFile}.php"))) {
+                $this->loadRoutesFrom("{$basePkgRoutePath}/{$routeFile}.php");
+            }
+        }
     }
 
     /**

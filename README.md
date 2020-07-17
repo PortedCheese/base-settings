@@ -4,6 +4,8 @@
 
 Есть базовые команды для пакетов что бы заполнить конфигурацию и модели.
 
+Все файлы роутов можно переопределить в приложении создав соответствующиее файлы по пути `routes/vendor/base-settings/{file}.php`
+
 ## Установка
     php artisan ui vue --auth
     npm install && npm run dev
@@ -37,6 +39,7 @@
     
 ### Middleware
 
+- role: доступ по наличию роли
 - management: доступ в административную часть сайта.
 - super: пропускает админа
 - editor: пропускает редактора
@@ -44,17 +47,24 @@
 ### Gates
 
 - пользователи с ролью admin имею доступ ко всему
-- site-management: право доступа к админке.
-- settings-management: открыто для админа
+- site-management: право доступа к админке. (`App\Policies\BasePolicy@siteManagement`)
+- settings-management: открыто для админа. (`App\Policies\BasePolicy@settingsManagement`)
 
 ### Команды и функции
 
 Функция для работы с датами: 
     
     datehelper()
-    {->forFilter(date, date to condition = false)}
-    {->changeTz(date)}
-    {->format(date, format = "d.m.Y H:i")
+        {->forFilter(date, date to condition = false)}
+        {->changeTz(date)}
+        {->format(date, format = "d.m.Y H:i")
+        
+Функция для работы с конфигурацией сайта:
+    
+    base-config()
+        @method static get(string $name, $value = "", $default = null)
+        @method static create(string $name, array $data, array $info, $force = false)
+        @method static update(string $name, string $var, $value)
     
 Генерация ссылки на вход:
     
@@ -68,6 +78,25 @@ universal-priority:
         :elements="{{ json_encode([['name' => "name", "id" => "id"(, "url" => "url")], [..], [..]]) }}"
         url="{{ route("admin.vue.priority", ['table' => "table_name", "field" => "field_name"]) }}">
     </universal-priority>
+    
+confirm-form:
+    
+    <confirm-form :id="'{{ "delete-form-{$model->id}" }}'">
+        <template>
+            <form action="{{ route('admin.model.destroy', ['model' => $model]) }}"
+                  id="delete-form-{{ $model->id }}"
+                  class="btn-group"
+                  method="post">
+                @csrf
+                @method("delete")
+            </form>
+        </template>
+    </confirm-form>
+    Параметры:
+        - title: Вы уверены?
+        - text: Это действие будет невозможно отменить!
+        - confirm-text: Да, удалить!
+        - cancel-text: Отмена
 
 ### Includes
 
@@ -120,7 +149,7 @@ universal-priority:
     v1.7.0:
         - Изменены зависимости
         - Доблены базовые адреса для управления
-        - Роуты разбиты по файлам
+        - Роуты разбиты по файлам, можно переопределить файл
     Обновление:
         - Удалить роуты: admin; admin.logs; profile.*
         
