@@ -101,10 +101,19 @@
                             </section>
                         @else
                             <section class="col-12">
-                                <div class="row">
-                                    @yield('content')
-                                    @yield('links')
-                                </div>
+                                @hasSection("content")
+                                    <div class="row">
+                                        @yield('content')
+                                    </div>
+                                @endif
+
+                                @yield("contents")
+
+                                @hasSection("links")
+                                    <div class="row">
+                                        @yield('links')
+                                    </div>
+                                @endif
                             </section>
                         @endif
                     </div>
