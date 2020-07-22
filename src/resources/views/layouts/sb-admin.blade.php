@@ -48,12 +48,6 @@
 
             {{--Menu--}}
             @include('base-settings::admin.menu')
-
-            {{--Sidebar Toggler (Sidebar)--}}
-            <hr class="sidebar-divider d-none d-md-block">
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
         </ul>
         {{--End of Sidebar--}}
 
@@ -94,10 +88,19 @@
                                 </div>
                             </aside>
                             <section class="col-9">
-                                <div class="row">
-                                    @yield('content')
-                                    @yield('links')
-                                </div>
+                                @hasSection("content")
+                                    <div class="row">
+                                        @yield('content')
+                                    </div>
+                                @endif
+
+                                @yield("contents")
+
+                                @hasSection("links")
+                                    <div class="row">
+                                        @yield('links')
+                                    </div>
+                                @endif
                             </section>
                         @else
                             <section class="col-12">
