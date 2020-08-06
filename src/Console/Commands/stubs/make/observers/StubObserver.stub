@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}};
+
+use PortedCheese\{{pkgName}}\Observers\{{observer}} as VendorObserver;
+
+class {{observer}} extends VendorObserver
+{
+
+}

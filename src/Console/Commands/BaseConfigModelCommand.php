@@ -10,6 +10,20 @@ use Illuminate\Container\Container;
 class BaseConfigModelCommand extends Command
 {
     /**
+     * Namespace.
+     *
+     * @var mixed|string
+     */
+    protected $namespace = '';
+
+    /**
+     * Имя пакета.
+     *
+     * @var string
+     */
+    protected $packageName = "";
+
+    /**
      * Список моделей.
      *
      * @var array
@@ -24,46 +38,11 @@ class BaseConfigModelCommand extends Command
     protected $controllers = [];
 
     /**
-     * Имя пакета.
-     *
-     * @var string
-     */
-    protected $packageName = "";
-
-    /**
-     * Имя конфига.
-     *
-     * @var string
-     */
-    protected $configName = '';
-
-    /**
-     * Заголовок конфига.
-     *
-     * @var string
-     */
-    protected $configTitle = "";
-
-    /**
-     * Шаблон конфига.
-     *
-     * @var string
-     */
-    protected $configTemplate = "";
-
-    /**
-     * Значения конфига.
+     * Список наблюдателей
      *
      * @var array
      */
-    protected $configValues = [];
-
-    /**
-     * Namespace.
-     *
-     * @var mixed|string
-     */
-    protected $namespace = '';
+    protected $observers = [];
 
     /**
      * Vue файлы.
@@ -99,6 +78,34 @@ class BaseConfigModelCommand extends Command
      * @var array
      */
     protected $scssIncludes = [];
+
+    /**
+     * Имя конфига.
+     *
+     * @var string
+     */
+    protected $configName = '';
+
+    /**
+     * Заголовок конфига.
+     *
+     * @var string
+     */
+    protected $configTitle = "";
+
+    /**
+     * Шаблон конфига.
+     *
+     * @var string
+     */
+    protected $configTemplate = "";
+
+    /**
+     * Значения конфига.
+     *
+     * @var array
+     */
+    protected $configValues = [];
 
     /**
      * Create a new command instance.
@@ -241,6 +248,53 @@ class BaseConfigModelCommand extends Command
                 $this->info("$scssInclude added to $filePath");
             }
         }
+    }
+
+    /**
+     * Create observers files.
+     */
+    protected function exportObservers()
+    {
+        $folders = "Observers/Vendor/{$this->packageName}";
+        foreach ($this->observers as $observer) {
+            $path = app_path("$folders/$observer.php");
+            if (file_exists($path)) {
+                if (! $this->confirm("The [{$observer}.php] observer already exists. Do you want to replace it?")) {
+                    continue;
+                }
+            }
+
+            if (! is_dir($directory = app_path($folders))) {
+                mkdir($directory, 0755, true);
+            }
+
+            try {
+                file_put_contents(
+                    $path,
+                    $this->compileObserverStub($observer)
+                );
+
+                $this->info("Observer [{$observer}] generated successfully.");
+            }
+            catch (\Exception $exception) {
+                $this->error("Filed put observer");
+            }
+        }
+    }
+
+    /**
+     * Replace namespace in observer.
+     *
+     * @param $observer
+     * @return mixed
+     */
+    protected function compileObserverStub($observer)
+    {
+        return str_replace(
+            ["{{namespace}}", "{{observer}}", "{{pkgName}}"],
+            [$this->namespace, $observer, $this->packageName],
+            file_get_contents(__DIR__ . "/stubs/make/observers/StubObserver.stub")
+        );
     }
 
     /**
