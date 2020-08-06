@@ -1,6 +1,6 @@
 <?php
 
-namespace {{namespace}};
+namespace {{namespace}}Observers\Vendor\{{pkgName}};
 
 use PortedCheese\{{pkgName}}\Observers\{{observer}} as VendorObserver;
 

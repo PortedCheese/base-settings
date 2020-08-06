@@ -292,7 +292,7 @@ class BaseConfigModelCommand extends Command
     {
         return str_replace(
             ["{{namespace}}", "{{observer}}", "{{pkgName}}"],
-            [$this->namespace, $observer, $this->packageName],
+            [$this->getAppNamespace(), $observer, $this->packageName],
             file_get_contents(__DIR__ . "/stubs/make/observers/StubObserver.stub")
         );
     }
