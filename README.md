@@ -146,6 +146,9 @@ confirm-form:
     
 ### Versions
     
+    v1.7.7:
+        - В app.blade.php добавлен stack svg
+    
     v1.7.3:
         - Добален класс исключения PreventDeleteException
         

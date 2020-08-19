@@ -39,6 +39,8 @@
 </head>
 <body>
     <div id="app">
+        @stack("svg")
+
         @include('base-settings::layouts.nav')
 
         <main class="main-section">
