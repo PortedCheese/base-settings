@@ -8,17 +8,23 @@ if (!function_exists('siteconf')) {
      */
     function siteconf()
     {
-        return app(\PortedCheese\BaseSettings\Helpers\SiteConfig::class);
+        return app("siteconf");
     }
 }
 
 if (!function_exists('datehelper')) {
+    /**
+     * @return \PortedCheese\BaseSettings\Helpers\DateHelper
+     */
     function datehelper() {
-        return app(\PortedCheese\BaseSettings\Helpers\DateHelper::class);
+        return app("datehelper");
     }
 }
 
 if (! function_exists("base_config")) {
+    /**
+     * @return \PortedCheese\BaseSettings\Helpers\ConfigManager
+     */
     function base_config() {
         return app("base-config");
     }

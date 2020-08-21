@@ -4,6 +4,11 @@ namespace PortedCheese\BaseSettings\Helpers;
 
 use Carbon\Carbon;
 
+/**
+ * @method Carbon|null forFilter($value, $to = false)
+ * @method Carbon|null changeTz($value)
+ * @method Carbon|null format($value, $format = "d.m.Y H:i")
+ */
 class DateHelper
 {
     const TZ = "Europe/Moscow";
@@ -39,7 +44,7 @@ class DateHelper
                 break;
 
             case 'changeTz':
-                call_user_func_array([$this, "changeTz"], $args);
+                call_user_func_array([$this, "changeTimeZone"], $args);
                 break;
 
             case 'format':
@@ -79,7 +84,7 @@ class DateHelper
      * @param $value
      * @return string
      */
-    protected function changeTz($value)
+    protected function changeTimeZone($value)
     {
         if (empty($value)) {
             return $value;
