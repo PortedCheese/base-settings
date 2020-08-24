@@ -1,4 +1,5 @@
 @includeIf("catalog::site.cart.cart-state")
+@includeIf("variation-cart::site.includes.cart-state")
 <!-- Authentication Links -->
 @guest
     <li class="nav-item">

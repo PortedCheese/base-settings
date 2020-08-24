@@ -92,6 +92,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->app->singleton("base-config", function () {
            return new ConfigManager;
         });
+
+        $this->mergeConfigFrom(__DIR__ . "/config/theme.php", "theme");
     }
 
     private function addRoutes()
