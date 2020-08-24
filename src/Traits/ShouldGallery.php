@@ -25,6 +25,16 @@ trait ShouldGallery
     }
 
     /**
+     * Обложка.
+     *
+     * @return mixed
+     */
+    public function cover()
+    {
+        return $this->morphOne(Image::class, "imageable")->oldest("weight");
+    }
+
+    /**
      * Удалить все изображения.
      */
     public function clearImages()
