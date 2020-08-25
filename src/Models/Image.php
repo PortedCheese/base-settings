@@ -22,7 +22,7 @@ class Image extends Model {
         parent::boot();
 
         static::updated(function ($model) {
-            event(new ImageUpdate($model));
+            event(new ImageUpdate($model, "updated"));
         });
 
         static::deleting(function ($model) {
@@ -31,7 +31,7 @@ class Image extends Model {
             // Удаляем с диска картинку.
             Storage::delete($model->path);
 
-            event(new ImageUpdate($model));
+            event(new ImageUpdate($model, "deleting"));
         });
     }
 

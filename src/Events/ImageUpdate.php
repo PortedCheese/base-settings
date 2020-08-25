@@ -11,16 +11,19 @@ class ImageUpdate
 
     public $image;
     public $morph;
+    public $action;
 
     /**
      * Create a new event instance.
      *
      * ImageUpdate constructor.
      * @param Image $image
+     * @param string $action
      */
-    public function __construct(Image $image)
+    public function __construct(Image $image, string $action = "undefined")
     {
         $this->image = $image;
         $this->morph = $image->imageable;
+        $this->action = $action;
     }
 }

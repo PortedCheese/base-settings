@@ -65,7 +65,7 @@ class ImageController extends Controller
         ]);
         $modelClass->images()->save($image);
         $image->setMax();
-        event(new ImageUpdate($image));
+        event(new ImageUpdate($image, "created"));
         return [
             'success' => TRUE,
             'images' => Image::prepareImage($modelClass),

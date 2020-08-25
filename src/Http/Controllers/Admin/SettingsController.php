@@ -192,12 +192,14 @@ class SettingsController extends Controller
             "items" => ["required", "array"]
         ])->validate();
         $items = $request->get("items");
+        $ids = [];
         foreach ($items as $priority => $id) {
+            $ids[] = $id;
             DB::table($table)
                 ->where("id", $id)
                 ->update(["$field" => $priority]);
         }
-        event(new PriorityUpdate($table));
+        event(new PriorityUpdate($table, $ids));
         return response()
             ->json([
                 "success" => true,
