@@ -145,6 +145,11 @@ confirm-form:
     ])
     
 ### Versions
+    v1.7.13:
+        - В main-section.blade.php добавлена секция header-upper-title и raw-header-upper-title
+        
+    v1.7.12:
+        - В app-base.js изменены настройки noUiSlider
     
     v1.7.7:
         - В app.blade.php добавлен stack svg

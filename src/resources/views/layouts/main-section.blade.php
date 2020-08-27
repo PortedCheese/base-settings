@@ -10,6 +10,18 @@
 
         <div class="row">
             @hasSection('sidebar')
+                @hasSection('header-upper-title')
+                    <section class="col-12 under-content-section">
+                        <div class="row @yield('header-upper-title-cover-class', 'header-upper-title-cover')">
+                            <div class="col-12">
+                                <h1>@yield('header-upper-title')</h1>
+                            </div>
+                        </div>
+                    </section>
+                @endif
+                @hasSection("raw-header-upper-title")
+                    @yield("raw-header-upper-title")
+                @endif
                 <aside class="d-none d-lg-block col-lg-3 sidebar-section">
                     @yield('sidebar')
                 </aside>
