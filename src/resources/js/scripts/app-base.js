@@ -80,6 +80,14 @@ window.noUiSlider = require('nouislider');
                 range: {
                     'min': min,
                     'max': max
+                },
+                format: {
+                    from: function(value) {
+                        return parseInt(value);
+                    },
+                    to: function(value) {
+                        return parseInt(value);
+                    }
                 }
             });
 
