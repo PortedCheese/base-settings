@@ -1,4 +1,5 @@
 @includeIf("catalog::site.cart.cart-state")
+@includeIf("category-product::site.includes.favorite-state")
 @includeIf("variation-cart::site.includes.cart-state")
 <!-- Authentication Links -->
 @guest
