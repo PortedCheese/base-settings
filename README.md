@@ -145,6 +145,11 @@ confirm-form:
     ])
     
 ### Versions
+    v1.7.15:
+        - В base.scss добавлен класс upper-label
+    Обновление:
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+        
     v1.7.14:
         - В base.scss изменен цвет noUi slider
     Обновление:
