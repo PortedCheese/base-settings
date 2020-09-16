@@ -89,6 +89,7 @@ class ProfileController extends Controller
             "email" => ["required", "email", "max:250", "unique:users,email,{$this->user->id}"],
             "password" => ["nullable", "string", "min:6", "confirmed"],
             "image" => ["nullable", "image"],
+            "phone_number" => ["nullable", "max:100"],
         ], [], [
             "name" => "Имя",
             "last_name" => "Фамилия",
@@ -96,6 +97,7 @@ class ProfileController extends Controller
             "email" => "E-mail",
             "password" => "Пароль",
             "image" => "Аватар",
+            "phone_number" => "Номер телефона",
         ])->validate();
     }
 
