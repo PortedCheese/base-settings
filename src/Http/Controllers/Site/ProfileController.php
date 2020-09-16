@@ -71,7 +71,7 @@ class ProfileController extends Controller
         $this->user->uploadImage($request, "users");
 
         return redirect()
-            ->back()
+            ->route("profile.show")
             ->with('success', 'Успешно обновлено');
     }
 

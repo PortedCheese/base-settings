@@ -39,6 +39,7 @@
 </head>
 <body>
     <div id="app">
+        @include("base-settings::layouts.svg")
         @foreach (config("theme.configSvg", []) as $item)
             @includeIf($item)
         @endforeach

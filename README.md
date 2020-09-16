@@ -145,6 +145,19 @@ confirm-form:
     ])
     
 ### Versions
+    v2.0.0:
+        - У пользователя убран шаблон layout
+        - К пользователю добалвен номер телефона
+        - Изменен внешний вид личного кабинета
+        - Добавлен шаблон для svg
+        - Убрана дата frontend из настроек
+        - Изменен метод обновления пользователя
+    Обновление:
+        - php artisan migrate
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+        - php artisan make:base-settings --scss (profile-page yes)
+        - Если изменена форма редактирования пользователя, добавить метод PUT
+        
     v1.7.15:
         - В base.scss добавлен класс upper-label
     Обновление:

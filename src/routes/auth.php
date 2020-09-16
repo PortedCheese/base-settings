@@ -22,6 +22,6 @@ Route::group([
         ->name('show');
     Route::get('/edit', 'ProfileController@edit')
         ->name("edit");
-    Route::post('/update', 'ProfileController@update')
+    Route::put('/update', 'ProfileController@update')
         ->name("update");
 });

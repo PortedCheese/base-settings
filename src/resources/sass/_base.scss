@@ -64,7 +64,7 @@
 .upper-label {
   margin-bottom: 1.5rem;
   position: relative;
-  label {
+  > label {
     font-size: 87.5%;
     position: absolute;
     left: $input-padding-x;
@@ -73,6 +73,7 @@
     margin-left: - .125rem;
     background-color: $input-bg;
     padding: 0 .125rem;
+    z-index: 1;
   }
   .form-control {
     &:focus {

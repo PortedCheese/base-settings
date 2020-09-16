@@ -1,0 +1,32 @@
+.profile-page {
+  &__empty {
+    display: flex;
+    border: 5px solid $primary;
+    color: $primary;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    @include border-radius(50%);
+    &-ico {
+      fill: currentColor;
+      width: 60px;
+      height: 60px;
+    }
+  }
+  &__name {
+    margin-bottom: $grid-gutter-width;
+  }
+  &__label {
+    font-size: .875rem;
+    color: $gray-500;
+  }
+  &__list-item:not(:last-child) {
+    margin-right: $grid-gutter-width * 2;
+  }
+  &__img {
+    display: block;
+    margin: 0 auto;
+  }
+}

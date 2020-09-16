@@ -15,10 +15,11 @@ use Illuminate\Support\Str;
 use PortedCheese\BaseSettings\Events\UserUpdate;
 use PortedCheese\BaseSettings\Notifications\CustomResetPasswordNotify;
 use PortedCheese\BaseSettings\Traits\HasImage;
+use PortedCheese\BaseSettings\Traits\ShouldImage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, HasImage;
+    use Notifiable, ShouldImage;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'last_name',
         'middle_name',
+        "phone_number",
     ];
 
     /**
@@ -45,7 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected static function boot()
     {
         parent::boot();
-        static::imageBoot();
 
         static::deleting(function(\App\User $model) {
             // Чистим таблицу ролей.

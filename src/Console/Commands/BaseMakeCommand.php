@@ -90,7 +90,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
     ];
 
     protected $scssIncludes = [
-        "app" => ["mixins", "base", "animation"],
+        "app" => ["mixins", "base", "animation", "profile-page"],
     ];
 
     protected $configName = "base-settings";

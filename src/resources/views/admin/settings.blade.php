@@ -44,17 +44,3 @@
     @enderror
 </div>
 
-<div class="form-group">
-    <label for="data-frontendDate">Дата frontend</label>
-    <input type="date"
-           id="data-frontendDate"
-           name="data-frontendDate"
-           value="{{ old("data-frontendDate", base_config()->get($name, "frontendDate", "")) }}"
-           class="form-control @error("data-frontendDate") is-invalid @enderror">
-    @error("data-frontendDate")
-        <div class="invalid-feedback" role="alert">
-            {{ $message }}
-        </div>
-    @enderror
-</div>
-

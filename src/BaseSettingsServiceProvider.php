@@ -14,6 +14,7 @@ use PortedCheese\BaseSettings\Filters\LgGrid4;
 use PortedCheese\BaseSettings\Filters\LgGrid6;
 use PortedCheese\BaseSettings\Filters\MdGrid4;
 use PortedCheese\BaseSettings\Filters\MdGrid6;
+use PortedCheese\BaseSettings\Filters\ProfileImage;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
 use PortedCheese\BaseSettings\Helpers\ConfigManager;
@@ -148,6 +149,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $imagecache['md-grid-6'] = MdGrid6::class;
         $imagecache['sm-grid-6'] = SmGrid6::class;
         $imagecache['sm-grid-12'] = SmGrid12::class;
+
+        $imagecache["profile-image"] = ProfileImage::class;
 
         app()->config['imagecache.templates'] = $imagecache;
     }
