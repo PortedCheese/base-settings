@@ -1,6 +1,8 @@
+@if (strstr($currentRoute, "admin") === false)
 @includeIf("catalog::site.cart.cart-state")
 @includeIf("category-product::site.includes.favorite-state")
 @includeIf("variation-cart::site.includes.cart-state")
+@endif
 <!-- Authentication Links -->
 @guest
     <li class="nav-item">

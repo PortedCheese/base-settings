@@ -15,11 +15,12 @@ use Illuminate\Support\Str;
 use PortedCheese\BaseSettings\Events\UserUpdate;
 use PortedCheese\BaseSettings\Notifications\CustomResetPasswordNotify;
 use PortedCheese\BaseSettings\Traits\HasImage;
+use PortedCheese\BaseSettings\Traits\ShouldGallery;
 use PortedCheese\BaseSettings\Traits\ShouldImage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, ShouldImage;
+    use Notifiable, ShouldImage, ShouldGallery;
 
     /**
      * The attributes that are mass assignable.
