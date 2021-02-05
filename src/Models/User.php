@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
         static::creating(function(\App\User $model) {
             if (
                 ! empty(Auth::user()) &&
-                Auth::user()->hasRole('admin')
+                Auth::user()->hasRole(\App\Role::SUPER)
             ) {
                 $model->email_verified_at = Carbon::now();
             }
@@ -168,16 +168,33 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setRoles($roles) {
         $adminRole = Role::query()
-            ->where('name', 'admin')
+            ->where('name', \App\Role::SUPER)
             ->first();
         // Если админ пытается снять у себя роль админа, вернуть ее.
         if (
             $this->id == Auth::id() &&
             !in_array($adminRole->id, $roles) &&
-            $this->hasRole('admin')
+            $this->hasRole(\App\Role::SUPER)
         ) {
             $roles[] = $adminRole->id;
         }
+        //Если не админ пытается снять роль у админа, вернуть ее
+        if (
+            !Auth::user()->hasRole(\App\Role::SUPER) &&
+            $this->hasRole(\App\Role::SUPER) &&
+            !in_array($adminRole->id, $roles)
+        ) {
+            $roles[] = $adminRole->id;
+        }
+        //Если не админ пытается поставить роль админа, отменяем изменения
+        if (
+            !Auth::user()->hasRole(\App\Role::SUPER) &&
+            !$this->hasRole(\App\Role::SUPER) &&
+            in_array($adminRole->id, $roles)
+        ) {
+            return;
+        }
+
         $this->roles()->sync($roles);
         $this->forgetRoleIdsCache();
     }
@@ -223,7 +240,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isSuperUser()
     {
-        return $this->hasRole("admin");
+        return $this->hasRole(\App\Role::SUPER);
     }
 
     /**
@@ -233,7 +250,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isEditorUser()
     {
-        return $this->hasRole("editor") || $this->hasRole("admin");
+        return $this->hasRole(\App\Role::EDITOR) || $this->hasRole(\App\Role::SUPER);
     }
 
     /**
@@ -255,6 +272,25 @@ class User extends Authenticatable implements MustVerifyEmail
             }
             return $roleIds;
         });
+    }
+    /**
+     * Получить пользователей без роли Админа
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     */
+    public static function getNoSuperUsers()
+    {
+
+        $users = DB::table("role_user")->select("user_id")->where("role_id", "!=", \App\Role::getSuperId())->get();
+        $users = $users->toArray();
+        $users_ids=[];
+        foreach ($users as $user) {
+            foreach ($user as $key => $value) {
+                $users_ids[]=$value;
+            }
+        }
+        return \App\User::query()->whereIn("id", $users_ids);
     }
 
     /**

@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 class Role extends Model
 {
+
+    const SUPER = "admin";
+    const EDITOR = "editor";
+
     protected $fillable = [
         'name',
         'default',
@@ -50,9 +54,24 @@ class Role extends Model
     public static function getForAdmin()
     {
         $roles = self::query();
-        if (! Auth::user()->hasRole('admin')) {
-            $roles->where('name', '!=', 'admin');
+        if (! Auth::user()->hasRole(\App\Role::SUPER)) {
+            $roles->where('name', '!=', \App\Role::SUPER);
         }
         return $roles->get();
+    }
+
+    /**
+     * Получить id главной роли.
+     *
+     * @return bool|mixed
+     */
+    public static function getSuperId() {
+        $id = self::query()
+            ->select("id")
+            ->where("name", \App\Role::SUPER)
+            ->first();
+        if (empty($id)) return false;
+        return $id->id;
+
     }
 }

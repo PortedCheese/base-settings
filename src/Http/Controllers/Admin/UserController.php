@@ -27,7 +27,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $collection = User::query();
+        //Администраторов видит только администратор
+        if (! Auth::user()->hasRole(Role::SUPER))
+            $collection = User::getNoSuperUsers();
+        else
+            $collection = User::query();
         $this->searchQuery($collection, $request);
         $perPage = siteconf()->get("base-settings", "userAdminPager");
         return view('base-settings::admin.user.index', [
@@ -94,12 +98,38 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->storeValidator($request->all());
+
+        //задать администратора может только администратор
+        if (!Auth::user()->hasRole(Role::SUPER)) {
+            if ($this->isAdminRolesInput($request))
+                return redirect()->route('admin.users.index')
+                    ->with('danger', 'Пользователь не может быть добавлен');
+        }
+
         $user = User::create($request->all());
         $user->uploadImage($request, "users");
 
         $user->roles()->sync($request->get("roles", []));
         return redirect()->route('admin.users.index')
             ->with('success', 'Пользователь добавлен');
+    }
+    /**
+     * Проверяем, указана ли роль Адмниситратора в форме
+     *
+     * @param Request $request
+     * @return bool
+     */
+
+    protected function isAdminRolesInput (Request $request) {
+
+        $inputRoles = $request->input("roles");
+        foreach ($inputRoles as $inputRole) {
+            $adminRoleId = Role::getSuperId();
+            if ($inputRole ==  $adminRoleId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -123,6 +153,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //администраторов может открывать для редактирования только администратор
+        if (!Auth::user()->hasRole(Role::SUPER) && ($user->hasRole(Role::SUPER)))
+        {
+            return redirect()->route('admin.users.index');
+        }
         return view('base-settings::admin.user.edit', [
             'user' => $user,
             'roles' => Role::getForAdmin(),
@@ -141,6 +176,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->updateValidator($request->all(), $user);
+
+        //добавить роль администратора может только администратор
+        if (!Auth::user()->hasRole(Role::SUPER)) {
+            if ($this->isAdminRolesInput($request))
+                return redirect()->route('admin.users.index')
+                    ->with('danger', 'Пользователь не может быть обновлен');
+        }
 
         $user->update($request->all());
         $user->uploadImage($request, "users");
@@ -177,7 +219,7 @@ class UserController extends Controller
         if (Auth::user()->id == $user->id) {
             return redirect()->back()->with('danger', 'Невозможно удалить себя!');
         }
-        if ($user->hasRole('admin')) {
+        if ($user->hasRole(Role::SUPER)) {
             return redirect()->back()->with('danger', 'Невозможно удалить админа!');
         }
         $user->delete();
