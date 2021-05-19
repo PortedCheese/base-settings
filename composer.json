@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "laravel/framework": "^8.0",
         "intervention/imagecache": "^2.4"
     },
