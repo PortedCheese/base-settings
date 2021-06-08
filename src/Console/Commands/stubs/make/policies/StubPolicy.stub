@@ -2,7 +2,7 @@
 
 namespace {{namespace}}\Policies;
 
-use PortedCheese\{{pkgName}}\Policies\{{policy}} as VendorPolicy;
+use {{vndName}}\{{pkgName}}\Policies\{{policy}} as VendorPolicy;
 
 class {{policy}} extends VendorPolicy
 {

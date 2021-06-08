@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use PortedCheese\{{pkgName}}\Models\{{model}} as VendorModel;
+use {{vndName}}\{{pkgName}}\Models\{{model}} as VendorModel;
 
 class {{model}} extends VendorModel
 {

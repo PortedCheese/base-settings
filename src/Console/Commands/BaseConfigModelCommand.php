@@ -17,6 +17,12 @@ class BaseConfigModelCommand extends Command
     protected $namespace = '';
 
     /**
+     * Разработчик пакета
+     *
+     * @var string
+     */
+    protected $vendorName = 'PortedCheese';
+    /**
      * Имя пакета.
      *
      * @var string
@@ -291,8 +297,8 @@ class BaseConfigModelCommand extends Command
     protected function compileObserverStub($observer)
     {
         return str_replace(
-            ["{{namespace}}", "{{observer}}", "{{pkgName}}"],
-            [$this->getAppNamespace(), $observer, $this->packageName],
+            ["{{vndName}}" , "{{namespace}}", "{{observer}}", "{{pkgName}}"],
+            [$this->vendorName, $this->getAppNamespace(), $observer, $this->packageName],
             file_get_contents(__DIR__ . "/stubs/make/observers/StubObserver.stub")
         );
     }
@@ -332,8 +338,8 @@ class BaseConfigModelCommand extends Command
     protected function compileModelStub($model)
     {
         return str_replace(
-            ['{{namespace}}', "{{model}}", "{{pkgName}}"],
-            [$this->namespace, $model, $this->packageName],
+            ['{{vndName}}','{{namespace}}', "{{model}}", "{{pkgName}}"],
+            [$this->vendorName, $this->namespace, $model, $this->packageName],
             file_get_contents(__DIR__ . "/stubs/make/models/StubModel.stub")
         );
     }
@@ -384,8 +390,8 @@ class BaseConfigModelCommand extends Command
     protected function compileControllerStub($place, $controller)
     {
         return str_replace(
-            ['{{namespace}}', '{{pkgName}}', "{{place}}", "{{name}}"],
-            [$this->getAppNamespace(), $this->packageName, $place, $controller],
+            ['{{vndName}}','{{namespace}}', '{{pkgName}}', "{{place}}", "{{name}}"],
+            [$this->vendorName, $this->getAppNamespace(), $this->packageName, $place, $controller],
             file_get_contents(__DIR__ . "/stubs/make/controllers/StubController.stub")
         );
     }
@@ -509,8 +515,8 @@ class BaseConfigModelCommand extends Command
     protected function compilePolicyStub($policy)
     {
         return str_replace(
-            ['{{namespace}}', "{{policy}}", "{{pkgName}}"],
-            [$this->namespace, $policy, $this->packageName],
+            ['{{vndName}}','{{namespace}}', "{{policy}}", "{{pkgName}}"],
+            [$this->vendorName, $this->namespace, $policy, $this->packageName],
             file_get_contents(__DIR__ . "/stubs/make/policies/StubPolicy.stub")
         );
     }

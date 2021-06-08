@@ -2,7 +2,7 @@
 
 namespace {{namespace}}Observers\Vendor\{{pkgName}};
 
-use PortedCheese\{{pkgName}}\Observers\{{observer}} as VendorObserver;
+use {{vndName}}\{{pkgName}}\Observers\{{observer}} as VendorObserver;
 
 class {{observer}} extends VendorObserver
 {
