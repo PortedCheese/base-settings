@@ -21,7 +21,7 @@ class BaseConfigModelCommand extends Command
      *
      * @var string
      */
-    protected $vendorName = 'PortedCheese';
+    protected $vendorName = '';
     /**
      * Имя пакета.
      *
