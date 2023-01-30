@@ -1,6 +1,6 @@
 window.Lightbox = require('lightbox2');
 window.Chosen = require('chosen-js');
-window.Swal = require('sweetalert2');
+window.Swal = require('sweetalert2-neutral');
 
 (function ($) {
     $(document).ready(function(){

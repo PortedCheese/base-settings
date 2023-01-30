@@ -143,7 +143,12 @@ confirm-form:
     ])
     
 ### Versions
-    
+    v3.0.4: Sweetalert2-neutral
+        - npm uninstall sweetalert2
+        - npm install sweetalert2-neutral
+    v3.0.3: unset vendorName variable
+    v3.0.2: add Bootstrap paginator to provider
+    v3.0.1: add vendorName to commands
     v.3.0.0: 
         Laravel 8
     v.2.1.2:
