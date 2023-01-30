@@ -146,6 +146,7 @@ confirm-form:
     v3.0.4: Sweetalert2-neutral
         - npm uninstall sweetalert2
         - npm install sweetalert2-neutral
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.0.3: unset vendorName variable
     v3.0.2: add Bootstrap paginator to provider
     v3.0.1: add vendorName to commands
