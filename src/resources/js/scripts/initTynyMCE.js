@@ -17,12 +17,84 @@ require('tinymce/plugins/charmap');
     $(document).ready(function(){
         initTiny();
     });
+    var dialogConfig =  {
+        title: 'Кнопка',
+        body: {
+            type: 'panel',
+            items: [
+                {
+                    type: 'selectbox',
+                    name: 'color',
+                    label: 'Выберите цвет',
+                    items: [
+                        { value: 'primary', text: 'Основной' },
+                        { value: 'secondary', text: 'Дополнительный' },
+                        { value: 'warning', text: 'Уведомление' },
+                        { value: 'danger', text: 'Предупреждение' },
+                        { value: 'info', text: 'Информация' },
+                    ]
+                },
+                {
+                    type: 'input',
+                    name: 'text',
+                    label: 'Текст на кнопке'
+                },
+                {
+                    type: 'input',
+                    name: 'link',
+                    label: 'Сcылка с кнопки'
+                },
+                {
+                    type: 'input',
+                    name: 'toggle',
+                    label: 'Открыть окно'
+                }
+            ]
+        },
+        buttons: [
+            {
+                type: 'cancel',
+                name: 'closeButton',
+                text: 'Cancel'
+            },
+            {
+                type: 'submit',
+                name: 'submitButton',
+                text: 'Добавить кнопку',
+                primary: true
+            }
+        ],
+        initialData: {
+            text: '',
+            link: '',
+            toggle: '',
+            color: 'primary',
+        },
+        onSubmit: function (api) {
+            var data = api.getData();
+            var link = data.link;
+            var toggle = data.toggle;
 
+            if (link.length > 0) {
+                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                    '<a class="btn btn-'+ data.color +'" href="'+ link+'">' + data.text + '</a>'
+                );
+            }
+            else
+            if (toggle.length >0) {
+                tinymce.activeEditor.execCommand('mceInsertContent', false,
+                    '<a class="btn btn-'+ data.color +'" href="#" data-toggle="modal" data-target="'+ toggle +'">' + data.text + '</a>'
+                );
+            }
+            api.close();
+        }
+    };
     function initTiny() {
         let $selector = $(".tiny");
         if (! $selector.length) {
             return;
         }
+
         tinymce.init({
             selector: ".tiny",
             height: 300,
@@ -31,7 +103,7 @@ require('tinymce/plugins/charmap');
                 'lists link image preview code fullscreen table paste code wordcount'
             ],
             toolbar1: "undo redo | removeformat code fullscreen",
-            toolbar2: 'styleselect | bold italic link | bullist numlist outdent indent | image table',
+            toolbar2: 'styleselect | bold italic link | bullist numlist outdent indent | image table | dialog-btn',
             style_formats: [
                 { title: 'Обычный', block: 'p'},
                 { title: 'Заголовки' },
@@ -44,8 +116,18 @@ require('tinymce/plugins/charmap');
             ],
             content_css: [
                 '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                '//www.tinymce.com/css/codepen.min.css'
+                '//www.tinymce.com/css/codepen.min.css',
+                '/css/admin.css'
             ],
+            setup: function (editor) {
+
+                editor.ui.registry.addButton('dialog-btn', {
+                    icon: 'color-swatch',
+                    onAction: function () {
+                        editor.windowManager.open(dialogConfig)
+                    }
+                })
+            },
             file_picker_callback : elFinderBrowser
         });
     }

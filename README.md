@@ -143,6 +143,8 @@ confirm-form:
     ])
     
 ### Versions
+    v3.0.5: TinyMCE init: add btn
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.0.4: Sweetalert2-neutral
         - npm uninstall sweetalert2
         - npm install sweetalert2-neutral
