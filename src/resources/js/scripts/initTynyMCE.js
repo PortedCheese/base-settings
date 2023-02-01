@@ -128,7 +128,7 @@ require('tinymce/plugins/charmap');
                     }
                 })
             },
-            file_picker_callback : elFinderBrowser
+            file_picker_callback : false //elFinderBrowser
         });
     }
 
