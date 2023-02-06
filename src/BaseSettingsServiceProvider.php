@@ -166,7 +166,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
         // Ко всем шаблонам цепляем переменную тукущего роута.
         // Ко всем что бы не добавлять шаблон каждый раз как понадобится эта переменная.
         view()->composer('*', function ($view) {
-            $detectIe = strpos(request()->userAgent(), "Trident");
+            $detectIe =
+                strpos(request()->userAgent(), "Trident") > 0 || strpos(request()->userAgent(), "MSIE" >0) ?? 1;
             $view->with('currentRoute', Route::currentRouteName());
             $view->with('detectIe', $detectIe);
         });
