@@ -141,8 +141,48 @@ confirm-form:
         ],
         "imgClass" => "img-fluid",
     ])
-    
+
+Вывод тега `picture` Lazy:
+
+    @picLazy([
+        "image" => (object) ["file_name" => "example.jpg", "name" => "example"],
+        "template" => "small",
+        "grid" => [
+            "example-grid" => 768,
+        ],
+        "imgClass" => "example-class",
+    ])
+
+Вывод изображения Lazy с `lightbox` :
+
+    @imgLazy([
+        "image" => (object) ["file_name" => "example.jpg", "name" => "example", "id" => "unique"], (id требуется если lightbox не указан)
+        "template" => "small",
+        "lightbox" => "lightGroupExample",
+        "imgClass" => "example-class",
+        "grid" => [
+            "example-grid" => 768,
+        ],
+    ])
+Вывод галереии Lazy с `lightbox` :
+
+    @imagesLazy([
+        "gallery" => [(object) ..., (object) ...],
+        "lightbox" => "lightExampleGroup",
+        "template" => "sm-grid-6",
+        "grid" => [
+            "lg-grid-3" => 992,
+            "md-grid-6" => 768,
+        ],
+        "imgClass" => "img-fluid",
+    ])
 ### Versions
+    v3.1.0: Lazy images support, $detectIe:
+        - npm install lazysizes
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+        - use: @picLazy, @imgLazy, @imageslazy
+    v3.0.6: TinyMCE files upload: false
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.0.5: TinyMCE init: add btn
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.0.4: Sweetalert2-neutral

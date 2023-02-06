@@ -1,6 +1,9 @@
 window.Lightbox = require('lightbox2');
 window.Chosen = require('chosen-js');
 window.noUiSlider = require('nouislider');
+// import a plugin
+import 'lazysizes';
+import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 (function ($) {
     $(document).ready(function(){

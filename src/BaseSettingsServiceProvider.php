@@ -166,7 +166,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         // Ко всем шаблонам цепляем переменную тукущего роута.
         // Ко всем что бы не добавлять шаблон каждый раз как понадобится эта переменная.
         view()->composer('*', function ($view) {
+            $detectIe = strpos(request()->userAgent(), "Trident");
             $view->with('currentRoute', Route::currentRouteName());
+            $view->with('detectIe', $detectIe);
         });
 
         // Выбор темы.
@@ -211,7 +213,10 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         Blade::aliasComponent("base-settings::components.picture", 'picture');
         Blade::aliasComponent("base-settings::components.image", 'image');
+        Blade::aliasComponent("base-settings::components.picture-lazy", 'pictureLazy');
+        Blade::aliasComponent("base-settings::components.image-lazy", 'imageLazy');
         Blade::aliasComponent("base-settings::components.gallery", 'gallery');
+        Blade::aliasComponent("base-settings::components.gallery-lazy", 'galleryLazy');
     }
 
     /**
@@ -224,7 +229,10 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         Blade::include("base-settings::components.picture", "pic");
         Blade::include("base-settings::components.image", "img");
+        Blade::include("base-settings::components.picture-lazy", "picLazy");
+        Blade::include("base-settings::components.image-lazy", "imgLazy");
         Blade::include("base-settings::components.gallery", "images");
+        Blade::include("base-settings::components.gallery-lazy", "imagesLazy");
 
         Blade::include("base-settings::components.edit-gallery", "eGall");
     }
