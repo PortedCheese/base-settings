@@ -177,6 +177,8 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v3.1.1: TinyMCE colors:
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.1.0: Lazy images support, $detectIe:
         - npm install lazysizes
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force

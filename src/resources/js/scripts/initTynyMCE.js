@@ -17,7 +17,7 @@ require('tinymce/plugins/charmap');
     $(document).ready(function(){
         initTiny();
     });
-    var dialogConfig =  {
+    var dialogBtn =  {
         title: 'Кнопка',
         body: {
             type: 'panel',
@@ -32,6 +32,7 @@ require('tinymce/plugins/charmap');
                         { value: 'warning', text: 'Уведомление' },
                         { value: 'danger', text: 'Предупреждение' },
                         { value: 'info', text: 'Информация' },
+                        { value: 'dark', text: 'Темный' },
                     ]
                 },
                 {
@@ -110,6 +111,14 @@ require('tinymce/plugins/charmap');
                 { title: 'Заголовок 2', block: 'h2'},
                 { title: 'Заголовок 3', block: 'h3'},
                 { title: 'Заголовок 4', block: 'h4'},
+                { title: 'Маленький', block: 'small'},
+                { title: 'Выделить цветом'},
+                {title : 'Основной цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-primary'},
+                {title : 'Дополнительный цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-secondary'},
+                {title : 'Уведомление', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-warning'},
+                {title : 'Предупреждение', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-danger'},
+                {title : 'Инофрмация', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-info'},
+                {title : 'Темный', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-dark'},
                 { title: 'Форматы изображений' },
                 { title: 'Изображение слева', selector: 'img', styles: { 'float': 'left', 'margin': '0 10px 0 10px' } },
                 { title: 'Изображение справа', selector: 'img', styles: { 'float': 'right', 'margin': '0 0 10px 10px' } },
@@ -124,7 +133,7 @@ require('tinymce/plugins/charmap');
                 editor.ui.registry.addButton('dialog-btn', {
                     icon: 'color-swatch',
                     onAction: function () {
-                        editor.windowManager.open(dialogConfig)
+                        editor.windowManager.open(dialogBtn)
                     }
                 })
             },
