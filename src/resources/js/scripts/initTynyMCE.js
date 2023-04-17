@@ -141,6 +141,13 @@ require('tinymce/plugins/charmap');
         });
     }
 
+    $(document).on('focusin', function(e) {
+        if ($(e.target).closest(".tox-tinymce, .tox-tinymce-aux, .moxman-window, .tam-assetmanager-root").length) {
+            e.stopImmediatePropagation();
+        }
+    });
+
+
     function elFinderBrowser (callback, value, meta) {
         tinymce.activeEditor.windowManager.openUrl({
             title: 'File Manager',
