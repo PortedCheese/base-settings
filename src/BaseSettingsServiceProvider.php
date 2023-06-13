@@ -26,6 +26,7 @@ use PortedCheese\BaseSettings\Http\Middleware\EditorUser;
 use PortedCheese\BaseSettings\Http\Middleware\Management;
 use PortedCheese\BaseSettings\Http\Middleware\SuperUser;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
 
 class BaseSettingsServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->extendImages();
         $this->setMiddleware();
         $this->addRoutes();
+
+        Schema::defaultStringLength(255);
 
         Paginator::useBootstrap();
 
