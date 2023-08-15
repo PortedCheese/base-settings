@@ -69,7 +69,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
 
     protected $controllers = [
         'Admin' => ['UserController', "SettingsController", "RoleController", "RuleController", "DefaultController"],
-        'Site' => ['ProfileController'],
+        'Site' => ['ProfileController', "RedirectController"],
     ];
 
     protected $vueIncludes = [

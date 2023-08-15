@@ -107,7 +107,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         $baseAppRoutePath = "routes/vendor/base-settings";
         $basePkgRoutePath = __DIR__ . "/routes";
-        $routeFiles = ["admin", "ajax", "auth", "settings", "user", "roles"];
+        $routeFiles = ["admin", "ajax", "auth", "settings", "user", "roles", "redirect"];
         foreach ($routeFiles as $routeFile) {
             if (! file_exists(base_path("{$baseAppRoutePath}/{$routeFile}.php"))) {
                 $this->loadRoutesFrom("{$basePkgRoutePath}/{$routeFile}.php");

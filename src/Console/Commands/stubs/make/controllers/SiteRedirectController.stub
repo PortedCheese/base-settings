@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Site;
+
+use Illuminate\Http\Request;
+
+class RedirectController extends \PortedCheese\BaseSettings\Http\Controllers\Site\RedirectController
+{
+
+}

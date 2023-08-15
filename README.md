@@ -177,6 +177,9 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.0.1: Add RedirectController
+        - php artisan make:base-settongs --controllers (y - для создания Site/RedirectController)
+    v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)
     v3.1.4: Change Init TinyMCE (fix Tiny modal dialog)
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v3.1.3: Detect IE fix
