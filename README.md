@@ -177,6 +177,7 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.0.2: ShouldImage new methods
     v4.0.1: Add RedirectController
         - php artisan make:base-settongs --controllers (y - для создания Site/RedirectController)
     v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)

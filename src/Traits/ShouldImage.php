@@ -4,6 +4,9 @@ namespace PortedCheese\BaseSettings\Traits;
 
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait ShouldImage
 {
@@ -61,6 +64,95 @@ trait ShouldImage
             $this->image()->associate($image);
             $this->save();
         }
+    }
+
+    /**
+     * Upload base64 encoded image to path
+     *
+     * @param $image64
+     * @param $path
+     * @param $field
+     * @return void
+     */
+    public function uploadBase64Image($image64, $path, $field = "title")
+    {
+        if (! $image64) return;
+        try {
+            $decode = base64_decode($image64);
+            $makePath =  $path . "/" . $this->makeImageName($decode);
+            Storage::disk("public")->put($makePath, $decode);
+
+            if (! empty($this->{$field})) {
+                $fileName = $this->{$field};
+            }
+            else {
+                $fileName = "";
+            }
+            $this->clearImage();
+
+            $image = Image::create([
+                'path' => $makePath,
+                'name' => $fileName,
+            ]);
+            $this->image()->associate($image);
+            $this->save();
+        }
+        catch (\Exception $exception) {
+            Log::error("Не удалось загрузить изображения для {$this->slug}");
+            return;
+        }
+    }
+
+    /**
+     * Upload image to Path from Url
+     * @param $url
+     * @param $path
+     * @param $field
+     * @return void
+     */
+
+    public function uploadUrlImage($url, $path, $field = "title")
+    {
+        if (! $url) return;
+        $contents = file_get_contents($url);
+        if (! $contents) return;
+        try {
+            $makePath =  $path . "/" . $this->makeImageName($contents);
+            Storage::disk("public")->put($makePath, $contents);
+
+            if (! empty($this->{$field})) {
+                $fileName = $this->{$field};
+            }
+            else {
+                $fileName = "";
+            }
+            $this->clearImage();
+
+            $image = Image::create([
+                'path' => $makePath,
+                'name' => $fileName,
+            ]);
+            $this->image()->associate($image);
+            $this->save();
+        }
+        catch (\Exception $exception) {
+            Log::error("Не удалось загрузить изображения для {$this->slug}");
+            return;
+        }
+    }
+
+    /**
+     * Make random image name
+     *
+     * @param $contents
+     * @return string
+     */
+
+    protected function makeImageName($contents){
+        $mimeType = finfo_buffer( finfo_open(), $contents, FILEINFO_MIME_TYPE);//mime_content_type($image);
+        $extension = explode('/', $mimeType)[1];
+        $imageName = Str::random(40).'.' . $extension;
+        return $imageName;
     }
 
     /**
