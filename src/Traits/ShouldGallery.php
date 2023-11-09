@@ -99,13 +99,13 @@ trait ShouldGallery
     public function uploadUrlGalleryImage($url, $path, $field = "title")
     {
         if (! $url) return;
-        $headers = @get_headers($url);
-        if(preg_match("|200|", $headers[0])) {
+
+        try{
             $contents = file_get_contents($url);
             if (! $contents)
                 return;
         }
-        else{
+        catch (\Exception $e){
             Log::error("Не доступно изображение для {$this->{$field}}");
             return;
         }

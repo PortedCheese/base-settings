@@ -114,16 +114,15 @@ trait ShouldImage
     public function uploadUrlImage($url, $path, $field = "title")
     {
         if (! $url) return;
-        $headers = @get_headers($url);
-        if(strpos('200', $headers[0])) {
+        try{
             $contents = file_get_contents($url);
             if (! $contents)
                 return;
-        }
-        else{
+        } catch (\Exception $e){
             Log::error("Не доступно изображение для {$this->{$field}}");
             return;
         }
+
         try {
             $makePath =  $path . "/" . $this->makeImageName($contents);
             Storage::disk("public")->put($makePath, $contents);
