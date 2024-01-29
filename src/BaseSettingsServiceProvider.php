@@ -2,6 +2,7 @@
 
 namespace PortedCheese\BaseSettings;
 
+use App\Helpers\FilterActionsManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
@@ -35,6 +36,13 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         setlocale(LC_ALL, 'ru_RU.UTF-8');
 
+        // Config.
+        $this->publishes([
+            __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
+            __DIR__ . '/config/theme.php' => config_path('theme.php'),
+            __DIR__ . '/config/image-filter.php' => config_path('image-filter.php'),
+        ], 'config');
+
         $this->setGates();
         $this->hasRoleBlade();
         $this->extendViews();
@@ -54,12 +62,6 @@ class BaseSettingsServiceProvider extends ServiceProvider
             __DIR__ . '/resources/sass' => resource_path('sass/vendor'),
             __DIR__ . '/resources/js/scripts' => resource_path("js/vendor"),
         ], 'public');
-
-        // Config.
-        $this->publishes([
-            __DIR__ . '/config/gallery.php' => config_path('gallery.php'),
-            __DIR__ . '/config/theme.php' => config_path('theme.php'),
-        ], 'config');
 
         // Подключение миграций.
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
@@ -100,14 +102,20 @@ class BaseSettingsServiceProvider extends ServiceProvider
            return new ConfigManager;
         });
 
+        $this->app->singleton("filter-actions", function () {
+            $class = config("image-filter.filterFacade");
+            return new $class;
+        });
+
         $this->mergeConfigFrom(__DIR__ . "/config/theme.php", "theme");
+        $this->mergeConfigFrom(__DIR__ . "/config/image-filter.php", "image-filter");
     }
 
     private function addRoutes()
     {
         $baseAppRoutePath = "routes/vendor/base-settings";
         $basePkgRoutePath = __DIR__ . "/routes";
-        $routeFiles = ["admin", "ajax", "auth", "settings", "user", "roles", "redirect"];
+        $routeFiles = ["admin", "ajax", "auth", "settings", "user", "roles", "redirect","filter"];
         foreach ($routeFiles as $routeFile) {
             if (! file_exists(base_path("{$baseAppRoutePath}/{$routeFile}.php"))) {
                 $this->loadRoutesFrom("{$basePkgRoutePath}/{$routeFile}.php");
@@ -158,7 +166,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
 
         $imagecache["profile-image"] = ProfileImage::class;
 
-        app()->config['imagecache.templates'] = $imagecache;
+ //       app()->config['imagecache.templates'] = $imagecache;
+        app()->config['image-filter.templates'] = $imagecache;
     }
 
     /**

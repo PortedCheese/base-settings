@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Site;
+
+use Illuminate\Http\Request;
+
+class FilterController extends \PortedCheese\BaseSettings\Http\Controllers\Site\FilterController
+{
+
+}

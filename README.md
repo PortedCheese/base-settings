@@ -33,7 +33,7 @@
 Для работы изображений настроить приложение:
     
     php artisan storage:link
-    FILESYSTEM_DRIVER=public 
+    FILESYSTEM_DISK=public 
     
 ### Middleware
 
@@ -67,6 +67,16 @@
 Генерация ссылки на вход:
     
     php artisan generate:login-link {email} {--send=} {--get}
+        
+Чистка ключа кэша:
+    
+    php artisan cache:forget {key}
+
+Чистка фильтра изображения:
+
+    php artisan cache:forget "image-filters:{template}-{filename}"
+    php artisan cache:forget "object-filters-original:{filename}"
+    php artisan cache:forget "object-filters-content:{template}-{filename}"
     
 ### Components
 
@@ -177,10 +187,23 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.1.0: Add ImageFilter (instead of intervention/imagecache) :
+        - php artisan migrate
+        - php artisan make:base-settings --models (y - для создания ImageFilter model)
+        - php artisan make:base-settings --controllers (y - для создания Site/FilterController)
+
+        Для конфигурации url фильтра, времени жизни кэша, шаблонов и путей:
+            - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config
+        Для совместимости с Imagecache-фильтрами других пакетов добавить в провайдер проекта:
+            app()->config['image-filter.templates'] = array_merge(app()->config['imagecache.templates'],app()->config['image-filter.templates']);
+            app()->config['image-filter.paths'] = array_merge(app()->config['imagecache.paths'], app()->config['image-filter.paths']); 
+        
+        Обновлены @pic @img @picLazy @imgLazy (change route "imagecache" to "image-filter")
+
     v4.0.3: ShouldGallery new methods
     v4.0.2: ShouldImage new methods
     v4.0.1: Add RedirectController
-        - php artisan make:base-settongs --controllers (y - для создания Site/RedirectController)
+        - php artisan make:base-settings --controllers (y - для создания Site/RedirectController)
     v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)
     v3.1.4: Change Init TinyMCE (fix Tiny modal dialog)
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force

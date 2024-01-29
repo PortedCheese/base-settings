@@ -1,6 +1,6 @@
 <figure class="figure">
     @php($imgClass = empty($imgClass) ? "img-thumbnail" : $imgClass)
-    <a href="{{ route('imagecache', ['template' => 'original', 'filename' => $image->file_name]) }}"
+    <a href="{{ route('image-filter', ['template' => 'original', 'filename' => $image->file_name]) }}"
        data-lightbox="{{ ! empty($lightbox) ? $lightbox : "image-{$image->id}" }}">
         @if(! empty($grid))
             @pic([
@@ -10,7 +10,7 @@
                 'imgClass' => $imgClass,
             ])
         @else
-            <img src="{{ route('imagecache', [
+            <img src="{{ route('image-filter', [
                         'template' => $template,
                         'filename' => $image->file_name
                     ]) }}"

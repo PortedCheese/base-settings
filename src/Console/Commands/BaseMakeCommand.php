@@ -30,7 +30,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
      * @var string
      */
     protected $description = 'Scaffold basic models';
-
+    protected $vendorName = 'PortedCheese';
     protected $packageName = "BaseSettings";
 
     /**
@@ -38,7 +38,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
      * @var array
      */
     protected $models = [
-        'Role', 'Image', 'User', "RoleRule",
+        'Role', 'Image', 'User', "RoleRule", "ImageFilter"
     ];
 
     /**
@@ -69,7 +69,7 @@ class BaseMakeCommand extends BaseConfigModelCommand
 
     protected $controllers = [
         'Admin' => ['UserController', "SettingsController", "RoleController", "RuleController", "DefaultController"],
-        'Site' => ['ProfileController', "RedirectController"],
+        'Site' => ['ProfileController', "RedirectController", "FilterController"],
     ];
 
     protected $vueIncludes = [

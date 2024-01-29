@@ -30,6 +30,7 @@ class Image extends Model {
             $model->cacheClear();
             // Удаляем с диска картинку.
             Storage::delete($model->path);
+            $model->filtersClear();
 
             event(new ImageUpdate($model, "deleting"));
         });
@@ -41,6 +42,15 @@ class Image extends Model {
      */
     public function imageable() {
         return $this->morphTo();
+    }
+
+    /**
+     * Фильтры
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function filters(){
+        return $this->hasMany(\App\ImageFilter::class, 'image_id')->orderBy("template");
     }
 
     /**
@@ -76,6 +86,7 @@ class Image extends Model {
         }
         return '';
     }
+
 
     /**
      * Подготовить для js.
@@ -163,5 +174,15 @@ class Image extends Model {
             }
         }
     }
-
+    /**
+     * Удаляем все кэши фильтры у картинки.
+     */
+    public function filtersClear() {
+        foreach ($this->filters as $item)
+        {
+            //чистим кэш
+            Cache::forget("image-filters:{$item->template}-{$this->file_name}");
+            $item->delete();
+        }
+    }
 }

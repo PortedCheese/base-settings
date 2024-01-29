@@ -1,6 +1,6 @@
 <figure class="figure">
     @php($imgClass = empty($imgClass) ? "lazyload img-thumbnail" : 'lazyload '.$imgClass)
-    <a href="{{ route('imagecache', ['template' => 'original', 'filename' => $image->file_name]) }}"
+    <a href="{{ route('image-filter', ['template' => 'original', 'filename' => $image->file_name]) }}"
        data-lightbox="{{ ! empty($lightbox) ? $lightbox : "image-{$image->id}" }}">
         @if(! empty($grid))
             @picLazy([
@@ -11,12 +11,12 @@
             ])
         @else
             <img @if (empty ($detectIe))
-                 data-src="{{ route('imagecache', [
+                 data-src="{{ route('image-filter', [
                         'template' => $template,
                         'filename' => $image->file_name
                     ]) }}"
                  @else
-                 src="{{ route('imagecache', [
+                 src="{{ route('image-filter', [
                         'template' => $template,
                         'filename' => $image->file_name
                     ]) }}"
