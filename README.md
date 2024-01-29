@@ -187,6 +187,10 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.1.1 - v4.1.2: Remove Imagecache, add Small,Medium,Large filters :
+        - composer remove imtrvention/imagecache   
+        - check imagecache.config  (remove Small, Medium & Large filters)
+
     v4.1.0: Add ImageFilter (instead of intervention/imagecache) :
         - php artisan migrate
         - php artisan make:base-settings --models (y - для создания ImageFilter model)

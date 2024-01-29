@@ -2,7 +2,6 @@
 
 namespace PortedCheese\BaseSettings;
 
-use App\Helpers\FilterActionsManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
@@ -10,12 +9,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
 use PortedCheese\BaseSettings\Console\Commands\GenerateLoginLink;
+use PortedCheese\BaseSettings\Filters\Large;
 use PortedCheese\BaseSettings\Filters\LgGrid3;
 use PortedCheese\BaseSettings\Filters\LgGrid4;
 use PortedCheese\BaseSettings\Filters\LgGrid6;
 use PortedCheese\BaseSettings\Filters\MdGrid4;
 use PortedCheese\BaseSettings\Filters\MdGrid6;
+use PortedCheese\BaseSettings\Filters\Medium;
 use PortedCheese\BaseSettings\Filters\ProfileImage;
+use PortedCheese\BaseSettings\Filters\Small;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
 use PortedCheese\BaseSettings\Helpers\ConfigManager;
@@ -156,6 +158,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         $imagecache = app()->config['imagecache.templates'];
 
+        $imagecache['small'] = Small::class;
+        $imagecache['medium'] = Medium::class;
+        $imagecache['large'] = Large::class;
         $imagecache['lg-grid-6'] = LgGrid6::class;
         $imagecache['lg-grid-3'] = LgGrid3::class;
         $imagecache['lg-grid-4'] = LgGrid4::class;
