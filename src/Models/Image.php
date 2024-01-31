@@ -160,17 +160,19 @@ class Image extends Model {
      */
     public function cacheClear() {
         $path = $this->image_path;
-        foreach (config('imagecache.templates') as $key => $filter) {
-            $imageCache = new ImageCache();
-            if (class_exists($filter)) {
-                $filter = new $filter;
-            }
-            $cached = $imageCache
-                ->make($path)
-                ->filter($filter);
-            $sum = $cached->checksum();
-            if (Cache::has($sum)) {
-                Cache::forget($sum);
+        if (class_exists(ImageCache::class)){
+            foreach (config('imagecache.templates') as $key => $filter) {
+                $imageCache = new ImageCache();
+                if (class_exists($filter)) {
+                    $filter = new $filter;
+                }
+                $cached = $imageCache
+                    ->make($path)
+                    ->filter($filter);
+                $sum = $cached->checksum();
+                if (Cache::has($sum)) {
+                    Cache::forget($sum);
+                }
             }
         }
     }
