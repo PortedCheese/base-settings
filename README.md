@@ -187,8 +187,8 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
-    v4.1.1 - v4.1.2: Remove Imagecache, add Small,Medium,Large filters :
-        - composer remove imtrvention/imagecache   
+    v4.1.1 - v4.1.3: Remove Imagecache, add Small,Medium,Large filters :
+        - composer remove intervention/imagecache   
         - check imagecache.config  (remove Small, Medium & Large filters)
 
     v4.1.0: Add ImageFilter (instead of intervention/imagecache) :
