@@ -192,9 +192,9 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
-    v4.1.4: 
-        - add widen-logo filter,
-        - add image-filters:clear command
+    v4.1.4-4.1.5: add widen-logo filter,  add image-filters:clear command, add d-hover & d-hover-relative style
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+            
     v4.1.1 - v4.1.3: Remove Imagecache, add Small,Medium,Large filters :
         - composer remove intervention/imagecache   
         - check imagecache.config  (remove Small, Medium & Large filters)
