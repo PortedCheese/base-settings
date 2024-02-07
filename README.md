@@ -67,7 +67,8 @@
 Генерация ссылки на вход:
     
     php artisan generate:login-link {email} {--send=} {--get}
-        
+
+
 Чистка ключа кэша:
     
     php artisan cache:forget {key}
@@ -77,7 +78,11 @@
     php artisan cache:forget "image-filters:{template}-{filename}"
     php artisan cache:forget "object-filters-original:{filename}"
     php artisan cache:forget "object-filters-content:{template}-{filename}"
-    
+
+Чистка всех фильтров:
+
+    php artisan image-filters:clear
+
 ### Components
 
 universal-priority:
@@ -187,6 +192,9 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.1.4: 
+        - add widen-logo filter,
+        - add image-filters:clear command
     v4.1.1 - v4.1.3: Remove Imagecache, add Small,Medium,Large filters :
         - composer remove intervention/imagecache   
         - check imagecache.config  (remove Small, Medium & Large filters)

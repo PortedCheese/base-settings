@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
 use PortedCheese\BaseSettings\Console\Commands\GenerateLoginLink;
+use PortedCheese\BaseSettings\Console\Commands\ImageFiltersClearCommand;
 use PortedCheese\BaseSettings\Filters\Large;
 use PortedCheese\BaseSettings\Filters\LgGrid3;
 use PortedCheese\BaseSettings\Filters\LgGrid4;
@@ -20,6 +21,7 @@ use PortedCheese\BaseSettings\Filters\ProfileImage;
 use PortedCheese\BaseSettings\Filters\Small;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
+use PortedCheese\BaseSettings\Filters\WidenLogo;
 use PortedCheese\BaseSettings\Helpers\ConfigManager;
 use PortedCheese\BaseSettings\Helpers\DateHelper;
 use PortedCheese\BaseSettings\Helpers\ReCaptcha;
@@ -75,6 +77,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BaseMakeCommand::class,
+            ]);
+            $this->commands([
+                ImageFiltersClearCommand::class,
             ]);
         }
         $this->commands([
@@ -170,6 +175,8 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $imagecache['sm-grid-12'] = SmGrid12::class;
 
         $imagecache["profile-image"] = ProfileImage::class;
+
+        $imagecache["widen-logo"] = WidenLogo::class;
 
  //       app()->config['imagecache.templates'] = $imagecache;
         app()->config['image-filter.templates'] = $imagecache;
