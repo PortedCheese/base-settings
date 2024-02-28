@@ -22,7 +22,7 @@ class Image extends JsonResource
             }
         }
         return [
-            'src' => route('imagecache', [
+            'src' => route(class_exists(\App\ImageFilter::class)? 'image-filter': 'imagecache', [
                 'template' => 'small',
                 'filename' => $this->file_name,
             ]),
