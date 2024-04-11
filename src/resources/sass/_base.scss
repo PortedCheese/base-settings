@@ -60,7 +60,13 @@
     }
   }
 }
-
+.custom-control-label{
+  .badge{
+    min-width: 2.5rem;
+    min-height: 1rem;
+    line-height: 1.5;
+  }
+}
 .upper-label {
   margin-bottom: 1.5rem;
   position: relative;
