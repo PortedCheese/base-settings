@@ -4,9 +4,7 @@ namespace PortedCheese\BaseSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageCache;
 use PortedCheese\BaseSettings\Events\ImageUpdate;
 
 class Image extends Model {

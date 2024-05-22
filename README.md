@@ -29,7 +29,6 @@
         $this->routeName = Route::currentRouteName();
     }
 
-[//]: # (Настроить `intervention/imagecache` что бы адрес был `imagecahce`)
 Для работы изображений настроить приложение:
     
     php artisan storage:link
@@ -192,6 +191,8 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
+    v4.2.2: tint init change 
+       - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v4.2.1: .custrom-control-label > .badge
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v4.2.0: Laravel 10

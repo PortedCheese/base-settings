@@ -6,7 +6,7 @@ require('tinymce/plugins/preview');
 require('tinymce/plugins/code');
 require('tinymce/plugins/fullscreen');
 require('tinymce/plugins/table');
-require('tinymce/plugins/paste');
+//require('tinymce/plugins/paste');
 require('tinymce/plugins/code');
 require('tinymce/plugins/wordcount');
 require('tinymce/plugins/image');
@@ -101,7 +101,7 @@ require('tinymce/plugins/charmap');
             height: 300,
             menubar: false,
             plugins: [
-                'lists link image preview code fullscreen table paste code wordcount'
+                'lists link image preview code fullscreen table code wordcount'
             ],
             toolbar1: "undo redo | removeformat code fullscreen",
             toolbar2: 'styleselect | bold italic link | bullist numlist outdent indent | image table | dialog-btn',
