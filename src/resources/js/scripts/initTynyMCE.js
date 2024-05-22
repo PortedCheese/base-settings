@@ -101,7 +101,7 @@ require('tinymce/plugins/charmap');
             height: 300,
             menubar: false,
             plugins: [
-                'lists link image preview code fullscreen table code wordcount'
+                'lists', 'link','image','preview','code','fullscreen','table','code','wordcount'
             ],
             toolbar1: "undo redo | removeformat code fullscreen",
             toolbar2: 'styleselect | bold italic link | bullist numlist outdent indent | image table | dialog-btn',
