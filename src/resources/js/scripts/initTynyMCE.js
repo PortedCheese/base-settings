@@ -98,30 +98,42 @@ require('tinymce/plugins/charmap');
 
         tinymce.init({
             selector: ".tiny",
+            license_key: 'gpl',
             height: 300,
             menubar: false,
             plugins: [
                 'lists', 'link','image','preview','code','fullscreen','table','code','wordcount'
             ],
-            toolbar1: "undo redo | removeformat code fullscreen",
-            toolbar2: 'styleselect | bold italic link | bullist numlist outdent indent | image table | dialog-btn',
+            toolbar: [
+                'undo redo | removeformat code fullscreen',
+                'styles | bold italic link | bullist numlist outdent indent | image table | dialog-btn'],
             style_formats: [
-                { title: 'Обычный', block: 'p'},
-                { title: 'Заголовки' },
-                { title: 'Заголовок 2', block: 'h2'},
-                { title: 'Заголовок 3', block: 'h3'},
-                { title: 'Заголовок 4', block: 'h4'},
-                { title: 'Маленький', block: 'small'},
-                { title: 'Выделить цветом'},
-                {title : 'Основной цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-primary'},
-                {title : 'Дополнительный цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-secondary'},
-                {title : 'Уведомление', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-warning'},
-                {title : 'Предупреждение', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-danger'},
-                {title : 'Инофрмация', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-info'},
-                {title : 'Темный', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span', classes : 'text-dark'},
-                { title: 'Форматы изображений' },
-                { title: 'Изображение слева', selector: 'img', styles: { 'float': 'left', 'margin': '0 10px 0 10px' } },
-                { title: 'Изображение справа', selector: 'img', styles: { 'float': 'right', 'margin': '0 0 10px 10px' } },
+                {title: 'Текст', items: [
+                        { title: 'Обычный', block: 'p'},
+                        { title: 'Маленький', block: 'small'},
+                        { title: 'Цитата', block: 'blockquote'},
+                    ]},
+                {title: 'Заголовки', items: [
+                        { title: 'H2', block: 'h2'},
+                        { title: 'H3', block: 'h3'},
+                        { title: 'H4', block: 'h4'},
+                        { title: 'H5', block: 'h5'},
+                        { title: 'H6', block: 'h6'},
+                    ]},
+                { title: 'Выделить цветом блок', items: [
+                        {title : 'Типовой цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-body'},
+                        {title : 'Основной цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-primary'},
+                        {title : 'Дополнительный цвет', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-secondary'},
+                        {title : 'Уведомление', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-warning'},
+                        {title : 'Предупреждение', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-danger'},
+                        {title : 'Инфо', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-info'},
+                        {title : 'Темный', selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,span,strong,em', classes : 'text-dark'},
+                    ]},
+
+                { title: 'Форматы изображений', items: [
+                        { title: 'Изображение слева', selector: 'img', styles: { 'float': 'left', 'margin': '0 10px 0 10px' } },
+                        { title: 'Изображение справа', selector: 'img', styles: { 'float': 'right', 'margin': '0 0 10px 10px' } },
+                    ] },
             ],
             content_css: [
                 '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
@@ -137,7 +149,7 @@ require('tinymce/plugins/charmap');
                     }
                 })
             },
-            file_picker_callback : false //elFinderBrowser
+            //file_picker_callback : elFinderBrowser
         });
     }
 

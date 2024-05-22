@@ -191,7 +191,8 @@ confirm-form:
         "imgClass" => "img-fluid",
     ])
 ### Versions
-    v4.2.2: tint init change 
+    v4.2.2-4.2.3: tint init change
+       - add to webpack (tiny ^7.0): .copy("node_modules/tinymce/models", "public/js/models")
        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
     v4.2.1: .custrom-control-label > .badge
         - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
