@@ -93,10 +93,9 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="customFile">Изображение</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="avatar">
                                 <label class="custom-file-label" for="customFile">Изображение</label>
+                                <input type="file" class="custom-file-input" id="customFile" name="avatar">
                             </div>
                         </div>
                     </div>

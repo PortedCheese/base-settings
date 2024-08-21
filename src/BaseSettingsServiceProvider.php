@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use PortedCheese\BaseSettings\Console\Commands\BaseMakeCommand;
 use PortedCheese\BaseSettings\Console\Commands\GenerateLoginLink;
 use PortedCheese\BaseSettings\Console\Commands\ImageFiltersClearCommand;
+use PortedCheese\BaseSettings\Filters\Badge;
 use PortedCheese\BaseSettings\Filters\Large;
 use PortedCheese\BaseSettings\Filters\LgGrid3;
 use PortedCheese\BaseSettings\Filters\LgGrid4;
@@ -22,6 +23,12 @@ use PortedCheese\BaseSettings\Filters\Small;
 use PortedCheese\BaseSettings\Filters\SmGrid12;
 use PortedCheese\BaseSettings\Filters\SmGrid6;
 use PortedCheese\BaseSettings\Filters\WidenLogo;
+use PortedCheese\BaseSettings\Filters\XxlGrid3;
+use PortedCheese\BaseSettings\Filters\XxlGrid4;
+use PortedCheese\BaseSettings\Filters\XxlGrid6;
+use PortedCheese\BaseSettings\Filters\XlGrid3;
+use PortedCheese\BaseSettings\Filters\XlGrid4;
+use PortedCheese\BaseSettings\Filters\XlGrid6;
 use PortedCheese\BaseSettings\Helpers\ConfigManager;
 use PortedCheese\BaseSettings\Helpers\DateHelper;
 use PortedCheese\BaseSettings\Helpers\ReCaptcha;
@@ -163,9 +170,16 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         $imagecache = app()->config['imagecache.templates'];
 
+        $imagecache['badge'] = Badge::class;
         $imagecache['small'] = Small::class;
         $imagecache['medium'] = Medium::class;
         $imagecache['large'] = Large::class;
+        $imagecache['xxl-grid-6'] = XxlGrid6::class;
+        $imagecache['xxl-grid-3'] = XxlGrid3::class;
+        $imagecache['xxl-grid-4'] = XxlGrid4::class;
+        $imagecache['xl-grid-6'] = XlGrid6::class;
+        $imagecache['xl-grid-3'] = XlGrid3::class;
+        $imagecache['xl-grid-4'] = XlGrid4::class;
         $imagecache['lg-grid-6'] = LgGrid6::class;
         $imagecache['lg-grid-3'] = LgGrid3::class;
         $imagecache['lg-grid-4'] = LgGrid4::class;

@@ -1,15 +1,65 @@
 window.Lightbox = require('lightbox2');
 window.Chosen = require('chosen-js');
 window.Swal = require('sweetalert2-neutral');
+require("./initTynyMCE");
+
+document.addEventListener('DOMContentLoaded', function(){
+    customFileInput();
+    ckExample();
+    ckDescription();
+
+    function customFileInput() {
+        document.querySelectorAll('.custom-file-input').forEach(function(element, index) {
+            element.addEventListener("change", (event) => {
+                let files = element.files;
+                let names = [];
+                for (let item in files) {
+                    if (files.hasOwnProperty(item)) {
+                        names.push(files[item].name);
+                    }
+                }
+                let fileName = names.join(", ");
+                let label = element.nextElementSibling;
+                if (label.classList.contains('custom-file-label')){
+                    label.insertAdjacentHTML('beforeend',fileName);
+                }
+            })
+        });
+    }
+
+    function ckExample() {
+
+        let element = document.getElementById('#ckExample');
+        if (element) {
+            element.classList.add("tiny");
+        }
+        // if (element.length && typeof CKEDITOR !== 'undefined') {
+        //     CKEDITOR.replace('ckExample', {
+        //         customConfig : '/config/ckEditorConfig.js'
+        //     });
+        // }
+    }
+
+    function ckDescription() {
+        let element = document.getElementById('#ckDescription');
+        if (element) {
+            element.classList.add("tiny");
+        }
+        // if (element.length && typeof CKEDITOR !== 'undefined') {
+        //     CKEDITOR.replace('ckDescription', {
+        //         customConfig : '/config/ckEditorConfig.js'
+        //     });
+        // }
+    }
+
+});
 
 (function ($) {
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
-        ckExample();
-        ckDescription();
-        customFileInput();
         activateChosen();
+
     });
 
     function activateChosen() {
@@ -23,49 +73,6 @@ window.Swal = require('sweetalert2-neutral');
         }
     }
 
-    function customFileInput() {
-        $('.custom-file-input').each(function (index, element) {
-            let $element = $(element);
-            $element
-                .on('change', function() {
-                    let files = $(this)[0].files;
-                    let names = [];
-                    for (let item in files) {
-                        if (files.hasOwnProperty(item)) {
-                            names.push(files[item].name);
-                        }
-                    }
-                    let fileName = names.join(", ");
-                    $(this)
-                        .next('.custom-file-label')
-                        .html(fileName);
-                })
-        });
-    }
 
-    function ckExample() {
-        let $element = $('#ckExample');
-        if ($element.length) {
-            $element.addClass("tiny");
-        }
-        // if ($element.length && typeof CKEDITOR !== 'undefined') {
-        //     CKEDITOR.replace('ckExample', {
-        //         customConfig : '/config/ckEditorConfig.js'
-        //     });
-        // }
-    }
-
-    function ckDescription() {
-        let $element = $('#ckDescription');
-        if ($element.length) {
-            $element.addClass("tiny");
-        }
-        // if ($element.length && typeof CKEDITOR !== 'undefined') {
-        //     CKEDITOR.replace('ckDescription', {
-        //         customConfig : '/config/ckEditorConfig.js'
-        //     });
-        // }
-    }
 })(jQuery);
 
-require("./initTynyMCE");

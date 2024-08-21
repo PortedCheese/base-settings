@@ -43,7 +43,7 @@
                                 @canany(["update", "delete"], \App\User::class)
                                     <td class="text-center">
                                         <div role="toolbar" class="btn-toolbar">
-                                            <div class="btn-group btn-group-sm mr-1">
+                                            <div class="btn-group btn-group-sm me-1">
                                                 @can("update", \App\User::class)
                                                     <a href="{{ route("admin.users.edit", ["user" => $item]) }}" class="btn btn-primary">
                                                         <i class="far fa-edit"></i>

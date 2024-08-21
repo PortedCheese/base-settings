@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<htms lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -61,12 +61,13 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     {{--Sidebar Toggle (Topbar)--}}
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle me-3"
+                            data-bs-toggle="collapse" data-bs-target="#accordionSidebar">
                         <i class="fa fa-bars"></i>
                     </button>
 
                     {{--Topbar Navbar--}}
-                    <ul class="navbar-nav ml-auto user-menu-list">
+                    <ul class="navbar-nav ms-auto user-menu-list">
                         @include('base-settings::layouts.user-menu')
                     </ul>
 
@@ -144,4 +145,4 @@
 
 </body>
 
-</html>
+</htms>

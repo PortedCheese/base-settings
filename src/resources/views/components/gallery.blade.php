@@ -1,4 +1,4 @@
-<div class="row justify-content-around gallery">
+<div class="row justify-content-start gallery">
     @foreach ($gallery as $image)
         <div class="col-6 col-lg-3 mt-2 text-center">
             @php($grid = empty($grid) ? [] : $grid)

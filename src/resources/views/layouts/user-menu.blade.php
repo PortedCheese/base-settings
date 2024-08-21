@@ -19,7 +19,7 @@
            class="nav-link dropdown-toggle"
            href="#"
            role="button"
-           data-toggle="dropdown"
+           data-bs-toggle="dropdown"
            aria-haspopup="true"
            aria-expanded="false"
            v-pre
@@ -27,7 +27,7 @@
             {{ !empty(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}
         </a>
 
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             @can('site-management')
                 <a href="{{ route('admin') }}" class="dropdown-item">
                     Dashboard
