@@ -2,12 +2,28 @@ window.Lightbox = require('lightbox2');
 window.Chosen = require('chosen-js');
 window.Swal = require('sweetalert2-neutral');
 require("./initTynyMCE");
+const bootstrap = require("bootstrap");
 
 document.addEventListener('DOMContentLoaded', function(){
     customFileInput();
+    jsPopover();
+    jsTooltip();
     ckExample();
     ckDescription();
 
+    function jsTooltip(){
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    }
+
+    function jsPopover() {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    }
     function customFileInput() {
         document.querySelectorAll('.custom-file-input').forEach(function(element, index) {
             element.addEventListener("change", (event) => {
@@ -56,8 +72,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 (function ($) {
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
         activateChosen();
 
     });
