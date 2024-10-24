@@ -24,6 +24,8 @@ class FilterActionsManager
     }
 
     /**
+     * Make filtered content from asset images
+     *
      * @param string $template
      * @param object $img
      * @return mixed
@@ -39,13 +41,13 @@ class FilterActionsManager
     }
 
     /**
-     *
+     * Get original obejct from asset
      *
      * @param object $img
      * @return string
      */
     public  function getObjectOriginalPath(object $img){
-        return asset($this->getObjectPath($img));
+        return asset($this->getObjectPath($img));//Storage::url($this->getObjectPath($img));
     }
 
     /**
@@ -108,7 +110,8 @@ class FilterActionsManager
     {
         $class = $this->getTemplate($template);
         $manager = new ImageManager(config("image"));
-        $intImage = $manager->make($img->storage);
+        $intImage = $manager->make(Storage::get($img->path));
+
         $newImage = $intImage->filter($class);
         $content = $newImage->response()->getContent();
 
