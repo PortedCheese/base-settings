@@ -1,5 +1,11 @@
 ### Versions
-    v5.0.0: bootstrap 5
+    v5.0.5: tiny init fix
+        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+    v5.0.4: messages btn-close
+    v5.0.3: image-filters: support cloud
+
+    v5.0.0-5.0.3: bootstrap 5
         - new filters: xl-grid-6, xxl-grid-6, xl-grid-4, xxl-grid-4, xl-grid-3, xxl-grid-3
         - change app-base.js, admin-base.js
         - change admin views

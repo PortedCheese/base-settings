@@ -84,7 +84,7 @@ require('tinymce/plugins/charmap');
             else
             if (toggle.length >0) {
                 tinymce.activeEditor.execCommand('mceInsertContent', false,
-                    '<a class="btn btn-'+ data.color +'" href="#" data-toggle="modal" data-target="'+ toggle +'">' + data.text + '</a>'
+                    '<a class="btn btn-'+ data.color +'" href="#" data-bs-toggle="modal" data-bd-target="'+ toggle +'">' + data.text + '</a>'
                 );
             }
             api.close();
