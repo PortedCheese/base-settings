@@ -98,6 +98,7 @@ require('tinymce/plugins/charmap');
 
         tinymce.init({
             selector: ".tiny",
+            sandbox_iframes: false,
             license_key: 'gpl',
             height: 300,
             menubar: false,
