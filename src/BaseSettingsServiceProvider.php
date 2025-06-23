@@ -21,6 +21,7 @@ use PortedCheese\BaseSettings\Helpers\ConfigManager;
 use PortedCheese\BaseSettings\Helpers\DateHelper;
 use PortedCheese\BaseSettings\Helpers\ReCaptcha;
 use PortedCheese\BaseSettings\Helpers\SiteConfig;
+use PortedCheese\BaseSettings\Helpers\SmartCaptcha;
 use PortedCheese\BaseSettings\Http\Middleware\CheckRole;
 use PortedCheese\BaseSettings\Http\Middleware\EditorUser;
 use PortedCheese\BaseSettings\Http\Middleware\Management;
@@ -80,6 +81,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         $this->app['validator']->extend('google_captcha', function ($attribute, $value) {
             return $this->app['geocaptcha']->verifyResponse($value, $this->app['request']->getClientIp());
         });
+        $this->app['validator']->extend('smart_captcha', function ($attribute, $value) {
+            return $this->app['smartcaptcha']->verifyResponse($value, $this->app['request']->getClientIp(),$this->app["request"]->input("smart-token"));
+        });
     }
 
     public function register()
@@ -92,6 +96,9 @@ class BaseSettingsServiceProvider extends ServiceProvider
         });
         $this->app->singleton('geocaptcha', function ($app) {
             return new ReCaptcha();
+        });
+        $this->app->singleton('smartcaptcha', function ($app) {
+            return new SmartCaptcha();
         });
         $this->app->singleton("base-config", function () {
            return new ConfigManager;
@@ -211,6 +218,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         Blade::aliasComponent("base-settings::components.google-captcha", "gCaptcha");
         Blade::aliasComponent("base-settings::components.hidden-captcha", "hCaptcha");
+        Blade::aliasComponent("base-settings::components.smart-captcha", "sCaptcha");
 
         Blade::aliasComponent("base-settings::components.picture", 'picture');
         Blade::aliasComponent("base-settings::components.image", 'image');
@@ -227,6 +235,7 @@ class BaseSettingsServiceProvider extends ServiceProvider
     {
         Blade::include("base-settings::includes.google-captcha-v2", "googleCaptcha2");
         Blade::include("base-settings::includes.hidden-captcha", "hiddenCaptcha");
+        Blade::include("base-settings::includes.smart-captcha", "smartCaptcha");
 
         Blade::include("base-settings::components.picture", "pic");
         Blade::include("base-settings::components.image", "img");
