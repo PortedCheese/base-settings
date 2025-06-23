@@ -39,7 +39,7 @@ class SmartCaptcha
             'secret' => $this->secretKey,
             'ip' => $clientIp,
             'token' => $clientToken,
-            //'response' => $response
+            'response' => $response
         ]);
         return isset($response['status']) && $response['status'] === "ok";
     }
@@ -53,9 +53,8 @@ class SmartCaptcha
      */
     protected function sendVerifyRequest(array $query = [])
     {
-        $response = $this->client->post(static::VERIFY_URI, [
-            $query,
-        ]);
+        $response = $this->client->post(static::VERIFY_URI,
+            $query);
 
         return json_decode($response->getBody(), true);
     }
