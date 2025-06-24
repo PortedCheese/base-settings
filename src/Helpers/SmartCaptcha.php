@@ -54,7 +54,9 @@ class SmartCaptcha
     protected function sendVerifyRequest(array $query = [])
     {
         $response = $this->client->post(static::VERIFY_URI,
-            $query);
+            [
+                'form_params' => $query,
+            ]);
 
         return json_decode($response->getBody(), true);
     }
