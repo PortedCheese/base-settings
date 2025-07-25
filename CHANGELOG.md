@@ -1,99 +1,160 @@
 ### Versions
-    v5.0.5: tiny init fix
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
 
-    v5.0.4: messages btn-close
-    v5.0.3: image-filters: support cloud
-
-    v5.0.0-5.0.3: bootstrap 5
-        - new filters: xl-grid-6, xxl-grid-6, xl-grid-4, xxl-grid-4, xl-grid-3, xxl-grid-3
-        - change app-base.js, admin-base.js
-        - change admin views
-        - change gallery component: justify-content-start
-        - change layouts.messages, layouts.user-menu, layouts.sb-admin
+v5.0.8: add vue3 universal priority component
         
-    Обновление:
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-        - php artisan image-filters:clear, php artisan config:clear, php artisan cache:clear
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+   
+Для использования компонента в проекте с vue3 измените подключение в admin.js:
+    
+    import UniversalPriority from './components/vendor/base-settings/UniversalPriorityVue3Component.vue';   
+        
+    app.component('universal-priority',UniversalPriority);
+        
+v5.0.6-5.0.7: smart captcha
+       
+     Компонент @smartCaptcha 
 
-    v4.2.2-4.2.4: tint init change
-       - add to webpack (tiny ^7.0): .copy("node_modules/tinymce/models", "public/js/models")
-       - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v4.2.1: .custrom-control-label > .badge
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v4.2.0: Laravel 10
-    v4.1.4-4.1.6: add widen-logo filter,  add image-filters:clear command, add d-hover & d-hover-relative style
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+v5.0.5: tiny init fix
+
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v5.0.4: messages btn-close
+v5.0.3: image-filters: support cloud
+
+v5.0.0-5.0.3: bootstrap 5
+       
+ - new filters: xl-grid-6, xxl-grid-6, xl-grid-4, xxl-grid-4, xl-grid-3, xxl-grid-3
+ - change app-base.js, admin-base.js 
+ - change admin views
+ - change gallery component: justify-content-start
+ - change layouts.messages, layouts.user-menu, layouts.sb-admin
+        
+ Обновление:
+        
+     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+     php artisan image-filters:clear, php artisan config:clear, php artisan cache:clear
+
+v4.2.2-4.2.4: tint init change
+- add to webpack (tiny ^7.0): .copy("node_modules/tinymce/models", "public/js/models")
+
+    
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+   
+- v4.2.1: .custrom-control-label > .badge
+    
+    
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+      
+- v4.2.0: Laravel 10
+
+- v4.1.4-4.1.6: add widen-logo filter,  add image-filters:clear command, add d-hover & d-hover-relative style
+          - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
             
-    v4.1.1 - v4.1.3: Remove Imagecache, add Small,Medium,Large filters :
-        - composer remove intervention/imagecache   
-        - check imagecache.config  (remove Small, Medium & Large filters)
 
-    v4.1.0: Add ImageFilter (instead of intervention/imagecache) :
-        - php artisan migrate
-        - php artisan make:base-settings --models (y - для создания ImageFilter model)
-        - php artisan make:base-settings --controllers (y - для создания Site/FilterController)
+v4.1.1 - v4.1.3: Remove Imagecache, add Small,Medium,Large filters :
+          - composer remove intervention/imagecache   
+          - check imagecache.config  (remove Small, Medium & Large filters)
 
-        Для конфигурации url фильтра, времени жизни кэша, шаблонов и путей:
-            - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config
-        Для совместимости с Imagecache-фильтрами других пакетов добавить в провайдер проекта:
-            app()->config['image-filter.templates'] = array_merge(app()->config['imagecache.templates'],app()->config['image-filter.templates']);
-            app()->config['image-filter.paths'] = array_merge(app()->config['imagecache.paths'], app()->config['image-filter.paths']); 
-        
-        Обновлены @pic @img @picLazy @imgLazy (change route "imagecache" to "image-filter")
 
-    v4.0.3: ShouldGallery new methods
-    v4.0.2: ShouldImage new methods
-    v4.0.1: Add RedirectController
-        - php artisan make:base-settings --controllers (y - для создания Site/RedirectController)
-    v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)
-    v3.1.4: Change Init TinyMCE (fix Tiny modal dialog)
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v3.1.3: Detect IE fix
-    v3.1.2: TinyMCE colors:
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v3.1.0: Lazy images support, $detectIe:
-        - npm install lazysizes
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-        - use: @picLazy, @imgLazy, @imageslazy
-    v3.0.6: TinyMCE files upload: false
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v3.0.5: TinyMCE init: add btn
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v3.0.4: Sweetalert2-neutral
-        - npm uninstall sweetalert2
-        - npm install sweetalert2-neutral
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-    v3.0.3: unset vendorName variable
-    v3.0.2: add Bootstrap paginator to provider
-    v3.0.1: add vendorName to commands
-    v.3.0.0: 
-        Laravel 8
-    v.2.1.2:
-        В панели управления добавлены ограничения для пользвоателей, не имеющих роли admin   
-        - добавлены константы для default-ролей: admin и editor 
-        - новый метод  getSuperId() модели Role - для получения id роли администратора
-        - новый метод getNoSuperUsers() модели User - для получения пользователей без прав администратора
-        - обновлен метод setRoles() модели User 
-        (ограничения для не адмнистраторов при обновлении ролей пользователя)    
-        - Обновлен контроллер UserController: 
-            -- в методах index,edit: пользователям без прав администратора не отображаются пользователи-администраторы
-            -- в методах store, update: пользователь без прав админитсратора не может назначать и снимать роль администратора
-            -- новая функция isAdminRolesInput - проверяет переданные роли на наличие роли администратора
+v4.1.0: Add ImageFilter (instead of intervention/imagecache) :
+          - php artisan migrate
+          - php artisan make:base-settings --models (y - для создания ImageFilter model)
+          - php artisan make:base-settings --controllers (y - для создания Site/FilterController)
+
+          Для конфигурации url фильтра, времени жизни кэша, шаблонов и путей:
+              - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=config
+          Для совместимости с Imagecache-фильтрами других пакетов добавить в провайдер проекта:
+              app()->config['image-filter.templates'] = array_merge(app()->config['imagecache.templates'],app()->config['image-filter.templates']);
+              app()->config['image-filter.paths'] = array_merge(app()->config['imagecache.paths'], app()->config['image-filter.paths']); 
+        
+          Обновлены @pic @img @picLazy @imgLazy (change route "imagecache" to "image-filter")
+
+
+v4.0.3: ShouldGallery new methods
+
+v4.0.2: ShouldImage new methods
+
+v4.0.1: Add RedirectController
+          
+
+    php artisan make:base-settings --controllers (y - для создания Site/RedirectController)
+
+v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)
+
+v3.1.4: Change Init TinyMCE (fix Tiny modal dialog)
+          
+
+     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v3.1.3: Detect IE fix
+
+v3.1.2: TinyMCE colors:
+          
+
+     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v3.1.0: Lazy images support, $detectIe:
+
+
+    npm install lazysizes
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+    
+- use: @picLazy, @imgLazy, @imageslazy
+
+v3.0.6: TinyMCE files upload: false
+          
+
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v3.0.5: TinyMCE init: add btn
+
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v3.0.4: Sweetalert2-neutral
+
+    npm uninstall sweetalert2
+    npm install sweetalert2-neutral
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+v3.0.3: unset vendorName variable
+
+v3.0.2: add Bootstrap paginator to provider
+
+v3.0.1: add vendorName to commands
+
+v.3.0.0: Laravel 8
+
+v.2.1.2:
+В панели управления добавлены ограничения для пользвоателей, не имеющих роли admin   
+          
+- добавлены константы для default-ролей: admin и editor  
+- новый метод  getSuperId() модели Role - для получения id роли администратора
+- новый метод getNoSuperUsers() модели User - для получения пользователей без прав администратора
+- обновлен метод setRoles() модели User 
+          (ограничения для не адмнистраторов при обновлении ролей пользователя)    
+- Обновлен контроллер UserController: 
+              
+  - в методах index,edit: пользователям без прав администратора не отображаются пользователи-администраторы 
+  - в методах store, update: пользователь без прав админитсратора не может назначать и снимать роль администратора 
+  - новая функция isAdminRolesInput - проверяет переданные роли на наличие роли администратора
         
         
-    v2.0.0:
-        - У пользователя убран шаблон layout
-        - К пользователю добалвен номер телефона
-        - Изменен внешний вид личного кабинета
-        - Добавлен шаблон для svg
-        - Убрана дата frontend из настроек
-        - Изменен метод обновления пользователя
-    Обновление:
-        - php artisan migrate
-        - php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
-        - php artisan make:base-settings --scss (profile-page yes)
-        - Если изменена форма редактирования пользователя, добавить метод PUT
+v2.0.0:
+- У пользователя убран шаблон layout
+- К пользователю добалвен номер телефона
+- Изменен внешний вид личного кабинета
+- Добавлен шаблон для svg
+- Убрана дата frontend из настроек
+- Изменен метод обновления пользователя
+
+Обновление:
+
+
+     php artisan migrate
+     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+     php artisan make:base-settings --scss (profile-page yes)
+
+Если изменена форма редактирования пользователя, добавить метод PUT
         
     v1.7.15:
         - В base.scss добавлен класс upper-label
