@@ -38,6 +38,9 @@ Route::group([
     'namespace' => 'App\Http\Controllers\Admin',
     "as" => "api.admin."
 ], function () {
+    Route::get("/auth/get-link", "UserController@getLoginLinkForCurrentUser")
+        ->name("get-link");
     Route::get("/auth/{email}/send-link", "UserController@sendLoginLinkForCurrentUserTo")
         ->name("get-current-link");
+
 });
