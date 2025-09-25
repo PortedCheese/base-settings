@@ -212,6 +212,7 @@
                             <li>{{ $item }}</li>
                         @endif
                     @endforeach
+                    <li>Комментарий.</li>
                     <li class="mb-2">Дополнительные данные:
                         <ul>
                             <li>

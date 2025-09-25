@@ -18,8 +18,11 @@
                             <li>Имя, Фамилия;</li>
                             <li>Телефон;</li>
                             <li>Электронный адрес;</li>
-                            <li>Номер группы;</li>
-                            <li>Наименование услуги;</li>
+                            @foreach ($data as $item)
+                                @if (! empty($item))
+                                    <li>{{ $item }}</li>
+                                @endif
+                            @endforeach
                             <li>Комментарий.</li>
                         </ul>
                     </li>
