@@ -55,7 +55,7 @@
 </div>
 <div class="alert-default alert alert-light alert-dismissible fade show d-none fixed-bottom" role="alert"
      id="alertDefaultHeading">
-    <button type="button" class="position-absolute top-0 end-0 btn btn-outline-primary p-2 my-3 alert-default__close" data-bs-dismiss="alert" aria-label="Close"> ОК </button>
+    <button type="button" class="position-absolute top-0 end-0 btn btn-outline-primary m-3 me-2 alert-default__close" data-bs-dismiss="alert" aria-label="Close"> <i class="fas fa-check"></i></button>
     <div class="alert-default__body">
         <small>
             Наш сайт использует файлы cookie, чтобы улучшить работу сайта, повысить его эффективность и удобство. Продолжая использовать сайт <a href="{{ route("home") }}">{{ config("app.name") }}</a>, я даю свое сгласие {{ config("policy.company","") }} на обработку моих персональных данных с использованием сервиса веб-аналитики Яндекс Метрика. Ознакомлен с <a href="{{ route("policy") }}">Политикой обработки персональных данных</a>.
