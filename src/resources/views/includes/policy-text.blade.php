@@ -207,6 +207,7 @@
                     <li>Фамилия, имя, отчество;</li>
                     <li>Электронный адрес;</li>
                     <li>Номера телефонов;</li>
+                    <li>Комментарий;</li>
                     @foreach(config('policy.data',[]) as $item)
                         @if (! empty($item))
                             <li>{{ $item }}</li>
