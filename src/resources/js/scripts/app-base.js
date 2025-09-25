@@ -7,6 +7,7 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 
 (function ($) {
     $(document).ready(function(){
+        initDefaultCookiesAlert();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
         customFileInput();
@@ -15,6 +16,23 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
         ajaxLogin();
     });
 
+    function initDefaultCookiesAlert() {
+        var now = new Date().getTime();
+        $(".alert-default").each( function (index){
+            if (!sessionStorage.getItem('alert-default-close-'+index) || (now - sessionStorage.getItem('alert-default-close-'+index)) > 24*60*60*1000) {
+                $(this).removeClass('d-none');
+                $(this).on('closed.bs.alert', function() {
+                    setDefaultCookiesAlertCookie(index, now);
+                })
+            } else {
+                $(this).addClass('d-none')
+                $(this).alert('close');
+            }
+        })
+    }
+    function setDefaultCookiesAlertCookie(index, value) {
+        sessionStorage.setItem('alert-default-close-'+index, value);
+    }
     function ajaxLogin() {
         let $forms = $('.ajax-login-form');
         $forms.each(function (index, element) {
