@@ -1,14 +1,25 @@
 ### Versions
 
+v5.0.12: policy
+        
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+- Удалить в проекте script.js функцию  initDefaultCookiesAlert()
+- Если необходимо - заменить политику на новые шаблоны:
+
+  
+    @includeIf("base-settings::includes.policy-text",compact("company", "params","email", "data"))
+    @includeIf("base-settings::includes.policy-alert")
+
+v5.0.9: fetch login link
+
 v5.0.8: add vue3 universal priority component
         
     php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
    
 Для использования компонента в проекте с vue3 измените подключение в admin.js:
-    
-    import UniversalPriority from './components/vendor/base-settings/UniversalPriorityVue3Component.vue';   
-        
-    app.component('universal-priority',UniversalPriority);
+
+    php artisan make:base-settings --vue3
         
 v5.0.6-5.0.7: smart captcha
        
@@ -33,6 +44,19 @@ v5.0.0-5.0.3: bootstrap 5
         
      php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
      php artisan image-filters:clear, php artisan config:clear, php artisan cache:clear
+
+v4.2.6-4.2.7: fetch login & policy
+
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+- Удалить в проекте script.js функцию  initDefaultCookiesAlert()
+- Если необходимо - заменить политику на новые шаблоны:
+
+
+    @includeIf("base-settings::includes.policy-text",compact("company", "params","email", "data"))
+    @includeIf("base-settings::includes.policy-alert")
+
+v4.2.5: smart recapcha
 
 v4.2.2-4.2.4: tint init change
 - add to webpack (tiny ^7.0): .copy("node_modules/tinymce/models", "public/js/models")
@@ -81,6 +105,18 @@ v4.0.1: Add RedirectController
 
 v4.0.0:  Laravel 9 & Schema::defaultStringLength(255)
 
+v3.1.8: fetch login & policy
+
+    php artisan vendor:publish --provider="PortedCheese\BaseSettings\BaseSettingsServiceProvider" --tag=public --force
+
+- Удалить в проекте script.js функцию  initDefaultCookiesAlert()
+- Если необходимо - заменить политику на новые шаблоны:
+
+
+    @includeIf("base-settings::includes.policy-text",compact("company", "params","email", "data"))
+    @includeIf("base-settings::includes.policy-alert")
+
+v3.1.5: smart recapcha
 v3.1.4: Change Init TinyMCE (fix Tiny modal dialog)
           
 
