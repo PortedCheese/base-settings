@@ -7,12 +7,31 @@ import 'lazysizes/plugins/parent-fit/ls.parent-fit';
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
 
+
 document.addEventListener('DOMContentLoaded', function(){
+    initDefaultCookiesAlert();
     jsLogin();
     jsTooltip();
     jsPopover();
     rangeSlider();
     customFileInput();
+
+    function initDefaultCookiesAlert() {
+        var now = new Date().getTime();
+        document.querySelectorAll(".alert-default").forEach(function (el, index) {
+            if (!sessionStorage.getItem('alert-default-close-' + index) || (now - sessionStorage.getItem('alert-default-close-' + index)) > 24 * 60 * 60 * 1000) {
+                el.classList.remove('d-none');
+                el.addEventListener('closed.bs.alert', event => {
+                    setDefaultCookiesAlertCookie(index, now);
+                })
+            } else {
+                el.classList.add('d-none')
+            }
+        });
+    }
+    function setDefaultCookiesAlertCookie(index, value) {
+        sessionStorage.setItem('alert-default-close-'+index, value);
+    }
 
     function jsTooltip(){
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
