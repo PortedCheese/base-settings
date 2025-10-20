@@ -209,7 +209,7 @@
                     <li>Номера телефонов;</li>
                     @foreach ($data as $item)
                         @if (! empty($item))
-                            <li>{{ $item }}</li>
+                            <li>{{ $item }};</li>
                         @endif
                     @endforeach
                     <li>Комментарий.</li>

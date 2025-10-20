@@ -20,7 +20,7 @@
                             <li>Электронный адрес;</li>
                             @foreach (config('policy.data',[]) as $item)
                                 @if (! empty($item))
-                                    <li>{{ $item }}</li>
+                                    <li>{{ $item }};</li>
                                 @endif
                             @endforeach
                             <li>Комментарий.</li>
