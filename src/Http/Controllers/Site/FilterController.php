@@ -39,13 +39,15 @@ class FilterController extends Controller
         $obj = (object) ["id" => $fileName, "path" => "", "file_name" => $fileName ];
         $ttl = 60*config("image-filter.lifetime", 0);
         // original
+        $key = "object-filters-original:{$fileName}";
+        $filterPath = Cache::remember($key,$ttl, function () use ($obj)
+        {
+            return FilterActions::getObjectOriginalPath($obj);
+        });
+
+        // check deleted
+        if (strlen($filterPath)> strlen(route("home"))) return abort(404);
         if ($template == 'original') {
-            $key = "object-filters-original:{$fileName}";
-            $filterPath = Cache::remember($key,$ttl, function () use ($obj)
-            {
-                return FilterActions::getObjectOriginalPath($obj);
-            });
-            if ($filterPath == '') return abort(404);
             return redirect($filterPath);
         }
         // filter
