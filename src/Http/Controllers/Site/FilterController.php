@@ -46,7 +46,7 @@ class FilterController extends Controller
         });
 
         // check deleted
-        if (strlen($filterPath)> strlen(route("home"))) return abort(404);
+        if (strlen($filterPath) == strlen(route("home"))) return abort(404);
         if ($template == 'original') {
             return redirect($filterPath);
         }
